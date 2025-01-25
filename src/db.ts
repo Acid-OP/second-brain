@@ -1,5 +1,5 @@
 import mongoose ,{ model,Schema } from "mongoose";
-mongoose.connect("mongodb+srv://Cluster0:gaurav23@cluster0.kobs3.mongodb.net/brainly", {
+mongoose.connect("process.env.MONGO_URL", {
   }).then(() => {
     console.log("Connected to MongoDB");
   }).catch((error) => {
@@ -13,3 +13,17 @@ const UserSchema = new Schema({
 })
 
 export const UserModel = model( "User" , UserSchema);
+
+const ContentSchema = new Schema({
+  title: String,
+  link: String,
+  tags: [{type:mongoose.Types.ObjectId , ref:"tag"}],
+  userId: {
+    type: mongoose.Types.ObjectId,
+    ref: "User",
+    required : true
+  },
+
+});
+
+export const ContentModel = model("Content", ContentSchema);
