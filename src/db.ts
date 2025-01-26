@@ -1,9 +1,5 @@
 import mongoose ,{ model,Schema } from "mongoose";
-<<<<<<< HEAD
-mongoose.connect("process.env.MONGO_URL", {
-=======
-mongoose.connect("put your url here", {
->>>>>>> 6771c2c9763d07f8fbdfc31881c3099765349f6b
+mongoose.connect("mongodb+srv://Cluster0:gaurav23@cluster0.kobs3.mongodb.net/brainly", {
   }).then(() => {
     console.log("Connected to MongoDB");
   }).catch((error) => {

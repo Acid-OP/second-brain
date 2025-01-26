@@ -1,3 +1,10 @@
+declare global {
+    namespace Express {
+        export interface Request{
+            userId?: string;
+        }}
+}
+
 import express from "express";
 import { JWT_SECRET} from "./config";
 import  Jwt from "jsonwebtoken";
@@ -47,7 +54,6 @@ app.post("/api/v1/content", userMiddleware, async (req , res) =>{
     await ContentModel.create({
         link ,
         title,
-        // @ts-ignore
         userId: req.userId,
         tags : []
     })
@@ -59,7 +65,7 @@ app.post("/api/v1/content", userMiddleware, async (req , res) =>{
 })
 
 app.get("/api/v1/content" , userMiddleware , async (req , res) => {
-    //@ts-ignore
+    
     const userId = req.userId;
     const content = await ContentModel.find({userId: userId}).populate("userId","username");
     res.json(content);
@@ -67,7 +73,6 @@ app.get("/api/v1/content" , userMiddleware , async (req , res) => {
 
 app.delete("/api/v1/content", userMiddleware, async (req, res) => {
     const contentId = req.body.contentId;
-    // @ts-ignore
     await ContentModel.deleteMany({ contentId, userId: req.userId });
     res.json({ message: "Deleted" }); 
 });
