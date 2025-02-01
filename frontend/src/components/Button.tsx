@@ -4,7 +4,7 @@ import { ReactElement } from "react";
 export interface ButtonProps {
     variant: "primary" | "secondary";
     text: string;
-    startIcon: ReactElement;
+    startIcon?: ReactElement;
     onClick ?: () => void;
     fullWidth?: boolean;
     loading ?: boolean;

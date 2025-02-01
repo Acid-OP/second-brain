@@ -1,29 +1,29 @@
-import mongoose ,{ model,Schema } from "mongoose";
-mongoose.connect("mongodb+srv://Cluster0:gaurav23@cluster0.kobs3.mongodb.net/brainly", {
-  }).then(() => {
-    console.log("Connected to MongoDB");
-  }).catch((error) => {
-    console.error("MongoDB connection error:", error);
-  });
+import mongoose, {model, Schema} from "mongoose";
 
+mongoose.connect("mongodb+srv://Cluster0:gaurav23@cluster0.kobs3.mongodb.net/brainly")
 
 const UserSchema = new Schema({
-    username: {type:String , unique:true},
+    username: {type: String, unique: true},
     password: String
 })
 
-export const UserModel = model( "User" , UserSchema);
+export const UserModel = model("User", UserSchema);
 
 const ContentSchema = new Schema({
-  title: String,
-  link: String,
-  tags: [{type:mongoose.Types.ObjectId , ref:"tag"}],
-  userId: {type: mongoose.Types.ObjectId,ref: "User",required : true},
-});
-export const ContentModel = model("Content", ContentSchema);
+    title: String,
+    link: String,
+    tags: [{type: mongoose.Types.ObjectId, ref: 'Tag'}],
+    type: String,
+    userId: {type: mongoose.Types.ObjectId, ref: 'User', required: true },
+})
 
 const LinkSchema = new Schema({
-  hash: String,
-  userId: {type: mongoose.Types.ObjectId,ref: "User",required : true , unique:true},
-});
-export const LinkModel = model("Links" , LinkSchema);
+    hash: String,
+    userId: {type: mongoose.Types.ObjectId, ref: 'User', required: true, unique: true },
+})
+
+export const LinkModel = model("Links", LinkSchema);
+export const ContentModel = model("Content", ContentSchema);
+
+
+
