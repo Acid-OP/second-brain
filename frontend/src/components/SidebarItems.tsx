@@ -16,3 +16,37 @@ export function SidebarItem({text , icon , onClick}: {
         </div>
     </div>
 }
+
+export interface mvp{
+    icon : ReactElement;
+    title : ReactElement
+}
+
+export function Mvp(props:mvp){
+
+    return(
+        <div className="flex mt-8">
+            {props.icon}
+            <span className="text-purple">{props.title}</span>
+        </div>
+    )
+}
+
+export function IconComponent({src , alt}:{src:string ; alt?:string}){
+    return(
+        <div>
+            <div>
+            <img src={src} alt={alt || "Icon"} width="45" height="45" /> 
+            </div>
+        </div>
+    )
+}
+
+
+export function TextComponent({ title }: { title: string }) {
+    return (
+        <div className="flex pl">
+            <span className="text-black text-2xl font-bold pt-3">{title}</span>
+        </div>
+    );
+}
