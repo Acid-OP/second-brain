@@ -10,8 +10,8 @@ export interface ButtonProps {
     loading ?: boolean;
 }
 const variantClasses = {
-    "primary" : "bg-[#7164c0] text-white",
-    "secondary" : "bg-[#d9ddee] text-purple-400",
+    "primary" : "bg-[#7164c0] text-white py-3 px-6",
+    "secondary" : "bg-[#d9ddee] text-purple-400 py-3 px-6",
 };
 
 const defaultStyles = "px-4 py-2 rounded-md font-light flex items-center";

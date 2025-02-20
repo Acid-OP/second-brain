@@ -34,15 +34,18 @@ export function CreateContentModal({open, onClose}) {
         onClose();
 
     }
+    
 
-    return <div>
+    return <div >
         {open && <div> 
-            <div className="w-screen h-screen bg-slate-500 fixed top-0 left-0 opacity-60 flex justify-center">
+            {/* <div className="w-screen h-screen bg-slate-500 fixed top-0 left-0 opacity-60 flex justify-center">
                
+            </div> */}
+            <div className="relative ">
+            <div className="w-screen h-screen fixed  left-0 flex justify-center">
             </div>
-            <div className="w-screen h-screen fixed top-0 left-0 flex justify-center">
-                <div className="flex flex-col justify-center">
-                    <span className="bg-white opacity-100 p-4 rounded fixed">
+                {/* <div className="flex flex-col items-start justify-start"> */}
+                    <div className="bg-amber-300 opacity-100 p-4 rounded fixed">
                         <div className="flex justify-end">
                             <div onClick={onClose} className="cursor-pointer">
                                 <CrossIcon />
@@ -66,7 +69,7 @@ export function CreateContentModal({open, onClose}) {
                         <div className="flex justify-center">
                             <Button onClick={addContent} variant="primary" text="Submit" />
                         </div>
-                    </span>
+                    {/* </div> */}
                 </div>     
             </div>
             
