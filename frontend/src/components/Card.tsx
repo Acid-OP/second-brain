@@ -1,4 +1,5 @@
 import { useEffect } from "react";
+import "./youtube.css";
 
 interface CardProps {
   title: string;
@@ -54,7 +55,7 @@ export function Card({ title, link, type }: CardProps) {
 
       <div className="pt-4">
         {type === "youtube" && (
-            <iframe className="w-full h-48" src={link.replace("watch","embed").replace("?v=","/").split("&")[0]} title="YouTube video player" frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerPolicy="strict-origin-when-cross-origin" allowFullScreen></iframe> 
+            <iframe className= "youtube-player"  src={link.replace("watch","embed").replace("?v=","/").split("&")[0]} title="YouTube video player" frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerPolicy="strict-origin-when-cross-origin" allowFullScreen></iframe> 
         )}
 
         {type === "twitter" && (

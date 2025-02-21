@@ -1,4 +1,3 @@
-import { Logo } from "../icons/Logo";
 import { TwitterIcon } from "../icons/TwitterIcon";
 import { YoutubeIcon } from "../icons/YoutubeIcon";
 import { IconComponent, Mvp, SidebarItem, Text, TextComponent } from "./SidebarItems";
