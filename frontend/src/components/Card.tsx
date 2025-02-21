@@ -64,7 +64,7 @@ export function Card({ title, link, type }: CardProps) {
         )}
 
         {type === "reddit" && (
-          <blockquote className="reddit-card" data-card-created={Date.now()}>
+          <blockquote className="reddit-card"  data-card-created={Date.now()}>
             <a href={link}>{title}</a> from{" "}
             <a href={`https://www.reddit.com/r/${subreddit}`}>{subreddit}</a>
           </blockquote>
