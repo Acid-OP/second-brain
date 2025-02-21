@@ -23,10 +23,6 @@ export function Dashboard() {
         filter === "Second Brain" ? type : type === filter
     );
 
-    function popup(){
-        setModalOpen(true);
-
-    }
 
     return (
         <>
@@ -35,16 +31,14 @@ export function Dashboard() {
             <Sidebar setFilter={setFilter} /> 
 
             <div className="p-4 ml-72 min-h-screen bg-gray-100 border-slate-200 border-2">
-                <div className="flex justify-end gap-4">
-                    <div className="flex flex-col">
-                    <Button onClick={popup} variant="primary" text="Add content" startIcon={<PlusIcon />} />
-                    {modalOpen && (
-        <div className="pt-4">
             <CreateContentModal open={modalOpen} onClose={() => setModalOpen(false)} />
-        </div>
-    )}
-            </div>
-                  <div> <Button
+                <div className="flex justify-end gap-4">
+                 
+                    <Button onClick={() => {
+          setModalOpen(true)
+        }} variant="primary" text="Add content" startIcon={<PlusIcon />}></Button>
+            
+                   <Button
                         onClick={async () => {
                             const response = await axios.post(`${BACKEND_URL}/api/v1/brain/share`, { share: true }, {
                                 headers: { "Authorization": localStorage.getItem("token") }
@@ -56,7 +50,7 @@ export function Dashboard() {
                         text="Share brain"
                         startIcon={<ShareIcon />}
                     />
-                </div>
+                
                 </div> 
                 <div className="flex gap-4 flex-wrap">
                     {filteredContents.map(({ type, link, title }) => (

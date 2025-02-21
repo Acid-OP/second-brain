@@ -9,7 +9,7 @@ export function Sidebar({ setFilter }: { setFilter: (filter: "Second Brain" | "y
     return (
         <div className="h-screen bg-white w-72 fixed left-0 top-0 pl-6">
             <Mvp icon={<IconComponent src={brain}/>} title={<TextComponent title="Second Brain"/>}  onClick={() => setFilter("Second Brain")} />
-            <div className="pt-8 pl-4">
+            <div className="pt-4 pl-4">
                 {/* <SidebarItem text="All" icon={<Logo />} onClick={() => setFilter("all")} /> */}
                 <SidebarItem text={<Text title="Twitter"/>} icon={<TwitterIcon />} onClick={() => setFilter("twitter")} />
                 <SidebarItem text={<Text title="Youtube"/>}icon={<YoutubeIcon />} onClick={() => setFilter("youtube")} />

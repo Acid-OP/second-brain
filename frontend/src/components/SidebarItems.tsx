@@ -8,23 +8,25 @@ export interface Sidebaritem{
 
 export function SidebarItem(props:Sidebaritem) {
 
-    return <div className="flex text-gray-700 cursor-pointer hover:bg-gray-200 rounded pl-4 py-0.5 max-w-48 transition-all duration-150"
+    return <div>
+        <div className="flex items-center text-gray-700 cursor-pointer hover:bg-gray-200 rounded pl-4 py-0.5 max-w-48 transition-all duration-150"
             onClick={props.onClick}
             >
-        <div className="flex justify-center gap-4 items-center h-15">
-          <div className=" h-full">
+        <div className="flex justify-center gap-4 items-center h-20">
+          <div className=" flex items-center h-full">
               {props.icon}
           </div>
-          <div className=" h-full">
+          <div className="flex items-center h-full">
               {props.text}
           </div>
         </div>
+    </div>
     </div>
 }
 export function Text({ title }: { title: string }) {
     return (
         <div className="flex">
-            <span className="text-gray-600 text-xl font-medium">{title}</span>
+            <span className="text-gray-600 text-2xl font-medium">{title}</span>
         </div>
     );
 }

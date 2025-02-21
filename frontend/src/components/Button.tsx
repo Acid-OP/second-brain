@@ -14,7 +14,7 @@ const variantClasses = {
     "secondary" : "bg-[#d9ddee] text-purple-400 py-3 px-6",
 };
 
-const defaultStyles = "px-4 py-2 rounded-md font-light flex items-center";
+const defaultStyles = "px-4 py-2 rounded-md font-semibold flex items-center";
 
 export function Button({variant , text , startIcon , onClick , fullWidth,loading }: ButtonProps) {
     return <button onClick={onClick} className={variantClasses[variant] + " " + defaultStyles + `${fullWidth ? " w-full flex justify-center items-center" : ""} ${loading ? "opacity-45" : ""}`} disabled = {loading}>

@@ -63,12 +63,13 @@ export function Card({ title, link, type }: CardProps) {
           </blockquote>
         )}
 
-        {type === "reddit" && (
-          <blockquote className="reddit-card"  data-card-created={Date.now()}>
-            <a href={link}>{title}</a> from{" "}
-            <a href={`https://www.reddit.com/r/${subreddit}`}>{subreddit}</a>
-          </blockquote>
-        )}
+         {type === "reddit" && (
+            <blockquote className="reddit-embed-bq" data-embed-height="316">
+              <a href={link}>{link}</a>
+              <a href={`https://www.reddit.com/r/${subreddit}`}>{subreddit}</a>
+            </blockquote>
+
+)}
       </div>
     </div>
     </div>
