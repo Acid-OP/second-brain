@@ -7,7 +7,8 @@ import axios from "axios";
 
 enum ContentType {
     Youtube = "youtube",
-    Twitter = "twitter"
+    Twitter = "twitter",
+    Reddit = "reddit"
 }
 
 // controlled component
@@ -63,6 +64,9 @@ export function CreateContentModal({open, onClose}) {
                                 }}></Button>
                                 <Button text="Twitter" variant={type === ContentType.Twitter ? "primary" : "secondary"} onClick={() => {
                                     setType(ContentType.Twitter)
+                                }}></Button>
+                                   <Button text="Reddit" variant={type === ContentType.Reddit ? "primary" : "secondary"} onClick={() => {
+                                    setType(ContentType.Reddit)
                                 }}></Button>
                             </div>
                         </div>

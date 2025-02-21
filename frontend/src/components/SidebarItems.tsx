@@ -19,14 +19,15 @@ export function SidebarItem({text , icon , onClick}: {
 
 export interface mvp{
     icon : ReactElement;
-    title : ReactElement
+    title : ReactElement;
+    onClick? : () => void;
 }
 
 export function Mvp(props:mvp){
 
     return(
         <div className="flex mt-8 items-center">
-            <div className="flex justify-center pl-4 items-center">
+            <div className="flex justify-center pl-4 items-center" onClick={props.onClick}>
             {props.icon}
             {props.title}
             </div>

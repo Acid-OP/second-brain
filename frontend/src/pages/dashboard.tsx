@@ -12,7 +12,7 @@ import { useContent } from "../hooks/usecontent";
 export function Dashboard() {
     const [modalOpen, setModalOpen] = useState(false);
     const { contents, refresh } = useContent();
-    const [filter, setFilter] = useState<"all" | "youtube" | "twitter">("all"); // Track selected filter
+    const [filter, setFilter] = useState<"Second Brain" | "youtube" | "twitter" | "reddit">("Second Brain"); // Track selected filter
 
     useEffect(() => {
         refresh();
@@ -20,7 +20,7 @@ export function Dashboard() {
 
     // Filter contents based on selected type
     const filteredContents = contents.filter(({ type }) =>
-        filter === "all" ? true : type === filter
+        filter === "Second Brain" ? type : type === filter
     );
 
     function popup(){
