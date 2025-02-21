@@ -1,8 +1,9 @@
 import { Logo } from "../icons/Logo";
 import { TwitterIcon } from "../icons/TwitterIcon";
 import { YoutubeIcon } from "../icons/YoutubeIcon";
-import { IconComponent, Mvp, SidebarItem, TextComponent } from "./SidebarItems";
+import { IconComponent, Mvp, SidebarItem, Text, TextComponent } from "./SidebarItems";
 import brain from "../iconImages/brain.png";
+import { RedditIcon } from "../icons/RedditIcon";
 
 export function Sidebar({ setFilter }: { setFilter: (filter: "Second Brain" | "youtube" | "twitter" | "reddit") => void }) {
     return (
@@ -10,9 +11,9 @@ export function Sidebar({ setFilter }: { setFilter: (filter: "Second Brain" | "y
             <Mvp icon={<IconComponent src={brain}/>} title={<TextComponent title="Second Brain"/>}  onClick={() => setFilter("Second Brain")} />
             <div className="pt-8 pl-4">
                 {/* <SidebarItem text="All" icon={<Logo />} onClick={() => setFilter("all")} /> */}
-                <SidebarItem text="Twitter" icon={<TwitterIcon />} onClick={() => setFilter("twitter")} />
-                <SidebarItem text="Youtube" icon={<YoutubeIcon />} onClick={() => setFilter("youtube")} />
-                <SidebarItem text="Reddit" icon={<YoutubeIcon />} onClick={() => setFilter("reddit")} />
+                <SidebarItem text={<Text title="Twitter"/>} icon={<TwitterIcon />} onClick={() => setFilter("twitter")} />
+                <SidebarItem text={<Text title="Youtube"/>}icon={<YoutubeIcon />} onClick={() => setFilter("youtube")} />
+                <SidebarItem text={<Text title="Reddit"/>} icon={<RedditIcon />} onClick={() => setFilter("reddit")} />
 
             </div>
         </div>

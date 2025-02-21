@@ -1,22 +1,32 @@
 import { ReactElement } from "react";
 
-export function SidebarItem({text , icon , onClick}: {
-    text: string;
+export interface Sidebaritem{
+    text: ReactElement;
     icon: ReactElement;
     onClick? : () => void;
-}) {
-    return <div className="flex text-gray-700 py-2 cursor-pointer hover:bg-gray-200 rounded pl-4 max-w-48 transition-all duration-150"
-            onClick={onClick}
+}
+
+export function SidebarItem(props:Sidebaritem) {
+
+    return <div className="flex text-gray-700 cursor-pointer hover:bg-gray-200 rounded pl-4 py-0.5 max-w-48 transition-all duration-150"
+            onClick={props.onClick}
             >
-        <div className="flex justify-center items-center h-15">
-          <div className="pr-2 h-full">
-              {icon}
+        <div className="flex justify-center gap-4 items-center h-15">
+          <div className=" h-full">
+              {props.icon}
           </div>
-          <div className="p-2 h-full">
-              {text}
+          <div className=" h-full">
+              {props.text}
           </div>
         </div>
     </div>
+}
+export function Text({ title }: { title: string }) {
+    return (
+        <div className="flex">
+            <span className="text-gray-600 text-xl font-medium">{title}</span>
+        </div>
+    );
 }
 
 export interface mvp{
