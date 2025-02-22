@@ -38,20 +38,21 @@ export function TopBar(props:Topbar){
 export function TopBarComp() {
     return (
         <div className="flex justify-center gap-16 w-full max-w-md">
-            <div>Features</div>
-            <div>Solutions</div>
-            <div>Resources</div>
-            <div>Prices</div>
+            <div className="from-neutral-800 font-normal text-lg ">Features</div>
+            <div className="from-neutral-800 font-normal text-lg ">Solutions</div>
+            <div className="from-neutral-800 font-normal text-lg ">Resources</div>
+            <div className="from-neutral-800 font-normal text-lg ">Prices</div>
         </div>
     );
 }
 
 
-export function TopBarSignin(){
-    return(
+export function TopBarSignin() {
+    return (
         <div className="flex justify-between w-max">
-            <div className="">Signin</div>
-
+            <button className="bg-[#7950f2] text-white py-2 px-6 rounded-full hover:bg-[#6a42c1] focus:outline-none focus:ring-2 focus:ring-[#6a42c1] cursor-pointer transition duration-300">
+                Signin
+            </button>
         </div>
-    )
+    );
 }
