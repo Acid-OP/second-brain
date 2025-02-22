@@ -63,14 +63,16 @@ export function Card({ title, link, type }: CardProps) {
             <a href={link.replace("x.com", "twitter.com")} />
           </blockquote>
         )}
-
          {type === "reddit" && (
+        <div className="border border-neurtal-700 rounded-xl">
             <blockquote className="reddit-embed-bq" data-embed-height="316">
               <a href={link}>{link}</a>
               <a href={`https://www.reddit.com/r/${subreddit}`}>{subreddit}</a>
             </blockquote>
+            </div>
 
 )}
+
       </div>
     </div>
     </div>
