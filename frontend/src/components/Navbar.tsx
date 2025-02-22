@@ -1,5 +1,6 @@
 import brain from "../iconImages/brain.png";
-import { TopBar , NavbarIconComponent , NavbarTextComponent, TopBarComp, TopBarSignin } from "./Topbar";
+import { NavbarIconComponent , NavbarTextComponent } from "./NavbarComponent";
+import { TopBar,TopBarComp,TopBarSignin } from "./Topbar";
 
 export function Navbar() {
     return (
