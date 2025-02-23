@@ -20,16 +20,16 @@ export function TopBar(props:Topbar){
 export function TopBarComp() {
     return (
         <div className="flex justify-center gap-16 w-full max-w-md">
-            <div className="from-neutral-800 font-normal text-lg hover:bg-[#f1f1f1] py-2 px-4 rounded-full cursor-pointer transition duration-300">
+            <div className="from-neutral-800 font-medium text-lg hover:bg-[#f1f1f1] py-2 px-4 rounded-full cursor-pointer transition duration-300">
                 Features
             </div>
-            <div className="from-neutral-800 font-normal text-lg hover:bg-[#f1f1f1] py-2 px-4 rounded-full cursor-pointer transition duration-300">
+            <div className="from-neutral-800 font-medium text-lg hover:bg-[#f1f1f1] py-2 px-4 rounded-full cursor-pointer transition duration-300">
                 Solutions
             </div>
-            <div className="from-neutral-800 font-normal text-lg hover:bg-[#f1f1f1] py-2 px-4 rounded-full cursor-pointer transition duration-300">
+            <div className="from-neutral-800 font-medium text-lg hover:bg-[#f1f1f1] py-2 px-4 rounded-full cursor-pointer transition duration-300">
                 Resources
             </div>
-            <div className="from-neutral-800 font-normal text-lg hover:bg-[#f1f1f1] py-2 px-4 rounded-full cursor-pointer transition duration-300">
+            <div className="from-neutral-800 font-medium text-lg hover:bg-[#f1f1f1] py-2 px-4 rounded-full cursor-pointer transition duration-300">
                 Prices
             </div>
         </div>
@@ -39,7 +39,7 @@ export function TopBarComp() {
 export function TopBarSignin() {
     return (
         <div className="flex justify-between w-max">
-            <button className="bg-[#7950f2] text-white py-2 px-6 rounded-full hover:bg-[#6a42c1] focus:outline-none focus:ring-2 focus:ring-[#6a42c1] cursor-pointer transition duration-300">
+            <button className="bg-[#7950f2] text-white font-medium py-2 px-6 rounded-full hover:bg-[#6a42c1] focus:outline-none focus:ring-2 focus:ring-[#6a42c1] cursor-pointer transition duration-300">
                 Signin
             </button>
         </div>
