@@ -4,6 +4,17 @@ import { Input } from "../components/InputBox";
 import axios from "axios";
 import { BACKEND_URL } from "../config";
 import { useNavigate } from "react-router-dom";
+import brain from "../iconImages/brain.png";
+import welcome from "../iconImages/welcome.png";
+import { NavbarIconComponent } from "../components/NavbarComponent";
+
+export function SignUpIconcomponent({ src, alt, className }: { src: string; alt?: string; className?: string }) {
+    return (
+        <div className={className}>
+            <img src={src} alt={alt || "Icon"} width="350" />
+        </div>
+    );
+}
 
 export function Signup() {
     const usernameRef = useRef<HTMLInputElement>(null);
@@ -26,17 +37,16 @@ export function Signup() {
         }
     }
     return (
-        <div>
-            <div className="h-screen w-screen bg-white flex justify-center items-center">
-                <div className="flex items-center justify-center w-full">
-                    {/* Left Content */}
-                    <div className="flex items-center justify-center pr-10">
-                        <div>hi</div>
+        <div className="flex flex-col h-screen w-screen ">
+            <NavbarIconComponent src={brain} />
+            <div className=" bg-white h-screen flex flex-col justify-center items-center">
+                <div className="flex items-center justify-center">
+                    <div className="flex flex-col items-center justify-between space-y-4">
+                        <SignUpIconcomponent src={welcome}/>
+                        <div className="text-center">Start your journey <br/>
+                            keep your links close</div>
                     </div>
-    
-                    {/* Middle Line */}
-                    <div className="border-l-2 border-gray-300 h-48 mx-10"></div>
-    
+                    <div className="border-l-2 border-gray-300 h-96 mx-10"></div>
                     {/* Right Content (Signup Form) */}
                     <div className="bg-white rounded-xl border min-w-48 p-8">
                         <Input reference={usernameRef} placeholder="Username" />

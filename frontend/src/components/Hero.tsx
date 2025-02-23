@@ -1,7 +1,5 @@
 import brain2 from "../iconImages/brain2.png";
 import { HeroButton } from "./HeroButton";
-import social from "../iconImages/social.png";
-import reddit from "../iconImages/reddit.png";
 import x from "../iconImages/x.png";
 import youtube from "../iconImages/youtube.png";
 import card from "../iconImages/card.png";
@@ -9,7 +7,7 @@ import socialIcon from "../iconImages/socialIcon.png";
 import { motion } from "framer-motion";
 
 // Update NavbarIconComponent to accept className as a prop
-export function NavbarIconComponent({ src, alt, className }: { src: string; alt?: string; className?: string }) {
+export function NavbarIconcomponent({ src, alt, className }: { src: string; alt?: string; className?: string }) {
     return (
         <div className={className}>
             <img src={src} alt={alt || "Icon"} width="100" />
@@ -37,7 +35,7 @@ export function NavbarIcon3Component({ src, alt, className }: { src: string; alt
 export function Hero() {
     return (
         <div className="flex flex-col justify-center items-center pt-12 md:pt-16 lg:pt-24">
-            <NavbarIconComponent src={brain2} />
+            <NavbarIconcomponent src={brain2} />
             <div className="text-7xl pt-4">
                 Save, organize, and share
             </div>
