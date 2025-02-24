@@ -22,9 +22,10 @@ export function Dashboard() {
         filter === "Second Brain" ? type : type === filter);
     return (
         <>
-        <div>
+        <div className="bg-gray-100 flex ">
             <Sidebar setFilter={setFilter} /> 
-            <div className="p-4 ml-72 min-h-screen bg-gray-100 border-slate-200 border-2">
+            <div className=" bg-black w-110"></div>
+            <div className="p-4 min-h-screen bg-gray-100 ">
                 <CreateContentModal open={modalOpen} onClose={() => setModalOpen(false)} />
             <div className="flex justify-end gap-4">
                 <Button onClick={() => {
@@ -39,7 +40,7 @@ export function Dashboard() {
                     }}
                     variant="secondary" text="Share brain" startIcon={<ShareIcon />}/>
             </div> 
-                <div className="flex gap-4 flex-wrap">
+                <div className="flex pt-4 pl-4 gap-4 flex-wrap">
                     {filteredContents.map(({ type, link, title }) => (
                         <Card key={link} type={type} link={link} title={title} />
                     ))}
