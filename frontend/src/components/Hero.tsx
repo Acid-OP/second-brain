@@ -1,13 +1,16 @@
 import brain2 from "../iconImages/brain2.png";
 import { HeroButton } from "./HeroButton";
-import x from "../iconImages/x.png";
-import youtube from "../iconImages/youtube.png";
-import card from "../iconImages/card.png";
-import socialIcon from "../iconImages/socialIcon.png";
 import { motion } from "framer-motion";
 
-// Update NavbarIconComponent to accept className as a prop
-export function NavbarIconcomponent({ src, alt, className }: { src: string; alt?: string; className?: string }) {
+// Define interface for NavbarIconcomponent props
+interface NavbarIconProps {
+    src: string;
+    alt?: string; // Optional
+    className?: string; // Optional
+}
+
+// NavbarIconComponent with explicit typing
+export function NavbarIconcomponent({ src, alt, className }: NavbarIconProps) {
     return (
         <div className={className}>
             <img src={src} alt={alt || "Icon"} width="100" />
@@ -15,90 +18,115 @@ export function NavbarIconcomponent({ src, alt, className }: { src: string; alt?
     );
 }
 
-// Update the other components similarly if needed
-export function NavbarIcon2Component({ src, alt, className }: { src: string; alt?: string; className?: string }) {
-    return (
-        <div className={className}>
-            <img src={src} alt={alt || "Icon"} width="330" />
-        </div>
-    );
-}
-
-export function NavbarIcon3Component({ src, alt, className }: { src: string; alt?: string; className?: string }) {
-    return (
-        <div className={className}>
-            <img src={src} alt={alt || "Icon"} width="300" />
-        </div>
-    );
-}
-
+// Hero component with enhanced shapes and padding
 export function Hero() {
     return (
-        <div className="flex flex-col justify-center items-center pt-12 md:pt-16 lg:pt-24">
-            <NavbarIconcomponent src={brain2} />
-            <div className="text-7xl pt-4">
-                Save, organize, and share
-            </div>
-            <div className="text-7xl text-gray-500 pt-4">
-                all in one place
-            </div>
-            <div className="pt-12">
-                <HeroButton />
+        <div className="relative h-screen bg-gray-50 overflow-y-hidden">
+            {/* Main Content - Centered */}
+            <div className="absolute top-[40%] left-1/2 transform -translate-x-1/2 -translate-y-1/2 flex flex-col items-center">
+                <motion.div
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ duration: 0.8, ease: "easeOut" }}
+                >
+                    <NavbarIconcomponent src={brain2} className="mb-4" />
+                </motion.div>
+
+                {/* First Layer: Save, Organize, Share */}
+                <motion.div
+                    className="text-5xl md:text-6xl lg:text-7xl font-extrabold text-gray-900 p-2 text-center leading-tight"
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ duration: 0.8, delay: 0.2 }}
+                >
+                    Save, Organize, Share
+                </motion.div>
+
+                {/* Second Layer: All in One Place */}
+                <motion.div
+                    className="text-3xl md:text-4xl lg:text-5xl font-bold text-gray-700 p-2 text-center mt-4"
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ duration: 0.8, delay: 0.4 }}
+                >
+                    All in One Place
+                </motion.div>
+
+                {/* Optional Short Line: Explanation */}
+                <motion.div
+                    className="text-lg md:text-xl lg:text-2xl font-medium text-gray-600 p-2 text-center mt-4 max-w-2xl"
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ duration: 0.8, delay: 0.6 }}
+                >
+                    Store, analyze, and access your Reddit, YouTube, and X links with intelligent embeddings.
+                </motion.div>
+
+                {/* Button to Dashboard */}
+                <motion.div
+                    className="mt-8"
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ duration: 0.6, delay: 0.8 }}
+                >
+                    <HeroButton />
+                </motion.div>
             </div>
 
-            {/* Motion Images Container */}
-            <div className="relative w-full h-[350px]">
-                {/* Static Images (Unrotated) */}
-                <NavbarIcon2Component 
-                    src={card} 
-                    className="absolute bottom-[80%] left-[15%] translate-x-[-15%] translate-y-[-35%]" 
+            {/* Enhanced Shapes Around UI - Radial Distribution */}
+            <div className="absolute inset-0 pointer-events-none">
+                {/* Top */}
+                <motion.div
+                    className="absolute top-[10%] left-[30%] transform -translate-x-1/2 w-16 h-16 bg-gradient-to-br from-blue-400 to-blue-600 rounded-full shadow-lg opacity-70"
+                    initial={{ y: -20, opacity: 0 }}
+                    animate={{ y: 0, opacity: 0.7 }}
+                    transition={{ duration: 1, repeat: Infinity, repeatType: "reverse", ease: "easeInOut" }}
                 />
-                <MotionImage
-                    src={socialIcon} 
-                    className="bottom-[90%] right-[15%] translate-x-[10%] translate-y-[-10%] lg:w-32 lg:h-32 md:w-36 md:h-36" 
-                />
-                {/* Rotated Motion Images with Hover Effects */}
-                <MotionImage 
-                    src={youtube} 
-                    className="top-[40%] right-[25%] translate-x-[20%] translate-y-[-20%] lg:w-32 lg:h-32 md:w-36 md:h-36" 
-                    rotate={0} 
-                />
-<MotionImage 
-    src={x} 
-    className="bottom-[20%] left-[37%] translate-x-[-10%] translate-y-[5%] w-4 h-4 md:w-20 md:h-20 lg:w-26 lg:h-24" 
-    rotate={5} 
-/>
+                {/* Bottom */}
 
+                {/* Left */}
+                <motion.div
+                    className="absolute top-1/2 left-[10%] w-12 h-12 bg-gradient-to-br from-gray-300 to-gray-500 rounded-full shadow-lg opacity-70"
+                    initial={{ x: -20, opacity: 0 }}
+                    animate={{ x: 0, opacity: 0.7 }}
+                    transition={{ duration: 1.4, repeat: Infinity, repeatType: "reverse", ease: "easeInOut", delay: 0.5 }}
+                />
+                {/* Right */}
+                <motion.div
+                    className="absolute top-[30%] right-[10%] w-16 h-16 bg-gradient-to-br from-blue-400 to-blue-600 rounded-full shadow-lg opacity-70"
+                    initial={{ x: 20, opacity: 0 }}
+                    animate={{ x: 0, opacity: 0.7 }}
+                    transition={{ duration: 1, repeat: Infinity, repeatType: "reverse", ease: "easeInOut", delay: 0.2 }}
+                />
+                {/* Top Left */}
+                <motion.div
+                    className="absolute top-[15%] left-[5%] w-14 h-14 bg-gradient-to-br from-purple-400 to-purple-600 rounded-lg shadow-lg opacity-70"
+                    initial={{ scale: 0, opacity: 0 }}
+                    animate={{ scale: 1, opacity: 0.7 }}
+                    transition={{ duration: 1.4, ease: "easeOut", delay: 0.4 }}
+                />
+                {/* Top Right */}
+                <motion.div
+                    className="absolute top-[5%] right-[25%] w-12 h-12 bg-gradient-to-br from-gray-300 to-gray-500 rounded-full shadow-lg opacity-70"
+                    initial={{ scale: 0, opacity: 0 }}
+                    animate={{ scale: 1, opacity: 0.7 }}
+                    transition={{ duration: 1.4, ease: "easeOut", delay: 0.6 }}
+                />
+                {/* Bottom Left */}
+                <motion.div
+                    className="absolute bottom-[20%] left-[20%] w-16 h-16 bg-gradient-to-br from-blue-400 to-blue-600 rounded-full shadow-lg opacity-70"
+                    initial={{ scale: 0, opacity: 0 }}
+                    animate={{ scale: 1, opacity: 0.7 }}
+                    transition={{ duration: 1.4, ease: "easeOut", delay: 0.8 }}
+                />
+                {/* Bottom Right */}
+                <motion.div
+                    className="absolute bottom-[30%] right-[15%] w-14 h-14 bg-gradient-to-br from-purple-400 to-purple-600 rounded-lg shadow-lg opacity-70"
+                    initial={{ scale: 0, opacity: 0 }}
+                    animate={{ scale: 1, opacity: 0.7 }}
+                    transition={{ duration: 1.4, ease: "easeOut", delay: 1 }}
+                />
             </div>
         </div>
     );
 }
-
-interface MotionImageProps {
-    src: string;
-    className?: string;
-    rotate?: number;
-}
-
-const MotionImage: React.FC<MotionImageProps> = ({ src, className = "", rotate }) => (
-    <motion.img
-        src={src}
-        alt=""
-        className={`absolute md:w-24 md:h-24 lg:w-22 lg:h-20 ${className}`}
-        initial={{ opacity: 0, scale: 0.8, rotate }}
-        animate={{ opacity: 1, scale: 1, rotate }}
-        whileHover={{ scale: 1.1 }}  // Increase scale slightly on hover
-        transition={{ duration: 0.8, ease: "easeOut" }}
-    />
-);
-
-const StaticImage: React.FC<MotionImageProps> = ({ src, className = "" }) => (
-    <motion.img
-        src={src}
-        alt=""
-        className={`absolute w-20 h-20 md:w-24 md:h-24 lg:w-32 lg:h-35 ${className}`}
-        initial={{ opacity: 0, scale: 0.8 }}
-        animate={{ opacity: 1, scale: 1 }}
-        transition={{ duration: 0.8, ease: "easeOut" }}
-    />
-);
