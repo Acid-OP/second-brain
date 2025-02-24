@@ -3,5 +3,7 @@
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); 
     border-radius: 8px;
     width: 100%;
-    height: 12rem;
+    /* height: 12rem; */
+    max-height: 100%;
+  object-fit: contain;
 }
