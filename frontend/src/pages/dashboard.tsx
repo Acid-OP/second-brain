@@ -25,10 +25,11 @@ export function Dashboard() {
   return (
     <div className="bg-gray-100 flex min-h-screen overflow-hidden">
       <Sidebar setFilter={setFilter} />
-      <div className="bg-black w-110 h-full flex-shrink-0"></div>
+      <div className="bg-black w-90 h-full flex-shrink-0"></div>
       <div className="p-4 flex-1 min-h-screen bg-gray-100 overflow-auto">
         <CreateContentModal open={modalOpen} onClose={() => setModalOpen(false)} />
         <div className="flex justify-end gap-4">
+
           {/* Add Content Button */}
           <Button
             onClick={() => setModalOpen(true)}
@@ -38,6 +39,7 @@ export function Dashboard() {
             className="px-5 py-2.5  text-white rounded-lg shadow-md hover:bg-[#6a42c1] hover:shadow-lg transition-all duration-200 ease-in-out flex items-center gap-2 text-sm font-semibold"
           />
           {/* Share Brain Button */}
+
           <Button
             onClick={async () => {
               const response = await axios.post(
