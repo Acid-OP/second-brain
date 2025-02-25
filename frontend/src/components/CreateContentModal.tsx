@@ -9,7 +9,7 @@ enum ContentType {
   Youtube = "youtube",
   Twitter = "twitter",
   Reddit = "reddit",
-  Pdf = "pdf"
+  Link = "link"
 }
 
 // @ts-ignore

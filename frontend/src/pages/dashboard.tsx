@@ -12,14 +12,14 @@ import { useContent } from "../hooks/usecontent";
 export function Dashboard() {
   const [modalOpen, setModalOpen] = useState(false);
   const { contents, refresh } = useContent();
-  const [filter, setFilter] = useState<"Second Brain" | "youtube" | "twitter" | "reddit">("Second Brain");
+  const [filter, setFilter] = useState<"all" | "youtube" | "twitter" | "reddit" | "link">("all");
 
   useEffect(() => {
     refresh();
   }, [modalOpen]);
 
   const filteredContents = contents.filter(({ type }) =>
-    filter === "Second Brain" ? type : type === filter
+    filter === "all" ? type : type === filter
   );
 
   return (
@@ -59,8 +59,8 @@ export function Dashboard() {
           />
         </div>
         <div className="flex pt-4 pl-4 gap-4 flex-wrap">
-          {filteredContents.map(({ type, link, title }) => (
-            <Card key={link} type={type} link={link} title={title} />
+          {filteredContents.map(({ id ,type, link, title }) => (
+            <Card key={id} type={type} link={link} title={title} />
           ))}
         </div>
       </div>

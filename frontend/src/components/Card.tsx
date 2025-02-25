@@ -5,7 +5,7 @@ import { ShareIcon } from "../icons/ShareIcon";
 interface CardProps {
   title: string;
   link: string;
-  type: "twitter" | "youtube" | "reddit";
+  type: "twitter" | "youtube" | "reddit" | "link"; // Added "link" type
 }
 
 export function Card({ title, link, type }: CardProps) {
@@ -15,7 +15,7 @@ export function Card({ title, link, type }: CardProps) {
     return { subreddit };
   };
 
-  const { subreddit } = getRedditEmbedData(link);
+  const { subreddit } = type === "reddit" ? getRedditEmbedData(link) : { subreddit: "" };
 
   useEffect(() => {
     if (type === "reddit") {
@@ -80,6 +80,18 @@ export function Card({ title, link, type }: CardProps) {
                 <a href={link}>{link}</a>
                 <a href={`https://www.reddit.com/r/${subreddit}`}>{subreddit}</a>
               </blockquote>
+            </div>
+          )}
+          {type === "link" && (
+            <div className="border border-neutral-700 rounded-xl p-2">
+              <a
+                target="_blank"
+                href={link}
+                className="text-blue-500 hover:underline break-all line-clamp-2 text-sm"
+                rel="noopener noreferrer"
+              >
+                {link}
+              </a>
             </div>
           )}
         </div>

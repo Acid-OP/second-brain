@@ -9,8 +9,9 @@ import { LogoutButton } from "./LogoutButton";
 import { useNavigate } from "react-router-dom";
 import { Button } from "../components/Button";
 import { Menu, X } from "lucide-react";
+import { ALLicon } from "../icons/Allicon";
 
-export function Sidebar({ setFilter }: { setFilter: (filter: "Second Brain" | "youtube" | "twitter" | "reddit") => void }) {
+export function Sidebar({ setFilter }: { setFilter: (filter: "all" | "youtube" | "twitter" | "reddit" | "link") => void }) {
   const navigate = useNavigate();
   const [open, setOpen] = useState(true);
 
@@ -25,26 +26,26 @@ export function Sidebar({ setFilter }: { setFilter: (filter: "Second Brain" | "y
       animate={{ width: open ? "250px" : "80px" }}
       transition={{ duration: 0.3, ease: "easeInOut" }}
     >
-      {/* Toggle Button and Second Brain in Same Div */}
-      <div className={`flex flex-col pt-4 space-y-4 ${open ? "": "pl-2"}`}>
-      <Button
+      <div className={`flex flex-col pt-4 space-y-4 ${open ? "" : "pl-2"}`}>
+        <Button
           onClick={() => setOpen(!open)}
           variant="sidebar"
           startIcon={open ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
-          className=" bg-white text-gray-700 rounded-lg hover:bg-gray-100 hover:text-[#7950f2] transition-all duration-200 ease-in-out "
+          className="bg-white text-gray-700 rounded-lg hover:bg-gray-100 hover:text-[#7950f2] transition-all duration-200 ease-in-out"
         />
       </div>
       <div className="flex flex-col pt-4 pl-4 space-y-4">
-
         <div className="flex justify-start">
           <Mvp
             icon={<IconComponent src={brain} open={open} />}
             title={open ? <TextComponent title="Second Brain" /> : undefined}
-            onClick={() => setFilter("Second Brain")}
           />
         </div>
-
-        {/* Sidebar Items */}
+        <SidebarItem
+          text={open ? <Text title="All" /> : undefined}
+          icon={<ALLicon open={open} />}
+          onClick={() => setFilter("all")}
+        />
         <SidebarItem
           text={open ? <Text title="Twitter" /> : undefined}
           icon={<TwitterIcon open={open} />}
@@ -60,9 +61,12 @@ export function Sidebar({ setFilter }: { setFilter: (filter: "Second Brain" | "y
           icon={<RedditIcon open={open} />}
           onClick={() => setFilter("reddit")}
         />
+        <SidebarItem
+          text={open ? <Text title="Link" /> : undefined}
+          icon={<RedditIcon open={open} />} // Replace with a LinkIcon if available
+          onClick={() => setFilter("link")}
+        />
       </div>
-
-      {/* Logout Button */}
       <div className="flex flex-col items-center pb-8 mt-auto">
         <LogoutButton
           onClick={logout}

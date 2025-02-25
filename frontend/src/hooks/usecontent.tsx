@@ -4,7 +4,7 @@ import { BACKEND_URL } from "../config";
 
 export function useContent() {
     const [contents, setContents] = useState([]);
-    console.log("Stored Token:", localStorage.getItem("token"));
+    // console.log("Stored Token:", localStorage.getItem("token"));
 
     function refresh() {
         axios.get(`${BACKEND_URL}/api/v1/content`, {
@@ -13,7 +13,7 @@ export function useContent() {
             }
         })
             .then((response) => {
-                console.log("response: ", response);
+                // console.log("response: ", response);
 
                 setContents(response.data)
             })
