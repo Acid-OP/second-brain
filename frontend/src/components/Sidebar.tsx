@@ -1,19 +1,26 @@
-import { useState } from "react";
+// src/components/Sidebar.tsx
+import { motion } from "framer-motion";
 import { TwitterIcon } from "../icons/TwitterIcon";
 import { YoutubeIcon } from "../icons/YoutubeIcon";
 import { IconComponent, Mvp, SidebarItem, Text, TextComponent } from "./SidebarItems";
 import brain from "../iconImages/brain.png";
 import { RedditIcon } from "../icons/RedditIcon";
-import { motion } from "framer-motion";
 import { LogoutButton } from "./LogoutButton";
 import { useNavigate } from "react-router-dom";
 import { Button } from "../components/Button";
 import { Menu, X } from "lucide-react";
 import { ALLicon } from "../icons/Allicon";
 
-export function Sidebar({ setFilter }: { setFilter: (filter: "all" | "youtube" | "twitter" | "reddit" | "link") => void }) {
+export function Sidebar({
+  setFilter,
+  open,
+  setOpen,
+}: {
+  setFilter: (filter: "all" | "youtube" | "twitter" | "reddit" | "link") => void;
+  open: boolean;
+  setOpen: (open: boolean) => void;
+}) {
   const navigate = useNavigate();
-  const [open, setOpen] = useState(true);
 
   function logout() {
     localStorage.removeItem("token");
@@ -22,7 +29,7 @@ export function Sidebar({ setFilter }: { setFilter: (filter: "all" | "youtube" |
 
   return (
     <motion.div
-      className="h-screen flex flex-col bg-white fixed left-0 top-0 shadow-lg overflow-hidden"
+      className={`h-screen flex flex-col bg-white fixed left-0 top-0 shadow-lg overflow-hidden z-10`}
       animate={{ width: open ? "250px" : "80px" }}
       transition={{ duration: 0.3, ease: "easeInOut" }}
     >
@@ -33,8 +40,6 @@ export function Sidebar({ setFilter }: { setFilter: (filter: "all" | "youtube" |
           startIcon={open ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
           className="bg-white text-gray-700 rounded-lg hover:bg-gray-100 hover:text-[#7950f2] transition-all duration-200 ease-in-out"
         />
-      </div>
-      <div className="flex flex-col pt-4 pl-4 space-y-4">
         <div className="flex justify-start">
           <Mvp
             icon={<IconComponent src={brain} open={open} />}
@@ -63,7 +68,7 @@ export function Sidebar({ setFilter }: { setFilter: (filter: "all" | "youtube" |
         />
         <SidebarItem
           text={open ? <Text title="Link" /> : undefined}
-          icon={<RedditIcon open={open} />} // Replace with a LinkIcon if available
+          icon={<RedditIcon open={open} />}
           onClick={() => setFilter("link")}
         />
       </div>
