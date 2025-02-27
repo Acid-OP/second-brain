@@ -11,12 +11,12 @@ export interface ButtonProps {
 }
 
 const variantClasses = {
-  primary: "bg-[#7164c0] text-white py-3 px-6 hover:bg-[#5a4e9f] transition duration-300 cursor-pointer",
+  primary: "bg-[#7164c0]  py-3 px-6 hover:bg-[#5a4e9f] transition duration-300 cursor-pointer",
   secondary: "bg-[#d9ddee] text-purple-400 py-3 px-6 hover:bg-[#c8cde0] transition duration-300 cursor-pointer",
   sidebar: "bg-white text-gray-700" // Minimal base styling for sidebar toggle
 };
 
-const defaultStyles = "px-4 py-2 rounded-md font-semibold flex items-center";
+const defaultStyles = "px-4 py-2 rounded-md flex items-center";
 
 export function Button({ variant, text, startIcon, onClick, fullWidth, loading, className }: ButtonProps) {
   return (

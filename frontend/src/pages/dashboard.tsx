@@ -38,7 +38,7 @@ export function Dashboard() {
             variant="primary"
             text="Add content"
             startIcon={<PlusIcon />}
-            className="px-5 py-2.5 text-white rounded-lg shadow-md hover:bg-[#6a42c1] hover:shadow-lg transition-all duration-200 ease-in-out flex items-center gap-2 text-sm font-semibold"
+            className="px-5 py-2.5 text-white font-bold text-md rounded-lg shadow-md hover:bg-[#6a42c1] hover:shadow-lg transition-all duration-200 ease-in-out flex items-center gap-2"
           />
           <Button
             onClick={async () => {
@@ -55,12 +55,11 @@ export function Dashboard() {
             variant="secondary"
             text="Share brain"
             startIcon={<ShareIcon />}
-            className="px-5 py-2.5 text-gray-700 border border-gray-300 rounded-lg shadow-md hover:bg-gray-100 hover:text-[#7950f2] hover:shadow-lg transition-all duration-200 ease-in-out flex items-center gap-2 text-sm font-semibold"
+            className="px-5 py-2.5 text-gray-700 border border-gray-300 rounded-lg shadow-md hover:bg-gray-100 hover:text-[#7950f2] hover:shadow-lg transition-all duration-200 ease-in-out flex items-center gap-2 text-md font-bold"
           />
         </div>
         <div className="flex w-full">
-          <div className={`bg-amber-300 ${open ? "w-full" : "w-80"}`}></div>
-          <div className="flex pt-4 pl-4 gap-4 flex-wrap">
+          <div className="flex pt-4 pl-4 gap-6 flex-wrap w-full">
             {filteredContents.map(({ id, type, link, title }) => (
               <Card key={id} type={type} link={link} title={title} />
             ))}

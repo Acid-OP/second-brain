@@ -5,18 +5,19 @@ export interface Sidebaritem {
   text?: ReactElement;
   icon: ReactElement;
   onClick?: () => void;
+  open?: boolean;
 }
 
 export function SidebarItem(props: Sidebaritem) {
   return (
     <motion.div
-      className="flex items-center text-gray-700 cursor-pointer hover:bg-gray-100 rounded-lg py-2 transition-all duration-300 w-full"
+      className={`flex items-center text-gray-700 cursor-pointer rounded-lg py-2 transition-all duration-300 ${props.open ? "w-full hover:bg-gray-200":" hover:bg-gray-100"}`}
       whileHover={{ y: -2 }}
       transition={{ duration: 0.2 }}
       onClick={props.onClick}
     >
       <div className="flex items-center gap-4 h-12 w-full">
-        <div className="flex items-center w-[45px] h-[45px]">{props.icon}</div>
+        <div className="flex items-center">{props.icon}</div>
         {props.text && (
           <div className="flex items-center">{props.text}</div>
         )}
