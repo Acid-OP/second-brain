@@ -4,6 +4,10 @@ import { TopBar, TopBarComp, TopBarSignin } from "./Topbar";
 import { motion } from "framer-motion";
 
 export function Navbar() {
+    const token = localStorage.getItem("token");
+    if(token){
+
+    }
     return (
         <motion.div
             className="pt-4" // Increased top padding for better spacing
@@ -28,7 +32,12 @@ export function Navbar() {
 
                     {/* Right: Sign In */}
                     <div className="flex items-center justify-end flex-1">
-                        <TopBarSignin />
+                    {token ? (""
+                        ) : (
+                            // When token doesn't exist (user not signed in)
+                            <TopBarSignin />
+                        )}
+                        {/* <TopBarSignin /> */}
                     </div>
                 </div>
             </div>

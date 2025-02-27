@@ -1,6 +1,6 @@
 import { ReactElement } from "react";
 import { motion } from "framer-motion";
-
+import { useNavigate } from "react-router-dom";
 export interface Topbar {
     icon: ReactElement;
     title: ReactElement;
@@ -8,6 +8,7 @@ export interface Topbar {
 }
 
 export function TopBar(props: Topbar) {
+
     return (
         <motion.div
             className="flex items-center gap-3 cursor-pointer" // Added gap and cursor-pointer
@@ -44,15 +45,23 @@ export function TopBarComp() {
     );
 }
 
+
 export function TopBarSignin() {
+    const navigate = useNavigate();
+
+    
+        function redirect(){
+        navigate("/signup")
+    }
+
     return (
         <motion.div
             className="flex justify-between w-max"
             whileHover={{ scale: 1.05 }} // Subtle scale-up on hover
             transition={{ duration: 0.2 }}
         >
-            <button className="bg-[#7950f2] text-white font-semibold text-base py-2.5 px-7 rounded-full hover:bg-[#6a42c1] focus:outline-none focus:ring-2 focus:ring-[#6a42c1] cursor-pointer transition duration-300 shadow-md hover:shadow-lg">
-                Sign In
+            <button onClick={redirect} className="bg-[#7950f2] text-white font-semibold text-base py-2.5 px-7 rounded-full hover:bg-[#6a42c1] focus:outline-none focus:ring-2 focus:ring-[#6a42c1] cursor-pointer transition duration-300 shadow-md hover:shadow-lg">
+                Sign up
             </button>
         </motion.div>
     );

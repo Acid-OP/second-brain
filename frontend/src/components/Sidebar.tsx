@@ -4,7 +4,6 @@ import { TwitterIcon } from "../icons/TwitterIcon";
 import { YoutubeIcon } from "../icons/YoutubeIcon";
 import { IconComponent, Mvp, SidebarItem, Text, TextComponent } from "./SidebarItems";
 import brain from "../iconImages/brain.png";
-import logout2 from "../iconImages/logout2.png"; // This is a string (URL)
 import { RedditIcon } from "../icons/RedditIcon";
 import { LogoutButton } from "./LogoutButton";
 import { useNavigate } from "react-router-dom";
