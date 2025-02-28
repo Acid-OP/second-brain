@@ -91,7 +91,7 @@ export function Signup() {
                   variant="primary"
                   text="Sign Up"
                   fullWidth={true}
-                  className="py-4 text-lg"
+                  className="py-4 text-lg cursor-pointer"
                 />
               </div>
               <div>
@@ -101,7 +101,7 @@ export function Signup() {
                     className="text-[#7950f2] cursor-pointer hover:text-[#6a42c1] transition duration-300"
                     onClick={() => navigate("/signin")}
                   >
-                    Sign In
+                    LogIn
                   </span>
                 </p>
               </div>

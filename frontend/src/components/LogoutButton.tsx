@@ -18,7 +18,7 @@ const variantClasses = {
 export function LogoutButton({ variant, text, onClick, loading, className, startIcon }: ButtonProps) {
     return (
         <motion.button
-            className={`${variantClasses[variant]} ${ "w-[80%]"} ${className || ""} px-6 py-3 rounded-lg font-semibold flex items-center justify-center space-x-2 cursor-pointer`}
+            className={`${variantClasses[variant]} ${ "w-[80%]"} ${className || ""}  rounded-lg font-semibold flex items-center justify-center space-x-2 cursor-pointer`}
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }} // Slight scale-down on click
             transition={{ duration: 0.2 }} // Smooth transition

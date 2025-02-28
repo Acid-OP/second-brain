@@ -8,6 +8,7 @@ import purplebrain from "../iconImages/purplebrain.png";
 import welcome from "../iconImages/welcome.png";
 import { motion } from "framer-motion";
 import { SignUpIconcomponent, SignUpIconcomponent2 } from "../components/SignupiconComponent";
+import { SignupInput } from "../components/SignupInput";
 
 export function Signin() {
   const usernameRef = useRef<HTMLInputElement>(null); // Fixed undefined default to null
@@ -65,20 +66,20 @@ export function Signin() {
 
           {/* Right Side: Signin Form */}
           <div className="flex flex-col items-center justify-center p-10 w-1/2 h-full">
-            <h2 className="text-3xl font-bold text-gray-900 mb-10 text-center">Sign In</h2>
+            <h2 className="text-3xl font-bold text-gray-900 mb-10 text-center">Log In</h2>
             <div className="flex flex-col justify-center items-center space-y-6 w-[70%] max-w-md">
               <div className="w-full">
-                <Input
+                <SignupInput
                   reference={usernameRef}
                   placeholder="Username"
-                  className="text-center px-4 py-2 text-lg rounded-lg shadow-sm"
+                  className="text-center px-4 py-2 text-lg "
                 />
               </div>
               <div className="w-full">
-                <Input
+                <SignupInput
                   reference={passwordRef}
                   placeholder="Password"
-                  className="text-center px-4 py-2 text-lg rounded-lg shadow-sm"
+                  className="text-center px-4 py-2 text-lg"
                 />
               </div>
               <div className="w-full">

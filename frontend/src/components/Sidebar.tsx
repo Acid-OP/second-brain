@@ -61,25 +61,25 @@ export function Sidebar({
           />
           <SidebarItem
             text={open ? <Text title="Twitter" /> : undefined}
-            icon={<TwitterIcon open={open} />}
+            icon={<TwitterIcon open={open}  className={`${open ? "w-12 h-12" : "w-9 h-9"}`} />}
             onClick={() => setFilter("twitter")}
             open={open}
           />
           <SidebarItem
             text={open ? <Text title="Youtube" /> : undefined}
-            icon={<YoutubeIcon open={open} />}
+            icon={<YoutubeIcon open={open}  className={`${open ? "w-12 h-12" : "w-9 h-9"}`}/>}
             onClick={() => setFilter("youtube")}
             open={open}
           />
           <SidebarItem
             text={open ? <Text title="Reddit" /> : undefined}
-            icon={<RedditIcon open={open} />}
+            icon={<RedditIcon open={open}  className={`${open ? "w-12 h-12" : "w-9 h-9"}`}/>}
             onClick={() => setFilter("reddit")}
             open={open}
           />
           <SidebarItem
             text={open ? <Text title="Link" /> : undefined}
-            icon={<Linkicon open={open} />}
+            icon={<Linkicon open={open} className={`${open ? "w-12 h-12" : "w-9 h-9"}`} />}
             onClick={() => setFilter("link")}
             open={open}
           />
@@ -91,8 +91,8 @@ export function Sidebar({
           variant="primary"
           text={open ? "Logout" : ""}
           startIcon= {<LogoutIcon open={open} />}
-          className={`leading-tight text-xl transition-all duration-200 ${
-            open ? "w-56" : "w-12 text-transparent"
+          className={`leading-tight text-xl transition-all  duration-200 ${
+            open ? "px-8 py-4 rounded-lg" : " hover:bg-gray-300 px-3 py-3 rounded-lg text-transparent"
           }`}
         />
       </div>

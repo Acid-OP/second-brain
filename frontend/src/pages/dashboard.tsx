@@ -10,7 +10,7 @@ import axios from "axios";
 import { useContent } from "../hooks/usecontent";
 
 export function Dashboard() {
-  const [open, setOpen] = useState(true); // Manage open state internally
+  const [open, setOpen] = useState(true);
   const [modalOpen, setModalOpen] = useState(false);
   const { contents, refresh } = useContent();
   const [filter, setFilter] = useState<"all" | "youtube" | "twitter" | "reddit" | "link">("all");
@@ -20,12 +20,12 @@ export function Dashboard() {
   }, [modalOpen]);
 
   const filteredContents = contents.filter(({ type }) =>
-    filter === "all" ? type : type === filter
+    filter === "all" ? true : type === filter
   );
 
   return (
     <div className="bg-gray-100 flex min-h-screen overflow-hidden">
-      <Sidebar setFilter={setFilter} open={open} setOpen={setOpen} /> {/* Pass open and setOpen */}
+      <Sidebar setFilter={setFilter} open={open} setOpen={setOpen} />
       <div
         className={`p-4 flex-1 min-h-screen bg-gray-100 overflow-auto transition-all duration-300 ease-in-out ${
           open ? "ml-[250px] lg:ml-[250px] md:ml-[200px] sm:ml-0" : "ml-20 lg:ml-20 md:ml-16 sm:ml-0"
@@ -36,9 +36,8 @@ export function Dashboard() {
           <Button
             onClick={() => setModalOpen(true)}
             variant="primary"
-            text="Add content"
+            text="Add Content"
             startIcon={<PlusIcon />}
-            className="px-5 py-2.5 text-white font-bold text-md rounded-lg shadow-md hover:bg-[#6a42c1] hover:shadow-lg transition-all duration-200 ease-in-out flex items-center gap-2"
           />
           <Button
             onClick={async () => {
@@ -53,9 +52,8 @@ export function Dashboard() {
               alert(shareUrl);
             }}
             variant="secondary"
-            text="Share brain"
+            text="Share Brain"
             startIcon={<ShareIcon />}
-            className="px-5 py-2.5 text-gray-700 border border-gray-300 rounded-lg shadow-md hover:bg-gray-100 hover:text-[#7950f2] hover:shadow-lg transition-all duration-200 ease-in-out flex items-center gap-2 text-md font-bold"
           />
         </div>
         <div className="flex w-full">

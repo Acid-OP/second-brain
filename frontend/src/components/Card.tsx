@@ -1,6 +1,11 @@
 import { useEffect } from "react";
 import "./youtube.css";
 import { ShareIcon } from "../icons/ShareIcon";
+import { YoutubeIcon } from "../icons/YoutubeIcon";
+import { TwitterIcon } from "../icons/TwitterIcon";
+import { RedditIcon } from "../icons/RedditIcon";
+import { Linkicon } from "../icons/Linkicon";
+import { DeleteIcon } from "../icons/DeleteIcon";
 
 interface CardProps {
   title: string;
@@ -46,16 +51,36 @@ export function Card({ title, link, type }: CardProps) {
     }
   }, [type, link]);
 
+  const RenderIcon = () => {
+    switch (type) {
+      case "youtube":
+        return <YoutubeIcon className="w-6"/>;
+      case "twitter":
+        return <TwitterIcon className="w-6"/>;
+      case "reddit":
+        return <RedditIcon className="w-6"/>;
+      case "link":
+        return <Linkicon className="w-6"/>;
+    }
+  };
+
   return (
     <div>
       <div className="p-4 bg-white rounded-md border-gray-200 max-w-72 min-h-48 min-w-72">
-        <div className="flex justify-between items-center pr-2">
+        <div className="flex justify-between items-center">
+          <div className="flex justify-center items-center gap-2">
+            {RenderIcon()}
           <span className="font-semibold text-neutral-800 text-xl tracking-wide capitalize leading-tight">
             {title}
           </span>
+          </div>
+          <div className="flex justify-center items-center gap-2">
           <a href={link} target="_blank" rel="noopener noreferrer">
-            <ShareIcon />
+            <ShareIcon className="w-5" />
           </a>
+          <DeleteIcon className="w-5"/>
+          </div>
+
         </div>
         <div className="pt-4">
           {type === "youtube" && (
