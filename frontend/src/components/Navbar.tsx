@@ -3,7 +3,16 @@ import { NavbarIconComponent, NavbarTextComponent } from "./NavbarComponent";
 import { TopBar, TopBarComp, TopBarSignin } from "./Topbar";
 import { motion } from "framer-motion";
 
-export function Navbar() {
+interface NavbarProps {
+    scrollToSection: (ref: React.RefObject<HTMLDivElement>) => void;
+    refs: {
+        featuresRef: React.RefObject<HTMLDivElement>;
+        solutionsRef: React.RefObject<HTMLDivElement>;
+        resourcesRef: React.RefObject<HTMLDivElement>;
+        pricesRef: React.RefObject<HTMLDivElement>;
+    };
+}
+export function Navbar({ scrollToSection, refs }: NavbarProps) {
     const token = localStorage.getItem("token");
     if(token){
 
@@ -27,7 +36,7 @@ export function Navbar() {
 
                     {/* Center: Navigation Links */}
                     <div className="flex items-center justify-center flex-1">
-                        <TopBarComp />
+                    <TopBarComp scrollToSection={scrollToSection} refs={refs} />
                     </div>
 
                     {/* Right: Sign In */}

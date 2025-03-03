@@ -32,11 +32,11 @@ export function Sidebar({
 
   return (
     <motion.div
-      className="h-screen flex flex-col bg-white fixed left-0 top-0 shadow-lg z-10"
+      className="h-screen flex flex-col bg-white items-center justify-center fixed left-0 top-0 shadow-lg z-10"
       animate={{ width: open ? "250px" : "80px" }}
       transition={{ duration: 0.3, ease: "easeInOut" }}
     >
-      <div className={`flex flex-col pt-4 space-y-4 ${open ? "" : "pl-2"}`}>
+      <div className={`flex flex-col justify-center pt-4 space-y-4 ${open ? "" : "pl-2"}`}>
         <Button
           onClick={() => setOpen(!open)}
           variant="sidebar"

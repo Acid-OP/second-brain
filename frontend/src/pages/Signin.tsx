@@ -66,7 +66,7 @@ export function Signin() {
 
           {/* Right Side: Signin Form */}
           <div className="flex flex-col items-center justify-center p-10 w-1/2 h-full">
-            <h2 className="text-3xl font-bold text-gray-900 mb-10 text-center">Log In</h2>
+            <h2 className="text-3xl font-bold text-gray-900 mb-10 text-center"> LogIn</h2>
             <div className="flex flex-col justify-center items-center space-y-6 w-[70%] max-w-md">
               <div className="w-full">
                 <SignupInput
