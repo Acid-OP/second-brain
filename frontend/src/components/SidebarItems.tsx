@@ -11,15 +11,21 @@ export interface Sidebaritem {
 export function SidebarItem(props: Sidebaritem) {
   return (
     <motion.div
-      className={`flex items-center text-gray-700 cursor-pointer rounded-lg py-2 transition-all duration-300 ${props.open ? "w-full hover:bg-gray-200":" hover:bg-gray-100"}`}
+      className={`flex items-center text-gray-700 cursor-pointer rounded-lg py-2 transition-all duration-300 w-full ${
+        props.open ? "hover:bg-gray-200" : "hover:bg-gray-100"
+      }`}
       whileHover={{ y: -2 }}
       transition={{ duration: 0.2 }}
       onClick={props.onClick}
     >
-      <div className="flex items-center gap-4 h-12 w-full">
-        <div className="flex items-center">{props.icon}</div>
-        {props.text && (
-          <div className="flex items-center">{props.text}</div>
+      <div className={`flex items-center h-12 ${props.open ? "gap-4" : "justify-center"} w-full`}>
+        <div className="flex items-center justify-center flex-shrink-0">
+          {props.icon}
+        </div>
+        {props.text && props.open && (
+          <div className="flex items-center">
+            {props.text}
+          </div>
         )}
       </div>
     </motion.div>

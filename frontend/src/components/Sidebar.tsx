@@ -36,23 +36,23 @@ export function Sidebar({
       animate={{ width: open ? "250px" : "80px" }}
       transition={{ duration: 0.3, ease: "easeInOut" }}
     >
-      <div className={`flex flex-col justify-center pt-4 space-y-4 ${open ? "" : "pl-2"}`}>
+      <div className="flex flex-col items-center pt-4 space-y-4 w-full">
         <Button
           onClick={() => setOpen(!open)}
           variant="sidebar"
           startIcon={open ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
-          className="bg-white text-gray-700 rounded-lg hover:bg-gray-100 hover:text-[#7950f2] transition-all duration-200 ease-in-out"
+          className={`bg-white text-gray-700 rounded-lg hover:bg-gray-100 hover:text-[#7950f2] transition-all duration-200 ${
+            open ? "self-start" : "self-center"
+          }`}
         />
-        <div className="flex justify-start pl-2">
+        <div className={`flex w-full ${open ? "justify-start pl-2" : "justify-center"}`}>
           <Mvp
             icon={<IconComponent src={brain} open={open} />}
             title={open ? <TextComponent title="Second Brain" /> : undefined}
-            onClick={() => {
-              navigate("/home");
-            }}
+            onClick={() => navigate("/home")}
           />
         </div>
-        <div className={`${open ? "pl-4" : "pl-2"}`}>
+        <div className={`flex flex-col items-center w-full ${open ? "pl-4" : "pl-0"}`}>
           <SidebarItem
             text={open ? <Text title="All" /> : undefined}
             icon={<ALLicon open={open} />}
@@ -61,19 +61,19 @@ export function Sidebar({
           />
           <SidebarItem
             text={open ? <Text title="Twitter" /> : undefined}
-            icon={<TwitterIcon open={open}  className={`${open ? "w-12 h-12" : "w-9 h-9"}`} />}
+            icon={<TwitterIcon open={open} className={`${open ? "w-12 h-12" : "w-9 h-9"}`} />}
             onClick={() => setFilter("twitter")}
             open={open}
           />
           <SidebarItem
             text={open ? <Text title="Youtube" /> : undefined}
-            icon={<YoutubeIcon open={open}  className={`${open ? "w-12 h-12" : "w-9 h-9"}`}/>}
+            icon={<YoutubeIcon open={open} className={`${open ? "w-12 h-12" : "w-9 h-9"}`}/>}
             onClick={() => setFilter("youtube")}
             open={open}
           />
           <SidebarItem
             text={open ? <Text title="Reddit" /> : undefined}
-            icon={<RedditIcon open={open}  className={`${open ? "w-12 h-12" : "w-9 h-9"}`}/>}
+            icon={<RedditIcon open={open} className={`${open ? "w-12 h-12" : "w-9 h-9"}`}/>}
             onClick={() => setFilter("reddit")}
             open={open}
           />
@@ -85,14 +85,16 @@ export function Sidebar({
           />
         </div>
       </div>
-      <div className="flex flex-col items-center pb-8 mt-auto">
+      <div className="flex flex-col items-center pb-8 mt-auto w-full">
         <LogoutButton
           onClick={logout}
           variant="primary"
           text={open ? "Logout" : ""}
-          startIcon= {<LogoutIcon open={open} />}
-          className={`leading-tight text-xl transition-all  duration-200 ${
-            open ? "px-8 py-4 rounded-lg" : " hover:bg-gray-300 px-3 py-3 rounded-lg text-transparent"
+          startIcon={<LogoutIcon open={open} />}
+          className={`leading-tight text-xl transition-all duration-200 ${
+            open 
+              ? "px-8 py-4 rounded-lg" 
+              : "px-0 py-3 rounded-lg hover:bg-gray-300 text-transparent flex justify-center"
           }`}
         />
       </div>
