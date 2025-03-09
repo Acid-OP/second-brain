@@ -1,19 +1,17 @@
-// src/components/Sidebar.tsx
 import { motion } from "framer-motion";
 import { TwitterIcon } from "../icons/TwitterIcon";
 import { YoutubeIcon } from "../icons/YoutubeIcon";
 import { IconComponent, Mvp, SidebarItem, Text, TextComponent } from "./SidebarItems";
 import brain from "../iconImages/brain.png";
 import { RedditIcon } from "../icons/RedditIcon";
-import { LogoutButton } from "./LogoutButton";
+import { LogoutButton } from "./LogoutButton"; // Contains LogoutButton and LogoutText
 import { useNavigate } from "react-router-dom";
 import { Button } from "../components/Button";
 import { Menu, X } from "lucide-react";
 import { ALLicon } from "../icons/Allicon";
 import { Linkicon } from "../icons/Linkicon";
-import { LogoutIcon } from "../icons/LogoutIcon";
-// import { LogoutIconcomponent2 } from "../icons/LogoutIcon"; // Adjust path if needed
-
+import { LogoutIcon } from "../icons/LogoutIcon"; // Adjust if in a different file
+import { LogoutText } from "./LogoutButton";
 export function Sidebar({
   setFilter,
   open,
@@ -67,13 +65,13 @@ export function Sidebar({
           />
           <SidebarItem
             text={open ? <Text title="Youtube" /> : undefined}
-            icon={<YoutubeIcon open={open} className={`${open ? "w-12 h-12" : "w-9 h-9"}`}/>}
+            icon={<YoutubeIcon open={open} className={`${open ? "w-12 h-12" : "w-9 h-9"}`} />}
             onClick={() => setFilter("youtube")}
             open={open}
           />
           <SidebarItem
             text={open ? <Text title="Reddit" /> : undefined}
-            icon={<RedditIcon open={open} className={`${open ? "w-12 h-12" : "w-9 h-9"}`}/>}
+            icon={<RedditIcon open={open} className={`${open ? "w-12 h-12" : "w-9 h-9"}`} />}
             onClick={() => setFilter("reddit")}
             open={open}
           />
@@ -89,12 +87,12 @@ export function Sidebar({
         <LogoutButton
           onClick={logout}
           variant="primary"
-          text={open ? "Logout" : ""}
+          text={open ? <LogoutText title="Logout" /> : ""} // Pass title prop
           startIcon={<LogoutIcon open={open} />}
-          className={`leading-tight text-xl transition-all duration-200 ${
-            open 
-              ? "px-8 py-4 rounded-lg" 
-              : "px-0 py-3 rounded-lg hover:bg-gray-300 text-transparent flex justify-center"
+          className={`leading-tight text-2xl transition-all duration-200 flex justify-center ${
+            open
+              ? "px-25 py-3 rounded-lg bg-[#7164c0]"
+              : "bg-white px-0 py-3 rounded-lg hover:bg-gray-300 text-transparent flex justify-center"
           }`}
         />
       </div>

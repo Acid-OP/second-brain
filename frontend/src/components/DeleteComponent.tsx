@@ -17,7 +17,7 @@ export function DeleteComp({ _id }: DeleteCompProps) {
 
     return (
         <div>
-            <button onClick={popup} className="focus:outline-none">
+            <button onClick={popup} className="focus:outline-none flex justify-center cursor-pointer">
                 <DeleteIcon className="w-5" />
             </button>
         </div>

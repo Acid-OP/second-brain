@@ -1,13 +1,22 @@
 import { ReactElement } from "react";
-import { motion } from "framer-motion"; // Import motion for animations
+import { motion } from "framer-motion";
+
+// Renamed to match Sidebar usage
+export function LogoutText({ title }: { title: string }) {
+    return (
+        <span className="text-3xl">
+            {title}
+        </span>
+    );
+}
 
 export interface ButtonProps {
     variant: "primary" | "secondary";
-    text: string;
+    text: ReactElement | string;
     onClick?: () => void;
     loading?: boolean;
     className?: string;
-    startIcon?: ReactElement; // Optional icon
+    startIcon?: ReactElement;
 }
 
 const variantClasses = {
@@ -17,19 +26,22 @@ const variantClasses = {
 
 export function LogoutButton({ variant, text, onClick, loading, className, startIcon }: ButtonProps) {
     return (
-        <motion.button
-            className={`${variantClasses[variant]} ${ "w-[80%]"} ${className || ""}  rounded-lg font-semibold flex items-center justify-center space-x-2 cursor-pointer`}
+<motion.button
+            className={`${variantClasses[variant]} ${"w-[70%]"} ${className || ""} rounded-lg font-semibold flex items-center justify-center space-x-2 cursor-pointer`}
             initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }} // Slight scale-down on click
-            transition={{ duration: 0.2 }} // Smooth transition
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.2 }}
             onClick={onClick}
             disabled={loading}
         >
-            {/* Start Icon */}
-            {startIcon && <div className="flex items-center">{startIcon}</div>}
-
-            {/* Button Text */}
-            <span>{loading ? "Loading..." : text}</span>
-        </motion.button>
-    );
+            {/* Start Icon and Text */}
+            {startIcon && (
+                <div className="flex items-center">
+                    {startIcon}
+                    {text && <span className="ml-2">{loading ? "Loading..." : text}</span>}
+                </div>
+            )}
+            {/* Text Only (if no startIcon) */}
+            {!startIcon && <span>{loading ? "Loading..." : text}</span>}
+        </motion.button>    );
 }
