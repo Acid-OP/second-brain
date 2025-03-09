@@ -70,10 +70,29 @@ app.get("/api/v1/content" , userMiddleware , async (req , res) => {
     res.json(content);
 });
 
-app.delete("/api/v1/content", userMiddleware, async (req, res) => {
-    const contentId = req.body.contentId;
-    await ContentModel.deleteMany({ contentId, userId: req.userId });
-    res.json({ message: "Deleted" }); 
+app.delete("/api/v1/content", userMiddleware, (req, res) => {
+    const { id } = req.body;
+    const userId = req.userId;
+
+    ContentModel.findOne({ _id: id, userId })
+        .then((content) => {
+            if (!content) {
+                return res.status(404).json({ error: "Content not found or you don’t have permission." });
+            }
+            
+            ContentModel.findByIdAndDelete(id)
+                .then(() => {
+                    res.status(200).json({ message: "Content deleted successfully." });
+                })
+                .catch((e) => {
+                    console.error("Error deleting content:", e);
+                    res.status(500).json({ error: "Internal server error." });
+                });
+        })
+        .catch((e) => {
+            console.error("Error finding content:", e);
+            res.status(500).json({ error: "Internal server error." });
+        });
 });
 
 app.post("/api/v1/brain/share" , userMiddleware , async (req , res) => {

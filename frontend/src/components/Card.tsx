@@ -5,15 +5,16 @@ import { YoutubeIcon } from "../icons/YoutubeIcon";
 import { TwitterIcon } from "../icons/TwitterIcon";
 import { RedditIcon } from "../icons/RedditIcon";
 import { Linkicon } from "../icons/Linkicon";
-import { DeleteIcon } from "../icons/DeleteIcon";
+import { DeleteComp } from "./DeleteComponent";
 
 interface CardProps {
   title: string;
   link: string;
-  type: "twitter" | "youtube" | "reddit" | "link"; // Added "link" type
+  type: "twitter" | "youtube" | "reddit" | "link"; 
+  _id : string;
 }
 
-export function Card({ title, link, type }: CardProps) {
+export function Card({ title, link, type ,_id }: CardProps) {
   const getRedditEmbedData = (url: string) => {
     const urlObj = new URL(url);
     const subreddit = urlObj.pathname.split("/")[2];
@@ -78,9 +79,8 @@ export function Card({ title, link, type }: CardProps) {
           <a href={link} target="_blank" rel="noopener noreferrer">
             <ShareIcon className="w-5" />
           </a>
-          <DeleteIcon className="w-5"/>
+          <DeleteComp _id={_id}/>
           </div>
-
         </div>
         <div className="pt-4">
           {type === "youtube" && (

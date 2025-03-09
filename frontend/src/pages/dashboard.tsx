@@ -22,6 +22,7 @@ export function Dashboard() {
   const filteredContents = contents.filter(({ type }) =>
     filter === "all" ? true : type === filter
   );
+  
 
   return (
     <div className="bg-gray-100 flex min-h-screen overflow-hidden">
@@ -58,8 +59,14 @@ export function Dashboard() {
         </div>
         <div className="flex w-full">
           <div className="flex pt-4 pl-4 gap-6 flex-wrap w-full">
-            {filteredContents.map(({ id, type, link, title }) => (
-              <Card key={id} type={type} link={link} title={title} />
+            {filteredContents.map((content) => (
+              <Card
+              key={content._id}
+              _id={content._id}
+              title={content.title}
+              link={content.link}
+              type={content.type}
+          />
             ))}
           </div>
         </div>
