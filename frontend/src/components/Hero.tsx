@@ -18,14 +18,8 @@ export function NavbarIconcomponent2({ src, alt, className }: NavbarIconProps) {
   );
 }
 
-interface HeroProps {
-  featuresRef: React.RefObject<HTMLDivElement>;
-  solutionsRef: React.RefObject<HTMLDivElement>;
-  resourcesRef: React.RefObject<HTMLDivElement>;
-  pricesRef: React.RefObject<HTMLDivElement>;
-}
-
-export function Hero({ featuresRef, solutionsRef, resourcesRef, pricesRef }: HeroProps) {
+// Removed featuresRef and howItWorksRef from HeroProps
+export function Hero() {
   return (
     <div className="relative">
       {/* Hero Section */}
@@ -122,69 +116,6 @@ export function Hero({ featuresRef, solutionsRef, resourcesRef, pricesRef }: Her
             transition={{ duration: 1.4, ease: "easeOut", delay: 1 }}
           />
         </div>
-      </div>
-
-      {/* Additional Sections with Synced UI */}
-      <div className="bg-gray-50">
-        {/* Features Section */}
-        <motion.div
-          ref={featuresRef}
-          className="min-h-screen flex flex-col items-center justify-center text-center px-4 py-16"
-          initial={{ opacity: 0, y: 50 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, ease: "easeOut" }}
-          viewport={{ once: true }}
-        >
-          <h2 className="text-4xl md:text-5xl font-extrabold text-gray-900 mb-6">Features</h2>
-          <p className="text-lg md:text-xl text-gray-600 max-w-3xl">
-            Discover powerful tools to save, organize, and share your digital content effortlessly.
-          </p>
-        </motion.div>
-
-        {/* Solutions Section */}
-        <motion.div
-          ref={solutionsRef}
-          className="min-h-screen flex flex-col items-center justify-center text-center px-4 py-16 bg-white"
-          initial={{ opacity: 0, y: 50 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, ease: "easeOut" }}
-          viewport={{ once: true }}
-        >
-          <h2 className="text-4xl md:text-5xl font-extrabold text-gray-900 mb-6">Solutions</h2>
-          <p className="text-lg md:text-xl text-gray-600 max-w-3xl">
-            Tailored solutions to manage your digital knowledge with precision and ease.
-          </p>
-        </motion.div>
-
-        {/* Resources Section */}
-        <motion.div
-          ref={resourcesRef}
-          className="min-h-screen flex flex-col items-center justify-center text-center px-4 py-16"
-          initial={{ opacity: 0, y: 50 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, ease: "easeOut" }}
-          viewport={{ once: true }}
-        >
-          <h2 className="text-4xl md:text-5xl font-extrabold text-gray-900 mb-6">Resources</h2>
-          <p className="text-lg md:text-xl text-gray-600 max-w-3xl">
-            Access guides and tutorials to maximize your experience with Second Brain.
-          </p>
-        </motion.div>
-
-        {/* Prices Section */}
-        <motion.div
-          ref={pricesRef}
-          className="min-h-screen flex flex-col items-center justify-center text-center px-4 py-16 bg-white"
-          initial={{ opacity: 0, y: 50 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, ease: "easeOut" }}
-          viewport={{ once: true }}
-        >
-          <h2 className="text-4xl md:text-5xl font-extrabold text-gray-900 mb-6">Prices</h2>
-          <p className="text-lg md:text-xl text-gray-600 max-w-3xl">
-            Affordable plans designed to suit your needs and budget.
-          </p>
-        </motion.div>
       </div>
     </div>
   );

@@ -1,6 +1,6 @@
 export function LogoutIcon({open}:{open:boolean} ){
     return(
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" className={`flex ${open ? "w-10" : "w-9"} `} id="logout">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" className={`flex ${open ? "w-9" : "w-9"} `} id="logout">
   <path d="M20.9 11.6c-.1-.1-.1-.2-.2-.3l-3-3c-.4-.4-1-.4-1.4 0s-.4 1 0 1.4l1.3 1.3H13c-.6 0-1 .4-1 1s.4 1 1 1h4.6l-1.3 1.3c-.4.4-.4 1 0 1.4.2.2.5.3.7.3s.5-.1.7-.3l3-3c.1-.1.2-.2.2-.3.1-.3.1-.5 0-.8z"></path>
   <path d="M15.5 18.1c-1.1.6-2.3.9-3.5.9-3.9 0-7-3.1-7-7s3.1-7 7-7c1.2 0 2.4.3 3.5.9.5.3 1.1.1 1.4-.4.3-.5.1-1.1-.4-1.4C15.1 3.4 13.6 3 12 3c-5 0-9 4-9 9s4 9 9 9c1.6 0 3.1-.4 4.5-1.2.5-.3.6-.9.4-1.4-.3-.4-.9-.6-1.4-.3z"></path>
 </svg>

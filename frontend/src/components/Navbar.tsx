@@ -1,26 +1,28 @@
+import { useState } from "react";
+import { motion } from "framer-motion";
+import { Menu, X } from "lucide-react";
 import brain from "../iconImages/brain.png";
 import { NavbarIconComponent, NavbarTextComponent } from "./NavbarComponent";
 import { TopBar, TopBarComp, TopBarSignin } from "./Topbar";
-import { motion } from "framer-motion";
+import { useNavigate } from "react-router-dom";
 
 interface NavbarProps {
     scrollToSection: (ref: React.RefObject<HTMLDivElement>) => void;
     refs: {
         featuresRef: React.RefObject<HTMLDivElement>;
-        solutionsRef: React.RefObject<HTMLDivElement>;
-        resourcesRef: React.RefObject<HTMLDivElement>;
-        pricesRef: React.RefObject<HTMLDivElement>;
+        howItWorksRef: React.RefObject<HTMLDivElement>; // Renamed from solutionsRef
     };
 }
-export function Navbar({ scrollToSection, refs }: NavbarProps) {
-    const token = localStorage.getItem("token");
-    if(token){
 
-    }
+export function Navbar({ scrollToSection, refs }: NavbarProps) {
+    const [isMobileOpen, setIsMobileOpen] = useState(false);
+    const token = localStorage.getItem("token");
+    const navigate = useNavigate();
+
     return (
         <motion.div
-            className="pt-4" // Increased top padding for better spacing
-            initial={{ opacity: 0, y: -20 }} // Fade-in and slide-down animation
+            className="pt-4"
+            initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, ease: "easeOut" }}
         >
@@ -31,22 +33,27 @@ export function Navbar({ scrollToSection, refs }: NavbarProps) {
                         <TopBar
                             icon={<NavbarIconComponent src={brain} />}
                             title={<NavbarTextComponent title="Second Brain" />}
+                            onClick={() => navigate("/")}
                         />
                     </div>
 
-                    {/* Center: Navigation Links */}
-                    <div className="flex items-center justify-center flex-1">
-                    <TopBarComp scrollToSection={scrollToSection} refs={refs} />
+                    {/* Center: Navigation Links (Desktop) */}
+                    <div className="hidden md:flex items-center justify-center flex-1">
+                        <TopBarComp scrollToSection={scrollToSection} refs={refs} />
                     </div>
 
-                    {/* Right: Sign In */}
-                    <div className="flex items-center justify-end flex-1">
-                    {token ? (""
+                    {/* Right: Auth + Mobile Toggle */}
+                    <div className="flex items-center justify-end flex-1 gap-4">
+                        {token ? (""
                         ) : (
-                            // When token doesn't exist (user not signed in)
                             <TopBarSignin />
                         )}
-                        {/* <TopBarSignin /> */}
+                        <button
+                            className="md:hidden"
+                            onClick={() => setIsMobileOpen(!isMobileOpen)}
+                        >
+                            {isMobileOpen ? <X size={24} /> : <Menu size={24} />}
+                        </button>
                     </div>
                 </div>
             </div>
