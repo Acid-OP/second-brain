@@ -10,11 +10,11 @@ import { DeleteComp } from "./DeleteComponent";
 interface CardProps {
   title: string;
   link: string;
-  type: "twitter" | "youtube" | "reddit" | "link"; 
-  _id : string;
+  type: "twitter" | "youtube" | "reddit" | "link";
+  _id: string;
 }
 
-export function Card({ title, link, type ,_id }: CardProps) {
+export function Card({ title, link, type, _id }: CardProps) {
   const getRedditEmbedData = (url: string) => {
     const urlObj = new URL(url);
     const subreddit = urlObj.pathname.split("/")[2];
@@ -55,13 +55,13 @@ export function Card({ title, link, type ,_id }: CardProps) {
   const RenderIcon = () => {
     switch (type) {
       case "youtube":
-        return <YoutubeIcon className="w-6"/>;
+        return <YoutubeIcon className="w-6" />;
       case "twitter":
-        return <TwitterIcon className="w-6"/>;
+        return <TwitterIcon className="w-6" />;
       case "reddit":
-        return <RedditIcon className="w-6"/>;
+        return <RedditIcon className="w-6" />;
       case "link":
-        return <Linkicon className="w-6"/>;
+        return <Linkicon className="w-6" />;
     }
   };
 
@@ -71,15 +71,26 @@ export function Card({ title, link, type ,_id }: CardProps) {
         <div className="flex justify-between items-center">
           <div className="flex justify-center items-center gap-2">
             {RenderIcon()}
-          <span className="font-semibold text-neutral-800 text-xl tracking-wide capitalize leading-tight">
-            {title}
-          </span>
+            <span className="font-semibold text-neutral-800 text-xl tracking-wide capitalize leading-tight">
+              {title}
+            </span>
           </div>
           <div className="flex justify-center items-center gap-2">
-          <a href={link} target="_blank" rel="noopener noreferrer">
-            <ShareIcon className="w-5" />
-          </a>
-          <DeleteComp _id={_id}/>
+            <a href={link} target="_blank" rel="noopener noreferrer">
+              <ShareIcon
+                className="w-5 cursor-pointer"
+                onClick={async (event: React.MouseEvent<SVGSVGElement>) => {
+                  event.preventDefault(); // Prevent the link from opening
+                  try {
+                    await navigator.clipboard.writeText(link);
+                    console.log("Copied to clipboard!");
+                  } catch (err) {
+                    console.error("Failed to copy:", err);
+                  }
+                }}
+              />
+            </a>
+            <DeleteComp _id={_id} />
           </div>
         </div>
         <div className="pt-4">
