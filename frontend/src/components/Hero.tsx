@@ -1,4 +1,3 @@
-import React from "react";
 import { motion } from "framer-motion";
 import brain2 from "../iconImages/brain2.png";
 import { HeroButton } from "./HeroButton";
@@ -18,7 +17,6 @@ export function NavbarIconcomponent2({ src, alt, className }: NavbarIconProps) {
   );
 }
 
-// Removed featuresRef and howItWorksRef from HeroProps
 export function Hero() {
   return (
     <div className="relative">
@@ -74,43 +72,60 @@ export function Hero() {
         {/* Enhanced Shapes */}
         <div className="absolute inset-0 pointer-events-none">
           <motion.div
-            className="absolute top-[10%] left-[30%] transform -translate-x-1/2 w-16 h-16 bg-gradient-to-br from-blue-400 to-blue-600 rounded-full shadow-lg opacity-70"
+            className="absolute top-[10%] left-[30%] transform -translate-x-1/2 w-16 h-16 bg-gradient-to-br from-blue-400 to-blue-600 rounded-full shadow-lg opacity-70 max-[640px]:w-8 max-[640px]:h-8 max-[640px]:top-[5%] max-[640px]:left-[10%]"
             initial={{ y: -20, opacity: 0 }}
             animate={{ y: 0, opacity: 0.7 }}
-            transition={{ duration: 1, repeat: Infinity, repeatType: "reverse", ease: "easeInOut" }}
+            transition={{
+              duration: 1,
+              repeat: Infinity,
+              repeatType: "reverse",
+              ease: "easeInOut",
+            }}
           />
           <motion.div
-            className="absolute top-1/2 left-[10%] w-12 h-12 bg-gradient-to-br from-gray-300 to-gray-500 rounded-full shadow-lg opacity-70"
+            className="absolute top-1/2 left-[10%] w-12 h-12 bg-gradient-to-br from-gray-300 to-gray-500 rounded-full shadow-lg opacity-70 max-[640px]:w-6 max-[640px]:h-6 max-[640px]:left-[5%] max-[640px]:top-[60%]"
             initial={{ x: -20, opacity: 0 }}
             animate={{ x: 0, opacity: 0.7 }}
-            transition={{ duration: 1.4, repeat: Infinity, repeatType: "reverse", ease: "easeInOut", delay: 0.5 }}
+            transition={{
+              duration: 1.4,
+              repeat: Infinity,
+              repeatType: "reverse",
+              ease: "easeInOut",
+              delay: 0.5,
+            }}
           />
           <motion.div
-            className="absolute top-[30%] right-[10%] w-16 h-16 bg-gradient-to-br from-blue-400 to-blue-600 rounded-full shadow-lg opacity-70"
+            className="absolute top-[30%] right-[10%] w-16 h-16 bg-gradient-to-br from-blue-400 to-blue-600 rounded-full shadow-lg opacity-70 max-[640px]:w-8 max-[640px]:h-8 max-[640px]:right-[5%] max-[640px]:top-[20%]"
             initial={{ x: 20, opacity: 0 }}
             animate={{ x: 0, opacity: 0.7 }}
-            transition={{ duration: 1, repeat: Infinity, repeatType: "reverse", ease: "easeInOut", delay: 0.2 }}
+            transition={{
+              duration: 1,
+              repeat: Infinity,
+              repeatType: "reverse",
+              ease: "easeInOut",
+              delay: 0.2,
+            }}
           />
           <motion.div
-            className="absolute top-[15%] left-[5%] w-14 h-14 bg-gradient-to-br from-purple-400 to-purple-600 rounded-lg shadow-lg opacity-70"
+            className="absolute top-[15%] left-[5%] w-14 h-14 bg-gradient-to-br from-purple-400 to-purple-600 rounded-lg shadow-lg opacity-70 max-[640px]:w-6 max-[640px]:h-6 max-[640px]:left-[2%] max-[640px]:top-[10%]"
             initial={{ scale: 0, opacity: 0 }}
             animate={{ scale: 1, opacity: 0.7 }}
             transition={{ duration: 1.4, ease: "easeOut", delay: 0.4 }}
           />
           <motion.div
-            className="absolute top-[5%] right-[25%] w-12 h-12 bg-gradient-to-br from-gray-300 to-gray-500 rounded-full shadow-lg opacity-70"
+            className="absolute top-[5%] right-[25%] w-12 h-12 bg-gradient-to-br from-gray-300 to-gray-500 rounded-full shadow-lg opacity-70 max-[640px]:w-6 max-[640px]:h-6 max-[640px]:right-[10%] max-[640px]:top-[2%]"
             initial={{ scale: 0, opacity: 0 }}
             animate={{ scale: 1, opacity: 0.7 }}
             transition={{ duration: 1.4, ease: "easeOut", delay: 0.6 }}
           />
           <motion.div
-            className="absolute bottom-[20%] left-[20%] w-16 h-16 bg-gradient-to-br from-blue-400 to-blue-600 rounded-full shadow-lg opacity-70"
+            className="absolute bottom-[20%] left-[20%] w-16 h-16 bg-gradient-to-br from-blue-400 to-blue-600 rounded-full shadow-lg opacity-70 max-[640px]:w-8 max-[640px]:h-8 max-[640px]:left-[5%] max-[640px]:bottom-[10%]"
             initial={{ scale: 0, opacity: 0 }}
             animate={{ scale: 1, opacity: 0.7 }}
             transition={{ duration: 1.4, ease: "easeOut", delay: 0.8 }}
           />
           <motion.div
-            className="absolute bottom-[30%] right-[15%] w-14 h-14 bg-gradient-to-br from-purple-400 to-purple-600 rounded-lg shadow-lg opacity-70"
+            className="absolute bottom-[30%] right-[15%] w-14 h-14 bg-gradient-to-br from-purple-400 to-purple-600 rounded-lg shadow-lg opacity-70 max-[640px]:w-6 max-[640px]:h-6 max-[640px]:right-[2%] max-[640px]:bottom-[15%]"
             initial={{ scale: 0, opacity: 0 }}
             animate={{ scale: 1, opacity: 0.7 }}
             transition={{ duration: 1.4, ease: "easeOut", delay: 1 }}

@@ -11,16 +11,19 @@ interface TopbarProps {
 export function TopBar({ icon, title, onClick }: TopbarProps) {
     return (
         <motion.div
-            className="flex items-center gap-3 cursor-pointer"
+            className="flex items-center gap-2 sm:gap-3 cursor-pointer"
             whileHover={{ scale: 1.02 }}
             transition={{ duration: 0.2 }}
             onClick={onClick}
         >
             <div className="flex justify-center items-center">{icon}</div>
-            <div className="text-2xl font-bold text-gray-900 tracking-tight">{title}</div>
+            <div className="text-lg sm:text-xl md:text-2xl font-bold text-gray-900 tracking-tight">
+                {title}
+            </div>
         </motion.div>
     );
 }
+
 
 interface TopBarCompProps {
     scrollToSection: (ref: React.RefObject<HTMLDivElement>) => void;
@@ -33,15 +36,15 @@ interface TopBarCompProps {
 export function TopBarComp({ scrollToSection, refs }: TopBarCompProps) {
     const sections = [
         { name: "Features", ref: refs.featuresRef },
-        { name: "How It Works", ref: refs.howItWorksRef }, // Replaced Solutions/Resources/Prices
+        { name: "How It Works", ref: refs.howItWorksRef },
     ];
 
     return (
-        <div className="flex flex-col md:flex-row justify-center gap-6 md:gap-10 w-full max-w-md">
+        <div className="hidden md:flex items-center justify-center gap-4 sm:gap-6 md:gap-8 w-full max-w-md">
             {sections.map((item, index) => (
                 <motion.div
                     key={index}
-                    className="text-neutral-800 font-semibold text-base hover:bg-[#f1f1f1] py-2 px-4 rounded-full cursor-pointer transition duration-300 text-center"
+                    className="text-neutral-800 font-semibold text-sm sm:text-base md:text-lg hover:bg-[#f1f1f1] py-2 px-4 rounded-full cursor-pointer transition duration-300 text-center"
                     whileHover={{ y: -2 }}
                     transition={{ duration: 0.2 }}
                     onClick={() => scrollToSection(item.ref)}
@@ -52,6 +55,9 @@ export function TopBarComp({ scrollToSection, refs }: TopBarCompProps) {
         </div>
     );
 }
+
+
+
 
 export function TopBarSignin() {
     const navigate = useNavigate();

@@ -14,19 +14,25 @@ export function Home() {
     }
   };
 
+  const cardHover = {
+    y: -5,
+    scale: 1.02,
+    transition: { duration: 0.2, ease: "easeOut" },
+  };
+
   return (
-    <div className="flex flex-col bg-white min-h-screen w-full">
+    <div className="flex flex-col bg-gray-50 min-h-screen w-full">
       <Navbar
         scrollToSection={scrollToSection}
         refs={{ featuresRef, howItWorksRef }}
       />
       <Hero />
 
-      {/* Features Section */}
+      {/* Features Section - Adjusted padding for iPad */}
       <motion.section
         ref={featuresRef}
         id="features"
-        className="py-20 px-6 bg-gray-50 flex flex-col items-center justify-center"
+        className="py-6 md:py-2 px-6 bg-gray-50 flex flex-col items-center justify-center" // Changed py-6 to py-6 md:py-2
         initial={{ opacity: 0, y: 50 }}
         whileInView={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.8, ease: "easeOut" }}
@@ -70,7 +76,7 @@ export function Home() {
             {
               title: "Share Seamlessly",
               desc: "Distribute your curated insights with one tap.",
-              icon: "M4 12h16m-7-7l7 7-7 7", // Share icon: horizontal line with right arrow
+              icon: "M4 12h16m-7-7l7 7-7 7",
             },
           ].map((feature, index) => (
             <motion.div
@@ -80,7 +86,7 @@ export function Home() {
               whileInView={{ y: 0, opacity: 1 }}
               transition={{ duration: 0.6, delay: index * 0.2 }}
               viewport={{ once: true }}
-              whileHover={{ y: -5, transition: { duration: 0.2 } }}
+              whileHover={cardHover}
             >
               <svg
                 className="w-8 h-8 text-indigo-600 mb-4"
@@ -103,11 +109,14 @@ export function Home() {
         </div>
       </motion.section>
 
+      {/* Spacer between Features and How It Works */}
+      <div className="py-12 bg-gray-50"></div>
+
       {/* How It Works Section */}
       <motion.section
         ref={howItWorksRef}
         id="how-it-works"
-        className="py-20 px-6 bg-white flex flex-col items-center justify-center"
+        className="py-12 px-6 bg-gray-50 flex flex-col items-center justify-center"
         initial={{ opacity: 0, y: 50 }}
         whileInView={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.8, ease: "easeOut" }}
@@ -161,6 +170,7 @@ export function Home() {
               whileInView={{ y: 0, opacity: 1 }}
               transition={{ duration: 0.6, delay: index * 0.2 }}
               viewport={{ once: true }}
+              whileHover={cardHover}
             >
               <span className="absolute -top-4 left-6 text-2xl font-bold text-indigo-600 bg-white px-2 rounded-full border border-indigo-100">
                 {step.step}
