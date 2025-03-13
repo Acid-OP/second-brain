@@ -22,7 +22,6 @@ export function Dashboard() {
   const filteredContents = contents.filter(({ type }) =>
     filter === "all" ? true : type === filter
   );
-  
 
   return (
     <div className="bg-gray-100 flex min-h-screen overflow-hidden">
@@ -33,7 +32,8 @@ export function Dashboard() {
         }`}
       >
         <CreateContentModal open={modalOpen} onClose={() => setModalOpen(false)} />
-        <div className="flex justify-end gap-4">
+        {/* Adjusted for responsiveness */}
+        <div className="flex justify-end gap-4 flex-wrap sm:flex-col sm:items-center md:flex-row md:gap-6">
           <Button
             onClick={() => setModalOpen(true)}
             variant="primary"
@@ -57,16 +57,17 @@ export function Dashboard() {
             startIcon={<ShareIcon />}
           />
         </div>
+
         <div className="flex w-full">
           <div className="flex pt-4 pl-4 gap-6 flex-wrap w-full">
             {filteredContents.map((content) => (
               <Card
-              key={content._id}
-              _id={content._id}
-              title={content.title}
-              link={content.link}
-              type={content.type}
-          />
+                key={content._id}
+                _id={content._id}
+                title={content.title}
+                link={content.link}
+                type={content.type}
+              />
             ))}
           </div>
         </div>
