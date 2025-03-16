@@ -1,11 +1,11 @@
-import { useEffect } from "react";
-import "./youtube.css";
+import { useEffect, useState } from "react";
 import { ShareIcon } from "../icons/ShareIcon";
 import { YoutubeIcon } from "../icons/YoutubeIcon";
 import { TwitterIcon } from "../icons/TwitterIcon";
 import { RedditIcon } from "../icons/RedditIcon";
 import { Linkicon } from "../icons/Linkicon";
 import { DeleteComp } from "./DeleteComponent";
+import { Toast } from "./Toastcomponent";
 
 interface CardProps {
   title: string;
@@ -16,6 +16,8 @@ interface CardProps {
 }
 
 export function Card({ title, link, type, _id, className }: CardProps) {
+  const [showToast, setShowToast] = useState(false);
+
   const getRedditEmbedData = (url: string) => {
     const urlObj = new URL(url);
     const subreddit = urlObj.pathname.split("/")[2];
@@ -66,6 +68,15 @@ export function Card({ title, link, type, _id, className }: CardProps) {
     }
   };
 
+  const handleCopyLink = async () => {
+    try {
+      await navigator.clipboard.writeText(link);
+      setShowToast(true);
+    } catch (err) {
+      console.error("Failed to copy:", err);
+    }
+  };
+
   return (
     <div className={`${className} p-4 bg-white rounded-md border-gray-200 max-w-72 min-h-48 min-w-72 sm:w-full md:w-1/2 lg:w-1/3`}>
       <div className="flex justify-between items-center">
@@ -76,20 +87,10 @@ export function Card({ title, link, type, _id, className }: CardProps) {
           </span>
         </div>
         <div className="flex justify-center items-center gap-2">
-          <a href={link} target="_blank" rel="noopener noreferrer">
-            <ShareIcon
-              className="w-5 cursor-pointer"
-              onClick={async (event: React.MouseEvent<SVGSVGElement>) => {
-                event.preventDefault(); // Prevent the link from opening
-                try {
-                  await navigator.clipboard.writeText(link);
-                  console.log("Copied to clipboard!");
-                } catch (err) {
-                  console.error("Failed to copy:", err);
-                }
-              }}
-            />
-          </a>
+          <ShareIcon
+            className="w-5 cursor-pointer"
+            onClick={handleCopyLink}
+          />
           <DeleteComp _id={_id} />
         </div>
       </div>
@@ -131,6 +132,14 @@ export function Card({ title, link, type, _id, className }: CardProps) {
           </div>
         )}
       </div>
+
+      {showToast && (
+        <Toast
+          message="Link copied to your clipboard!"
+          duration={3000}
+          onClose={() => setShowToast(false)}
+        />
+      )}
     </div>
   );
 }
