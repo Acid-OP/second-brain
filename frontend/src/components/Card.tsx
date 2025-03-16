@@ -1,4 +1,4 @@
-import React, { useEffect, useState, ReactElement } from "react";
+import { useEffect, useState, ReactElement } from "react";
 import { ShareIcon } from "../icons/ShareIcon";
 import { YoutubeIcon } from "../icons/YoutubeIcon";
 import { TwitterIcon } from "../icons/TwitterIcon";
@@ -21,6 +21,37 @@ interface CardProps {
 
 export function Card({ title, link, type, _id, description, className }: CardProps): ReactElement {
   const [showToast, setShowToast] = useState<boolean>(false);
+  useEffect(() => {
+    const sendCardDataToBackend = async () => {
+      try {
+        console.log("[DEBUG] Sending card data to backend..."); // Debug log
+        const response = await fetch("/api/v1/content", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            _id,
+            title,
+            description,
+            type,
+            link,
+          }),
+        });
+  
+        if (!response.ok) {
+          throw new Error("Failed to send card data to the backend");
+        }
+  
+        const data = await response.json();
+        console.log("[DEBUG] Backend response:", data); // Debug log
+      } catch (error) {
+        console.error("[ERROR] Error sending card data to the backend:", error);
+      }
+    };
+  
+    sendCardDataToBackend();
+  }, [_id, title, description, type, link]);
   const getRedditEmbedData = (url: string): { subreddit: string } => {
     const urlObj = new URL(url);
     const subreddit = urlObj.pathname.split("/")[2];

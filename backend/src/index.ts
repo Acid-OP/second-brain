@@ -5,11 +5,11 @@ import { UserModel, ContentModel, LinkModel } from "./db";
 import { userMiddleware } from "./middelware";
 import { random } from "./utils";
 import cors from "cors";
+import { storeCardEmbeddings } from "./embeddingService"; // Import the embedding service
 
 const app = express();
 app.use(express.json());
 app.use(cors());
-
 
 // Routes without heavy TypeScript
 app.post("/api/v1/signup", async (req, res) => {
@@ -42,26 +42,44 @@ app.post("/api/v1/signin", async (req, res) => {
 });
 
 app.post("/api/v1/content", userMiddleware, async (req, res) => {
-  const link = req.body.link;
-  const type = req.body.type;
-  const description = req.body.description;
-  await ContentModel.create({
-    link,
-    type,
-    description,
-    title: req.body.title,
-    userId: req.userId,
-    tags: [],
-  });
-  res.json({ message: "Content added" });
+  console.log("[DEBUG] Request received to create content:", req.body); // Debug log
+  const { link, type, description, title } = req.body;
+  const userId = req.userId;
+
+  try {
+    // Create content in MongoDB
+    const content = await ContentModel.create({
+      link,
+      type,
+      description,
+      title,
+      userId,
+      tags: [],
+    });
+
+    console.log("[DEBUG] Content created in MongoDB:", content); // Debug log
+
+    // Store embeddings in ChromaDB
+    console.log("[DEBUG] Calling storeCardEmbeddings..."); // Debug log
+    await storeCardEmbeddings({
+      _id: content._id.toString(),
+      title,
+      description,
+      type,
+      link,
+    });
+
+    res.json({ message: "Content added" });
+  } catch (e) {
+    console.error("[ERROR] Error adding content:", e);
+    res.status(500).json({ error: "Internal server error" });
+  }
 });
 
 app.get("/api/v1/content", userMiddleware, async (req, res) => {
   const userId = req.userId;
   const content = await ContentModel.find({ userId: userId }).populate("userId", "username");
   res.json(content);
-  // console.log("Received data:", req.body);
-
 });
 
 app.delete("/api/v1/content", userMiddleware, (req, res) => {

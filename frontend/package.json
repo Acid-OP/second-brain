@@ -10,8 +10,10 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@huggingface/inference": "^3.5.2",
     "@tailwindcss/vite": "^4.0.1",
     "axios": "^1.7.9",
+    "chromadb": "^2.0.1",
     "framer-motion": "^12.4.7",
     "lucide-react": "^0.475.0",
     "react": "^18.3.1",
