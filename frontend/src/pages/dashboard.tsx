@@ -176,6 +176,7 @@ export function Dashboard() {
                 title={content.title}
                 link={content.link}
                 type={content.type}
+                description={content.description}
               />
             ))}
           </div>

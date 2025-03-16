@@ -9,6 +9,7 @@ interface Content {
     type: "twitter" | "youtube" | "reddit" | "link";
     userId: string;
     tags: string[];
+    description: string;
 }
 
 export function useContent() {
@@ -21,6 +22,7 @@ export function useContent() {
             }
         })
             .then((response) => {
+                
                 setContents(response.data);
             })
             .catch((error) => {

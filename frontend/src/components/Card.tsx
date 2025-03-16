@@ -21,7 +21,6 @@ interface CardProps {
 
 export function Card({ title, link, type, _id, description, className }: CardProps): ReactElement {
   const [showToast, setShowToast] = useState<boolean>(false);
-
   const getRedditEmbedData = (url: string): { subreddit: string } => {
     const urlObj = new URL(url);
     const subreddit = urlObj.pathname.split("/")[2];
