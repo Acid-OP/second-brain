@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { ShareIcon } from "../icons/ShareIcon";
 import { YoutubeIcon } from "../icons/YoutubeIcon";
 import { TwitterIcon } from "../icons/TwitterIcon";
@@ -6,16 +6,20 @@ import { RedditIcon } from "../icons/RedditIcon";
 import { Linkicon } from "../icons/Linkicon";
 import { DeleteComp } from "./DeleteComponent";
 import { Toast } from "./Toastcomponent";
+import "./youtube.css"; // Import YouTube CSS
+import "./twitter.css"; // Import Twitter CSS
+import "./reddit.css"; // Import Reddit CSS
 
 interface CardProps {
   title: string;
   link: string;
   type: "twitter" | "youtube" | "reddit" | "link";
   _id: string;
+  description?: string;
   className?: string;
 }
 
-export function Card({ title, link, type, _id, className }: CardProps) {
+export function Card({ title, link, type, _id, description, className }: CardProps) {
   const [showToast, setShowToast] = useState(false);
 
   const getRedditEmbedData = (url: string) => {
@@ -94,6 +98,14 @@ export function Card({ title, link, type, _id, className }: CardProps) {
           <DeleteComp _id={_id} />
         </div>
       </div>
+
+      {/* Display Description if Available */}
+      {description && (
+        <div className="mt-2 text-sm text-gray-600 line-clamp-2">
+          {description}
+        </div>
+      )}
+
       <div className="pt-4">
         {type === "youtube" && (
           <iframe
@@ -107,12 +119,14 @@ export function Card({ title, link, type, _id, className }: CardProps) {
           ></iframe>
         )}
         {type === "twitter" && (
-          <blockquote className="twitter-tweet">
-            <a href={link.replace("x.com", "twitter.com")} />
-          </blockquote>
+          <div className="twitter-embed-container">
+            <blockquote className="twitter-tweet">
+              <a href={link.replace("x.com", "twitter.com")} />
+            </blockquote>
+          </div>
         )}
         {type === "reddit" && (
-          <div className="border border-neutral-700 rounded-xl">
+          <div className="reddit-embed-container">
             <blockquote className="reddit-embed-bq" data-embed-height="316">
               <a href={link}>{link}</a>
               <a href={`https://www.reddit.com/r/${subreddit}`}>{subreddit}</a>

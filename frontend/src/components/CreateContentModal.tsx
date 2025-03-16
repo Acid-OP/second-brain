@@ -17,18 +17,20 @@ enum ContentType {
 export function CreateContentModal({ open, onClose }) {
   const titleRef = useRef<HTMLInputElement>(null!);
   const linkRef = useRef<HTMLInputElement>(null!);
+  const descriptionRef = useRef<HTMLInputElement>(null!); // Ref for description
   const [type, setType] = useState(ContentType.Youtube);
 
   async function addContent() {
     const title = titleRef.current?.value;
     const link = linkRef.current?.value;
+    const description = descriptionRef.current?.value; // Get description value
 
     if (!title || !link) return;
 
     try {
       await axios.post(
         `${BACKEND_URL}/api/v1/content`,
-        { link, title, type },
+        { link, title, type, description }, // Include description in the request
         {
           headers: {
             Authorization: localStorage.getItem("token"),
@@ -87,6 +89,12 @@ export function CreateContentModal({ open, onClose }) {
             <Input
               reference={linkRef}
               placeholder="Link"
+              className="w-full border-gray-300 focus:border-[#7950f2] focus:ring-[#7950f2] transition-all duration-200"
+            />
+            {/* Optional Description Field */}
+            <Input
+              reference={descriptionRef}
+              placeholder="Description (optional)"
               className="w-full border-gray-300 focus:border-[#7950f2] focus:ring-[#7950f2] transition-all duration-200"
             />
           </div>

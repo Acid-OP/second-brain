@@ -1,4 +1,17 @@
-.twitter-tweet-rendered {
-    max-height: 100% !important;
-    overflow: hidden;
-  }
+/* Container for the Twitter embed */
+.twitter-embed-container {
+  border: 1px solid #d1d5db; /* Add a border */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Add a subtle shadow */
+  border-radius: 8px; /* Rounded corners */
+  width: 100%; /* Ensure it takes full width of the card */
+  max-width: 100%; /* Prevent overflow */
+  overflow: hidden; /* Hide any overflow */
+  margin: 0 auto; /* Center the embed */
+}
+
+/* Target the dynamically loaded iframe */
+.twitter-embed-container iframe {
+  width: 100% !important; /* Ensure the iframe takes full width */
+  max-width: 100% !important; /* Prevent overflow */
+  border: none; /* Remove default iframe border */
+}
