@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, ReactElement } from "react";
 import { ShareIcon } from "../icons/ShareIcon";
 import { YoutubeIcon } from "../icons/YoutubeIcon";
 import { TwitterIcon } from "../icons/TwitterIcon";
@@ -19,10 +19,10 @@ interface CardProps {
   className?: string;
 }
 
-export function Card({ title, link, type, _id, description, className }: CardProps) {
-  const [showToast, setShowToast] = useState(false);
+export function Card({ title, link, type, _id, description, className }: CardProps): ReactElement {
+  const [showToast, setShowToast] = useState<boolean>(false);
 
-  const getRedditEmbedData = (url: string) => {
+  const getRedditEmbedData = (url: string): { subreddit: string } => {
     const urlObj = new URL(url);
     const subreddit = urlObj.pathname.split("/")[2];
     return { subreddit };
@@ -31,8 +31,10 @@ export function Card({ title, link, type, _id, description, className }: CardPro
   const { subreddit } = type === "reddit" ? getRedditEmbedData(link) : { subreddit: "" };
 
   useEffect(() => {
+    let script: HTMLScriptElement | null = null;
+    
     if (type === "reddit") {
-      const script = document.createElement("script");
+      script = document.createElement("script");
       script.src = "//embed.redditmedia.com/widgets/platform.js";
       script.async = true;
       script.onload = () => {
@@ -40,26 +42,35 @@ export function Card({ title, link, type, _id, description, className }: CardPro
         console.log("Reddit script loaded!");
       };
       document.body.appendChild(script);
-
-      return () => {
-        document.body.removeChild(script);
-      };
     } else if (type === "twitter") {
-      const script = document.createElement("script");
+      script = document.createElement("script");
       script.src = "https://platform.twitter.com/widgets.js";
       script.async = true;
       script.onload = () => {
+        // After the script loads, we need to wait for the widget to render
+        setTimeout(() => {
+          const iframe = document.querySelector('.twitter-embed-container iframe');
+          if (iframe) {
+            const container = iframe.closest('.twitter-embed-container');
+            if (container) {
+              // Set container height to match iframe height
+              (container as HTMLElement).style.height = `${iframe.clientHeight}px`;
+            }
+          }
+        }, 1000);
         console.log("Twitter script loaded!");
       };
       document.body.appendChild(script);
-
-      return () => {
-        document.body.removeChild(script);
-      };
     }
+
+    return () => {
+      if (script && document.body.contains(script)) {
+        document.body.removeChild(script);
+      }
+    };
   }, [type, link]);
 
-  const RenderIcon = () => {
+  const RenderIcon = (): ReactElement => {
     switch (type) {
       case "youtube":
         return <YoutubeIcon className="w-6" />;
@@ -72,7 +83,7 @@ export function Card({ title, link, type, _id, description, className }: CardPro
     }
   };
 
-  const handleCopyLink = async () => {
+  const handleCopyLink = async (): Promise<void> => {
     try {
       await navigator.clipboard.writeText(link);
       setShowToast(true);
@@ -82,7 +93,7 @@ export function Card({ title, link, type, _id, description, className }: CardPro
   };
 
   return (
-    <div className={`${className} p-4 bg-white rounded-md border-gray-200 max-w-72 min-h-48 min-w-72 sm:w-full md:w-1/2 lg:w-1/3`}>
+    <div className={`${className || ""} p-4 bg-white rounded-md border-gray-200 max-w-72 min-h-48 min-w-72 sm:w-full md:w-1/2 lg:w-1/3`}>
       <div className="flex justify-between items-center">
         <div className="flex justify-center items-center gap-2">
           {RenderIcon()}

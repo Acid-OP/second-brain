@@ -1,17 +1,36 @@
 /* Container for the Twitter embed */
 .twitter-embed-container {
-  border: 1px solid #d1d5db; /* Add a border */
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Add a subtle shadow */
-  border-radius: 8px; /* Rounded corners */
+  border: 1px solid #d1d5db; /* Add a border matching Reddit */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Add a subtle shadow matching Reddit */
+  border-radius: 15px; /* Rounded corners matching Reddit */
   width: 100%; /* Ensure it takes full width of the card */
   max-width: 100%; /* Prevent overflow */
   overflow: hidden; /* Hide any overflow */
   margin: 0 auto; /* Center the embed */
+  padding: 0; /* Remove any padding that might cause issues */
 }
 
-/* Target the dynamically loaded iframe */
+/* Target the dynamically loaded iframe and blockquote */
 .twitter-embed-container iframe {
   width: 100% !important; /* Ensure the iframe takes full width */
   max-width: 100% !important; /* Prevent overflow */
-  border: none; /* Remove default iframe border */
+  border: none !important; /* Remove default iframe border */
+  margin: 0 !important; /* Remove margin that might cause misalignment */
+}
+
+/* Fix Twitter blockquote styling */
+.twitter-embed-container .twitter-tweet {
+  margin: 0 !important; /* Remove default margins */
+  width: 100% !important; /* Make sure it uses full width */
+}
+
+/* Make sure the iframe scales properly */
+.twitter-embed-container iframe.twitter-tweet-rendered {
+  min-width: 100% !important;
+  max-width: 100% !important;
+}
+
+/* Ensure the container size adapts to content */
+.twitter-embed-container:has(iframe) {
+  height: auto !important;
 }
