@@ -13,7 +13,8 @@ import { Linkicon } from "../icons/Linkicon";
 import { LogoutIcon } from "../icons/LogoutIcon"; // Adjust if in a different file
 import { LogoutText } from "./LogoutButton";
 import { QueryInput } from "./QuerySection"; // Import the new component
-
+import axios from "axios";
+import { BACKEND_URL } from "../config";
 export function Sidebar({
   setFilter,
   open,
@@ -30,9 +31,23 @@ export function Sidebar({
     navigate("/home");
   }
 
-  const handleQuerySubmit = (query: string) => {
-    console.log("Query submitted:", query); // For now, log the query (extend later for embeddings/vector DB)
-    // Future: Integrate with embeddings/vector DB here (e.g., axios.post to backend)
+  const handleQuerySubmit = async (query: string) => {
+    console.log("Query submitted:", query);
+    try {
+      const token = localStorage.getItem("token");
+      console.log("[DEBUG] Token used for query:", token); // Add this
+      const response = await axios.post(
+        `${BACKEND_URL}/api/v1/query`,
+        { query },
+        { headers: { Authorization: token } } // Raw token, no "Bearer"
+      );
+      const card = response.data.card;
+      console.log("Queried card from backend:", card);
+      
+    } catch (error) {
+      console.error("Error querying backend:", error);
+      
+    }
   };
 
   return (

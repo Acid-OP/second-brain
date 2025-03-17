@@ -1,34 +1,21 @@
 import { HfInference } from "@huggingface/inference";
-import { ChromaClient } from "chromadb";
+import { ChromaClient, IncludeEnum } from "chromadb";
 
 const hf = new HfInference("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");
 const client = new ChromaClient({ path: "http://localhost:8000" });
 
 async function getEmbeddings(text: string): Promise<number[]> {
   try {
-    console.log("[DEBUG] Starting to generate embeddings for text:", text);
+    console.log("[DEBUG] Generating embedding for text:", text);
     const embedding = await hf.featureExtraction({
       model: "sentence-transformers/all-MiniLM-L6-v2",
       inputs: text,
     });
-    console.log("[DEBUG] Raw embeddings received:", embedding);
     const result = Array.isArray(embedding[0]) ? (embedding as number[][])[0] : (embedding as number[]);
-    console.log("[DEBUG] Processed embeddings:", result);
+    console.log("[DEBUG] Embedding generated (length):", result.length);
     return result;
   } catch (error) {
-    console.error("[ERROR] Error generating embeddings:", error);
-    throw error;
-  }
-}
-
-async function checkIfEmbeddingsExist(cardId: string): Promise<boolean> {
-  try {
-    const collection = await client.getOrCreateCollection({ name: "content_collection" });
-    const existingEntry = await collection.get({ ids: [cardId] });
-    console.log("[DEBUG] Checking if embeddings exist for cardId:", cardId, "Result:", existingEntry.ids.length > 0);
-    return existingEntry.ids.length > 0;
-  } catch (error) {
-    console.error("[ERROR] Error checking embeddings:", error);
+    console.error("[ERROR] Error generating embedding:", error);
     throw error;
   }
 }
@@ -42,51 +29,25 @@ export async function storeCardEmbeddings(card: {
   userId?: string;
 }) {
   try {
-    console.log("[DEBUG] Starting to store embeddings for card:", card);
-    const embeddingsExist = await checkIfEmbeddingsExist(card._id);
-    if (embeddingsExist) {
-      console.log("[DEBUG] Embeddings already exist for card:", card._id, "Skipping storage");
-      return;
-    }
-
-    console.log("[DEBUG] Generating embeddings for card components...");
-    const [titleEmbedding, descriptionEmbedding, typeEmbedding, linkEmbedding] = await Promise.all([
-      getEmbeddings(card.title),
-      card.description ? getEmbeddings(card.description) : Promise.resolve([]),
-      getEmbeddings(card.type),
-      card.link ? getEmbeddings(card.link) : Promise.resolve([]),
-    ]);
-
-    console.log("[DEBUG] Title embedding:", titleEmbedding);
-    console.log("[DEBUG] Description embedding:", descriptionEmbedding);
-    console.log("[DEBUG] Type embedding:", typeEmbedding);
-    console.log("[DEBUG] Link embedding:", linkEmbedding);
-
-    const combinedEmbedding = [...titleEmbedding, ...descriptionEmbedding, ...typeEmbedding, ...linkEmbedding];
-    console.log("[DEBUG] Combined embedding:", combinedEmbedding);
-
+    console.log("[DEBUG] Storing embeddings for card:", card);
     const combinedText = `${card.title} ${card.description || ""} ${card.type} ${card.link || ""}`.trim();
-    console.log("[DEBUG] Combined text for document:", combinedText);
+    const embedding = await getEmbeddings(combinedText);
+    console.log("[DEBUG] Embedding to store (length):", embedding.length); // Confirm 384D
 
     const collection = await client.getOrCreateCollection({ name: "content_collection" });
-    console.log("[DEBUG] Collection retrieved or created:", collection.name);
-
-    const metadata = {
-      title: card.title,
-      description: card.description || "",
-      type: card.type,
-      link: card.link || "",
-      userId: card.userId || "",
-    };
-    console.log("[DEBUG] Metadata to store:", metadata);
-
     await collection.upsert({
       ids: [card._id],
-      embeddings: [combinedEmbedding],
+      embeddings: [embedding], // Single 384D embedding
       documents: [combinedText],
-      metadatas: [metadata],
+      metadatas: [{
+        title: card.title,
+        description: card.description || "",
+        type: card.type,
+        link: card.link || "",
+        userId: card.userId || "",
+      }],
     });
-    console.log("[DEBUG] Embeddings successfully stored for card:", card._id);
+    console.log("[DEBUG] Embeddings stored for card ID:", card._id);
   } catch (error) {
     console.error("[ERROR] Error storing embeddings:", error);
     throw error;
@@ -101,33 +62,39 @@ export async function queryChromaDB(query: string, userId: string): Promise<{
   link: string;
 } | null> {
   try {
-    console.log("[DEBUG] Starting query process with query:", query, "for userId:", userId);
-    console.log("[DEBUG] Generating query embedding...");
+    console.log("[DEBUG] Querying with:", query, "for userId:", userId);
     const queryEmbedding = await getEmbeddings(query);
 
-    console.log("[DEBUG] Querying ChromaDB collection...");
     const collection = await client.getOrCreateCollection({ name: "content_collection" });
+    const allItems = await collection.get({ include: [IncludeEnum.Embeddings, IncludeEnum.Metadatas] });
+    console.log("[DEBUG] Collection contents:", allItems);
+    if (allItems.embeddings && allItems.embeddings.length > 0) {
+      console.log("[DEBUG] Stored embedding length:", allItems.embeddings[0].length);
+    } else {
+      console.log("[DEBUG] Collection is empty or embeddings not returned");
+    }
 
     const results = await collection.query({
-      queryEmbeddings: [queryEmbedding],
+      queryEmbeddings: [queryEmbedding], // 384D embedding
       nResults: 1,
       where: { userId },
+      include: [IncludeEnum.Metadatas, IncludeEnum.Distances],
     });
-    console.log("[DEBUG] Raw query results:", results);
+    console.log("[DEBUG] Query results:", results);
 
-    if (!results.ids?.[0] || !results.metadatas?.[0]?.[0]) {
-      console.log("[DEBUG] No matching card found in ChromaDB for query:", query);
+    if (!results.ids?.[0]?.[0] || !results.metadatas?.[0]?.[0]) {
+      console.log("[DEBUG] No match found for query:", query);
       return null;
     }
 
     const bestMatch = {
-      id: String(results.ids[0]),
+      id: results.ids[0][0],
       title: results.metadatas[0][0].title as string,
       description: results.metadatas[0][0].description as string,
       type: results.metadatas[0][0].type as string,
       link: results.metadatas[0][0].link as string,
     };
-    console.log("[DEBUG] Best matching card found:", bestMatch);
+    console.log("[DEBUG] Best match:", bestMatch, "Distance:", results.distances?.[0]?.[0]);
     return bestMatch;
   } catch (error) {
     console.error("[ERROR] Error querying ChromaDB:", error);
