@@ -57,7 +57,7 @@ export function QueryInput({ open, onSubmit }: QueryInputProps) {
         className="w-full flex flex-col gap-2"
       >
         <div className="flex items-center gap-2 bg-gray-50 rounded-lg p-2 border border-gray-200 hover:border-[#7950f2] transition-all duration-200 shadow-xs hover:shadow-sm">
-          <IconComponent src={ai} open={open} className={`${open ? "w-10 h-10" : "w-5 h-5"} object-contain`} />
+          <IconComponent src={ai} open={open} className={`${open ? "w-9" : "w-5 h-5"} object-contain`} />
           <input
             type="text"
             value={query}

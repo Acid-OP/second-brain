@@ -12,7 +12,7 @@ import { ALLicon } from "../icons/Allicon";
 import { Linkicon } from "../icons/Linkicon";
 import { LogoutIcon } from "../icons/LogoutIcon"; // Adjust if in a different file
 import { LogoutText } from "./LogoutButton";
-import { QueryInput } from "./QueryButton"; // Import the new component
+import { QueryInput } from "./QuerySection"; // Import the new component
 
 export function Sidebar({
   setFilter,
