@@ -2,7 +2,7 @@ import { HfInference } from "@huggingface/inference";
 import { ChromaClient } from "chromadb";
 
 // Initialize Hugging Face API and ChromaDB client
-const hf = new HfInference(); // Replace with your actual API key
+const hf = new HfInference("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"); // Replace with your actual API key
 const client = new ChromaClient({
   path: "http://localhost:8000", // Use 'path' instead of 'url'
 });

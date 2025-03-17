@@ -12,6 +12,8 @@ import { ALLicon } from "../icons/Allicon";
 import { Linkicon } from "../icons/Linkicon";
 import { LogoutIcon } from "../icons/LogoutIcon"; // Adjust if in a different file
 import { LogoutText } from "./LogoutButton";
+import { QueryInput } from "./QueryButton"; // Import the new component
+
 export function Sidebar({
   setFilter,
   open,
@@ -27,6 +29,11 @@ export function Sidebar({
     localStorage.removeItem("token");
     navigate("/home");
   }
+
+  const handleQuerySubmit = (query: string) => {
+    console.log("Query submitted:", query); // For now, log the query (extend later for embeddings/vector DB)
+    // Future: Integrate with embeddings/vector DB here (e.g., axios.post to backend)
+  };
 
   return (
     <motion.div
@@ -82,7 +89,11 @@ export function Sidebar({
             open={open}
           />
         </div>
+
+        {/* Use the QueryInput component */}
+        <QueryInput open={open} onSubmit={handleQuerySubmit} />
       </div>
+
       <div className="flex flex-col items-center pb-8 mt-auto w-full">
         <LogoutButton
           onClick={logout}
@@ -91,7 +102,7 @@ export function Sidebar({
           startIcon={<LogoutIcon open={open} />}
           className={`leading-tight text-2xl transition-all duration-200 flex justify-center ${
             open
-              ? "px-25 py-3 rounded-lg bg-[#7164c0]"
+              ? "px-6 py-3 rounded-lg bg-[#7164c0]"
               : "bg-white px-0 py-3 rounded-lg hover:bg-gray-300 text-transparent flex justify-center"
           }`}
         />
