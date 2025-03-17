@@ -6,7 +6,7 @@ import { userMiddleware } from "./middelware";
 import { random } from "./utils";
 import cors from "cors";
 import { storeCardEmbeddings } from "./embeddingService"; // Import the embedding service
-
+import { queryWithQA } from "./qaService";
 const app = express();
 app.use(express.json());
 app.use(cors());
@@ -42,12 +42,11 @@ app.post("/api/v1/signin", async (req, res) => {
 });
 
 app.post("/api/v1/content", userMiddleware, async (req, res) => {
-  console.log("[DEBUG] Request received to create content:", req.body); // Debug log
   const { link, type, description, title } = req.body;
   const userId = req.userId;
 
   try {
-    // Create content in MongoDB
+    console.log("[DEBUG] Received content creation request:", { link, type, description, title, userId });
     const content = await ContentModel.create({
       link,
       type,
@@ -57,21 +56,34 @@ app.post("/api/v1/content", userMiddleware, async (req, res) => {
       tags: [],
     });
 
-    console.log("[DEBUG] Content created in MongoDB:", content); // Debug log
-
-    // Store embeddings in ChromaDB
-    console.log("[DEBUG] Calling storeCardEmbeddings..."); // Debug log
     await storeCardEmbeddings({
       _id: content._id.toString(),
       title,
       description,
       type,
       link,
+      userId,
     });
-
+    console.log("[DEBUG] Content added and embeddings stored for card:", content._id.toString());
     res.json({ message: "Content added" });
   } catch (e) {
     console.error("[ERROR] Error adding content:", e);
+    res.status(500).json({ error: "Internal server error" });
+  }
+});
+
+app.post("/api/v1/query", userMiddleware, async (req, res) => {
+  const { query } = req.body;
+  const userId = req.userId;
+
+  try {
+    console.log("[DEBUG] Received query request:", { query, userId });
+    // @ts-ignore
+    const card = await queryWithQA(query, userId);
+    console.log("[DEBUG] Sending response with card:", card || "No card found");
+    res.json({ card });
+  } catch (error) {
+    console.error("[ERROR] Error processing query:", error);
     res.status(500).json({ error: "Internal server error" });
   }
 });
