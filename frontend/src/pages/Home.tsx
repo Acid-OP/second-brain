@@ -183,23 +183,26 @@ export function Home() {
       </motion.section>
 
       {/* Footer */}
-      <footer className="bg-gray-900 text-white py-8">
+ {/* Footer */}
+ <footer className="bg-gray-900 text-white py-8">
         <div className="max-w-7xl mx-auto px-4 flex flex-col items-center justify-center">
-          <div className="text-lg font-semibold mb-4">Second Brain</div>
-          <div className="flex gap-6 mb-4">
+          <div className="text-lg font-semibold mb-4 tracking-tight">Second Brain</div>
+          <div className="flex gap-8 mb-4">
             <a
-              href="#features"
-              className="hover:text-gray-300 transition duration-200"
-              onClick={() => scrollToSection(featuresRef)}
+              href="https://x.com/GauravKapurr"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center gap-2 text-gray-300 hover:text-[#7950f2] transition duration-200"
             >
-              Features
+              <span className="text-sm font-medium">Twitter</span>
             </a>
             <a
-              href="#how-it-works"
-              className="hover:text-gray-300 transition duration-200"
-              onClick={() => scrollToSection(howItWorksRef)}
+              href="https://github.com/Acid-OP/second-brain"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center gap-2 text-gray-300 hover:text-[#7950f2] transition duration-200"
             >
-              How It Works
+              <span className="text-sm font-medium">GitHub</span>
             </a>
           </div>
           <div className="text-sm text-gray-400">© 2025 Second Brain. All rights reserved.</div>
