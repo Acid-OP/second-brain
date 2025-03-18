@@ -28,7 +28,7 @@ export function Home() {
       />
       <Hero />
 
-      {/* Features Section - Adjusted padding for iPad */}
+      {/* Features Section */}
       <motion.section
         id="features"
         className="py-12 px-6 bg-gray-50 flex flex-col items-center justify-center"
@@ -85,6 +85,7 @@ export function Home() {
               whileInView={{ y: 0, opacity: 1 }}
               transition={{ duration: 0.6, delay: index * 0.2, ease: "easeOut" }}
               viewport={{ once: true }}
+              whileHover={cardHover} // Applied here
             >
               <svg
                 className="w-8 h-8 text-[#7950f2] mb-4"
@@ -111,8 +112,7 @@ export function Home() {
       <div className="py-12 bg-gray-50"></div>
 
       {/* How It Works Section */}
- {/* How It Works Section */}
- <motion.section
+      <motion.section
         id="how-it-works"
         className="py-12 px-6 bg-gray-50 flex flex-col items-center justify-center"
         initial={{ opacity: 0, y: 50 }}
@@ -168,6 +168,7 @@ export function Home() {
               whileInView={{ y: 0, opacity: 1 }}
               transition={{ duration: 0.6, delay: index * 0.2, ease: "easeOut" }}
               viewport={{ once: true }}
+              whileHover={cardHover} // Applied here
             >
               <span className="absolute -top-4 left-6 text-2xl font-bold text-[#7950f2] bg-white px-3 py-1 rounded-full border border-[#7950f2]/20 shadow-sm">
                 {step.step}
@@ -178,9 +179,9 @@ export function Home() {
           ))}
         </div>
       </motion.section>
+
       {/* Footer */}
- {/* Footer */}
- <footer className="bg-gray-900 text-white py-8">
+      <footer className="bg-gray-900 text-white py-8">
         <div className="max-w-7xl mx-auto px-4 flex flex-col items-center justify-center">
           <div className="text-lg font-semibold mb-4 tracking-tight">Second Brain</div>
           <div className="flex gap-8 mb-4">

@@ -111,16 +111,35 @@ export function Signup() {
       </div>
 
       {/* Footer: Complementary Section */}
-      <div className="py-6 bg-gray-100 border-t border-gray-200">
-        <div className="flex flex-col sm:flex-row justify-center items-center gap-6 sm:gap-10 text-gray-600 text-sm max-[640px]:gap-4 max-[640px]:text-xs">
-          <p>© 2025 Your Second Brain. All rights reserved.</p>
-          <div className="flex gap-6 max-[640px]:gap-4">
-            <a href="#" className="hover:text-[#7950f2] transition-colors duration-200">Features</a>
-            <a href="#" className="hover:text-[#7950f2] transition-colors duration-200">Privacy</a>
-            <a href="#" className="hover:text-[#7950f2] transition-colors duration-200">Contact</a>
+      <footer className="py-8 bg-gradient-to-t from-gray-100 to-gray-50 border-t border-gray-200">
+        <div className="flex flex-col sm:flex-row justify-center items-center gap-8 sm:gap-12 text-gray-700">
+          <p className="text-sm font-medium tracking-tight">© 2025 Your Second Brain. All rights reserved.</p>
+          <div className="flex gap-8 sm:gap-10">
+            <a
+              href="https://x.com/GauravKapurr"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center gap-2 text-gray-600 hover:text-[#7950f2] transition-all duration-300 group"
+            >
+              {/* <svg className="w-5 h-5 text-gray-600 group-hover:text-[#7950f2] transition-colors duration-300" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
+              </svg> */}
+              <span className="text-sm font-medium">Twitter</span>
+            </a>
+            <a
+              href="https://github.com/Acid-OP/second-brain"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center gap-2 text-gray-600 hover:text-[#7950f2] transition-all duration-300 group"
+            >
+              {/* <svg className="w-5 h-5 text-gray-600 group-hover:text-[#7950f2] transition-colors duration-300" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.387.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-1.338.09-2.584-.896-3.256-1.607-1.338-.708-.113-1.467.324-1.467.868 0 .367.134.713.405.883 1.14 0 2.01-.896 2.01-.896.405 1.727 2.01 1.228 2.504.896.174-.668.67-1.228 1.223-1.51-4.27-.486-8.754-2.13-8.754-9.48 0-2.09.896-3.854 2.367-5.21-.24-.58-.435-1.54.09-3.206 0 0 1.013-.324 3.32 1.24 1.934-.54 4.013-.54 5.947 0 2.306-1.564 3.32-1.24 3.32-1.24.526 1.666.33 2.626.09 3.206 1.47 1.356 2.367 3.12 2.367 5.21 0 7.373-4.49 8.99-8.77 9.47.69.6 1.305 1.77 1.305 3.57 0 2.58-.015 4.66-.015 5.29 0 .32.21.69.825.577C20.565 22.087 24 17.59 24 12.297c0-6.627-5.373-12-12-12" />
+              </svg> */}
+              <span className="text-sm font-medium">GitHub</span>
+            </a>
           </div>
         </div>
-      </div>
+      </footer>
     </div>
   );
 }
