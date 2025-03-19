@@ -13,33 +13,64 @@ enum ContentType {
   Link = "link",
 }
 
-// @ts-ignore
-export function CreateContentModal({ open, onClose }) {
+interface CreateContentModalProps {
+  open: boolean;
+  onClose: () => void;
+  onContentAdded?: () => void;
+}
+
+export function CreateContentModal({ open, onClose, onContentAdded }: CreateContentModalProps) {
   const titleRef = useRef<HTMLInputElement>(null!);
   const linkRef = useRef<HTMLInputElement>(null!);
-  const descriptionRef = useRef<HTMLInputElement>(null!); // Ref for description
+  const descriptionRef = useRef<HTMLInputElement>(null!);
   const [type, setType] = useState(ContentType.Youtube);
+  const [error, setError] = useState<string | null>(null);
 
   async function addContent() {
     const title = titleRef.current?.value;
     const link = linkRef.current?.value;
-    const description = descriptionRef.current?.value; // Get description value
+    const description = descriptionRef.current?.value;
 
-    if (!title || !link) return;
+    if (!title || !link) {
+      setError("Title and link are required.");
+      return;
+    }
 
     try {
-      await axios.post(
+      const token = localStorage.getItem("token");
+      if (!token) {
+        throw new Error("No token found. Please log in.");
+      }
+
+      console.log("[DEBUG] Sending POST to:", `${BACKEND_URL}/api/v1/content`);
+      console.log("[DEBUG] Request headers:", { Authorization: `Bearer ${token}` });
+      console.log("[DEBUG] Request body:", { link, title, type, description });
+
+      const response = await axios.post(
         `${BACKEND_URL}/api/v1/content`,
-        { link, title, type, description }, // Include description in the request
+        { link, title, type, description },
         {
           headers: {
-            Authorization: localStorage.getItem("token"),
+            Authorization: `Bearer ${token}`,
           },
         }
       );
+
+      console.log("[DEBUG] Content added:", response.data);
+
+      // Clear inputs
+      titleRef.current.value = "";
+      linkRef.current.value = "";
+      descriptionRef.current.value = "";
+      setError(null);
+
+      if (onContentAdded) onContentAdded();
       onClose();
-    } catch (error) {
-      console.error("Error adding content:", error);
+    } catch (error: any) {
+      console.error("[ERROR] Error adding content:", error.response?.data || error.message);
+      setError(`Failed to add content: ${error.response?.status || "Unknown error"}`);
+      // Close modal even on failure after a delay to show error
+      setTimeout(onClose, 2000);
     }
   }
 
@@ -47,7 +78,6 @@ export function CreateContentModal({ open, onClose }) {
 
   return (
     <div className="fixed inset-0 z-50">
-      {/* Overlay */}
       <motion.div
         className="w-screen h-screen bg-gray-800 fixed top-0 left-0 opacity-75"
         initial={{ opacity: 0 }}
@@ -56,8 +86,6 @@ export function CreateContentModal({ open, onClose }) {
         transition={{ duration: 0.3 }}
         onClick={onClose}
       />
-
-      {/* Modal */}
       <motion.div
         className="w-screen h-screen fixed top-0 left-0 flex justify-center items-center"
         initial={{ opacity: 0, scale: 0.95 }}
@@ -66,20 +94,16 @@ export function CreateContentModal({ open, onClose }) {
         transition={{ duration: 0.4, ease: "easeInOut" }}
       >
         <div className="bg-white p-6 rounded-lg shadow-xl relative z-10 w-full max-w-md mx-4">
-          {/* Close Button (Top-Right Corner) */}
           <button
             onClick={onClose}
-            className="absolute top-2 right-2 p-2 rounded-full hover:bg-gray-100 transition-all duration-200  cursor-pointer"
+            className="absolute top-2 right-2 p-2 rounded-full hover:bg-gray-100 transition-all duration-200 cursor-pointer"
           >
-            <CrossIcon/>
+            <CrossIcon />
           </button>
-
-          {/* Header */}
           <div className="text-center">
             <h2 className="text-xl font-semibold text-gray-800">Add New Content</h2>
           </div>
-
-          {/* Input Fields */}
+          {error && <div className="mt-2 text-red-500 text-sm text-center">{error}</div>}
           <div className="flex flex-col gap-4 mt-6">
             <Input
               reference={titleRef}
@@ -91,22 +115,19 @@ export function CreateContentModal({ open, onClose }) {
               placeholder="Link"
               className="w-full border-gray-300 focus:border-[#7950f2] focus:ring-[#7950f2] transition-all duration-200"
             />
-            {/* Optional Description Field */}
             <Input
               reference={descriptionRef}
               placeholder="Description (optional)"
               className="w-full border-gray-300 focus:border-[#7950f2] focus:ring-[#7950f2] transition-all duration-200"
             />
           </div>
-
-          {/* Type Selection */}
           <div className="mt-6">
             <div className="text-sm font-medium text-gray-600 mb-2">Content Type</div>
             <div className="flex flex-wrap gap-2 justify-center">
               {Object.values(ContentType).map((content) => (
                 <Button
                   key={content}
-                  text={content.charAt(0).toUpperCase() + content.slice(1)} // Capitalize
+                  text={content.charAt(0).toUpperCase() + content.slice(1)}
                   variant={type === content ? "primary" : "secondary"}
                   onClick={() => setType(content)}
                   className={`px-3 py-1.5 text-sm font-medium rounded-md transition-all duration-200 ${
@@ -118,8 +139,6 @@ export function CreateContentModal({ open, onClose }) {
               ))}
             </div>
           </div>
-
-          {/* Submit Button */}
           <div className="flex justify-center mt-6">
             <Button
               onClick={addContent}

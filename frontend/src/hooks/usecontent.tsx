@@ -2,62 +2,75 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { BACKEND_URL } from "../config";
 
+interface User {
+  _id: string;
+  username: string;
+}
+
 interface Content {
-    _id: string;
-    title: string;
-    link: string;
-    type: "twitter" | "youtube" | "reddit" | "link";
-    userId: string;
-    tags: string[];
-    description: string;
+  _id: string;
+  title: string;
+  link: string;
+  type: "twitter" | "youtube" | "reddit" | "link";
+  userId: User;
+  tags: string[];
+  description?: string;
 }
 
 export function useContent() {
-    const [contents, setContents] = useState<Content[]>([]);
+  const [contents, setContents] = useState<Content[]>([]);
+  const [loading, setLoading] = useState<boolean>(true); // Add loading state
+  const [error, setError] = useState<string | null>(null); // Add error state
 
-    function refresh() {
-        axios.get(`${BACKEND_URL}/api/v1/content`, {
-            headers: {
-                "Authorization": localStorage.getItem("token")
-            }
-        })
-            .then((response) => {
-                
-                setContents(response.data);
-            })
-            .catch((error) => {
-                console.error("Error fetching content:", error);
-            });
+  const refresh = async () => {
+    try {
+      console.log("[DEBUG] Fetching content from:", `${BACKEND_URL}/api/v1/content`);
+      const token = localStorage.getItem("token");
+      if (!token) {
+        throw new Error("No token found. Please log in.");
+      }
+
+      const response = await axios.get(`${BACKEND_URL}/api/v1/content`, {
+        headers: {
+          Authorization: `Bearer ${token}`, // Add "Bearer" prefix for JWT
+        },
+      });
+      console.log("[DEBUG] Content fetched:", response.data);
+      setContents(response.data);
+      setError(null); // Clear any previous errors
+    } catch (error) {
+      console.error("[ERROR] Error fetching content:", error);
+      setError("Failed to fetch content. Please check your network connection."); // Set error message
+    } finally {
+      setLoading(false); // Set loading to false after fetch completes
     }
+  };
 
-    async function deleteContent(id: string) {
-        try {
-            const response = await axios.delete(`${BACKEND_URL}/api/v1/content`, {
-                headers: { "Authorization": localStorage.getItem("token") },
-                data: { id }
-            });
-        console.log("Delete response:", response.data); // Log success response
-            
-            setContents((prevContents) => 
-                prevContents.filter((content) => content._id !== id)
-            );
-        } catch (error) {
-            console.error("Error deleting content:", error);
-            alert("Failed to delete content. Please try again."); // User feedback
-            refresh(); // Optional: Sync with server on error
-        }
+  const deleteContent = async (id: string) => {
+    try {
+      const token = localStorage.getItem("token");
+      if (!token) {
+        throw new Error("No token found. Please log in.");
+      }
+
+      const response = await axios.delete(`${BACKEND_URL}/api/v1/content`, {
+        headers: { Authorization: `Bearer ${token}` }, // Add "Bearer" prefix for JWT
+        data: { id },
+      });
+      console.log("[DEBUG] Delete response:", response.data);
+      if (response.status === 200) {
+        setContents((prevContents) => prevContents.filter((content) => content._id !== id));
+      }
+    } catch (error) {
+      console.error("[ERROR] Error deleting content:", error);
+      setError("Failed to delete content. Please try again."); // Set error message
+      await refresh(); // Sync with server on error
     }
+  };
 
-    useEffect(() => {
-        refresh();
-        const interval = setInterval(() => {
-            refresh();
-        }, 10 * 1000);
+  useEffect(() => {
+    refresh(); // Fetch once on mount
+  }, []); // No dependencies
 
-        return () => {
-            clearInterval(interval);
-        };
-    }, []);
-
-    return { contents, refresh, deleteContent };
+  return { contents, loading, error, refresh, deleteContent }; // Return loading and error states
 }

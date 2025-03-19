@@ -11,6 +11,7 @@
   },
   "dependencies": {
     "@huggingface/inference": "^3.5.2",
+    "@sentry/react": "^9.6.1",
     "@tailwindcss/vite": "^4.0.1",
     "axios": "^1.7.9",
     "chromadb": "^2.0.1",

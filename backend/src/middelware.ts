@@ -1,17 +1,34 @@
-import { NextFunction, Request , Response } from "express";
-import  jwt, { JwtPayload }  from "jsonwebtoken";
+import { NextFunction, Request, Response } from "express";
+import jwt, { JwtPayload } from "jsonwebtoken";
 import { JWT_SECRET } from "./config";
 
-export const userMiddleware = async (req: Request , res:Response , next:NextFunction) => {
-
-    const header = req.headers.authorization;
-    const decoded = jwt.verify(header as string  , JWT_SECRET);
-
-    if(decoded){
-        
-        req.userId = (decoded as JwtPayload).id;
-        next();
-    } else{
-        res.status(401).json({message:" Unauthrized user"});
-    }
+// Extend Request type to include userId
+interface AuthRequest extends Request {
+  userId?: string;
 }
+
+export const userMiddleware = (req: AuthRequest, res: Response, next: NextFunction) => {
+  const header = req.headers.authorization;
+
+  if (!header) {
+    res.status(401).json({ message: "No token provided" });
+    return; // Explicit return to stop execution
+  }
+
+  // Handle both "Bearer <token>" and raw "<token>"
+  const token = header.startsWith("Bearer ") ? header.split(" ")[1] : header;
+
+  try {
+    const decoded = jwt.verify(token, JWT_SECRET) as JwtPayload;
+    if (!decoded.id) {
+      res.status(401).json({ message: "Invalid token payload" });
+      return;
+    }
+    req.userId = decoded.id;
+    next();
+  } catch (error) {
+    console.error("[DEBUG] JWT verification failed:", error);
+    res.status(403).json({ message: "Invalid or expired token" });
+    return;
+  }
+};

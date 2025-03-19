@@ -27,20 +27,16 @@ export function Dashboard() {
 
   useEffect(() => {
     refresh();
-    checkShareStatus(); // Check status without enabling sharing
-  }, [modalOpen]);
+    checkShareStatus();
+  }, [refresh]);
 
   useEffect(() => {
     if (highlightedCardId) {
       const cardElement = cardRefs.current.get(highlightedCardId);
-      console.log("[DEBUG] Highlighted card ID:", highlightedCardId);
-      console.log("[DEBUG] Card element found:", cardElement);
-      if (cardElement && scrollContainerRef.current) {
-        console.log("[DEBUG] Scrolling to card:", cardElement);
+      if (cardElement) {
         cardElement.scrollIntoView({ behavior: "smooth", block: "center" });
-      } else {
-        console.log("[DEBUG] Scroll failed - Card element:", cardElement, "Scroll container:", scrollContainerRef.current);
       }
+      setTimeout(() => setHighlightedCardId(null), 5000);
     }
   }, [highlightedCardId]);
 
@@ -48,18 +44,19 @@ export function Dashboard() {
 
   const checkShareStatus = async () => {
     try {
-      // Use a GET request or POST with a status check to avoid enabling sharing
-      const response = await axios.get(`${BACKEND_URL}/api/v1/brain/share/status`, {
-        headers: { Authorization: localStorage.getItem("token") },
-      });
-      if (response.data.isShared && response.data.link) {
-        setShareLink(response.data.link); // Set link only if already shared
+      const response = await axios.post(
+        `${BACKEND_URL}/api/v1/brain/share`,
+        { share: true },
+        { headers: { Authorization: `Bearer ${localStorage.getItem("token")}` } }
+      );
+      setShareLink(response.data.link || null);
+    } catch (e: any) {
+      if (e.response?.status === 400) {
+        setShareLink(null);
       } else {
-        setShareLink(null); // Default to private
+        console.error("Error checking share status:", e);
+        setShareLink(null);
       }
-    } catch (e) {
-      console.error("Error checking share status:", e);
-      setShareLink(null); // Default to private on error
     }
   };
 
@@ -68,12 +65,10 @@ export function Dashboard() {
       const response = await axios.post(
         `${BACKEND_URL}/api/v1/brain/share`,
         { share: true },
-        { headers: { Authorization: localStorage.getItem("token") } }
+        { headers: { Authorization: `Bearer ${localStorage.getItem("token")}` } }
       );
-      const link = response.data.link;
-      setShareLink(link);
+      setShareLink(response.data.link);
       setShareModalOpen(true);
-      setIsCopied(false);
       setToastMessage("Share link generated!");
     } catch (e) {
       console.error("Error sharing:", e);
@@ -86,7 +81,7 @@ export function Dashboard() {
       await axios.post(
         `${BACKEND_URL}/api/v1/brain/share`,
         { share: false },
-        { headers: { Authorization: localStorage.getItem("token") } }
+        { headers: { Authorization: `Bearer ${localStorage.getItem("token")}` } }
       );
       setShareLink(null);
       setShareModalOpen(false);
@@ -99,9 +94,11 @@ export function Dashboard() {
 
   const handleSetHighlightedCardId = (id: string | null) => {
     setHighlightedCardId(id);
-    if (id) {
-      setTimeout(() => setHighlightedCardId(null), 5000);
-    }
+  };
+
+  const handleContentAdded = () => {
+    refresh(); // Refresh content after adding
+    setModalOpen(false); // Ensure modal closes
   };
 
   return (
@@ -113,7 +110,7 @@ export function Dashboard() {
           open ? "ml-[250px] lg:ml-[250px] md:ml-[200px] sm:ml-0" : "ml-20 lg:ml-20 md:ml-16 sm:ml-0"
         }`}
       >
-        <CreateContentModal open={modalOpen} onClose={() => setModalOpen(false)} />
+        <CreateContentModal open={modalOpen} onClose={() => setModalOpen(false)} onContentAdded={handleContentAdded} />
         {shareModalOpen && (
           <div className="fixed inset-0 z-50">
             <motion.div

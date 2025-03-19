@@ -1,4 +1,4 @@
-import { useEffect, useState, ReactElement, forwardRef } from "react"; // Add forwardRef
+import { useEffect, useState, ReactElement, forwardRef } from "react";
 import { ShareIcon } from "../icons/ShareIcon";
 import { YoutubeIcon } from "../icons/YoutubeIcon";
 import { TwitterIcon } from "../icons/TwitterIcon";
@@ -20,37 +20,9 @@ interface CardProps {
   isHighlighted?: boolean;
 }
 
-// Step 1: Wrap Card with forwardRef to accept ref
 export const Card = forwardRef<HTMLDivElement, CardProps>(
   ({ title, link, type, _id, description, className, isHighlighted = false }, ref): ReactElement => {
     const [showToast, setShowToast] = useState<boolean>(false);
-
-    useEffect(() => {
-      const sendCardDataToBackend = async () => {
-        try {
-          console.log("[DEBUG] Sending card data to backend...");
-          const response = await fetch("/api/v1/content", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ _id, title, description, type, link }),
-          });
-          if (!response.ok) throw new Error("Failed to send card data to the backend");
-          const data = await response.json();
-          console.log("[DEBUG] Backend response:", data);
-        } catch (error) {
-          console.error("[ERROR] Error sending card data to the backend:", error);
-        }
-      };
-      sendCardDataToBackend();
-    }, [_id, title, description, type, link]);
-
-    const getRedditEmbedData = (url: string): { subreddit: string } => {
-      const urlObj = new URL(url);
-      const subreddit = urlObj.pathname.split("/")[2];
-      return { subreddit };
-    };
-
-    const { subreddit } = type === "reddit" ? getRedditEmbedData(link) : { subreddit: "" };
 
     useEffect(() => {
       let script: HTMLScriptElement | null = null;
@@ -69,9 +41,9 @@ export const Card = forwardRef<HTMLDivElement, CardProps>(
         script.async = true;
         script.onload = () => {
           setTimeout(() => {
-            const iframe = document.querySelector('.twitter-embed-container iframe');
+            const iframe = document.querySelector(".twitter-embed-container iframe");
             if (iframe) {
-              const container = iframe.closest('.twitter-embed-container');
+              const container = iframe.closest(".twitter-embed-container");
               if (container) (container as HTMLElement).style.height = `${iframe.clientHeight}px`;
             }
           }, 1000);
@@ -104,7 +76,7 @@ export const Card = forwardRef<HTMLDivElement, CardProps>(
 
     return (
       <div
-        ref={ref} // Step 1: Apply ref to root div
+        ref={ref}
         className={`${className || ""} p-4 bg-white rounded-md border-gray-200 max-w-72 min-h-48 min-w-72 sm:w-full md:w-1/2 lg:w-1/3 transition-all duration-500 ${
           isHighlighted ? "bg-purple-100 border-2 border-purple-500 shadow-lg" : ""
         }`}
@@ -130,7 +102,7 @@ export const Card = forwardRef<HTMLDivElement, CardProps>(
               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
               referrerPolicy="strict-origin-when-cross-origin"
               allowFullScreen
-            ></iframe>
+            />
           )}
           {type === "twitter" && (
             <div className="twitter-embed-container">
@@ -143,13 +115,14 @@ export const Card = forwardRef<HTMLDivElement, CardProps>(
             <div className="reddit-embed-container">
               <blockquote className="reddit-embed-bq" data-embed-height="316">
                 <a href={link}>{link}</a>
-                <a href={`https://www.reddit.com/r/${subreddit}`}>{subreddit}</a>
               </blockquote>
             </div>
           )}
           {type === "link" && (
             <div className="border border-neutral-700 rounded-xl p-2">
-              <a target="_blank" href={link} className="text-blue-500 hover:underline break-all line-clamp-2 text-sm" rel="noopener noreferrer">{link}</a>
+              <a target="_blank" href={link} className="text-blue-500 hover:underline break-all line-clamp-2 text-sm" rel="noopener noreferrer">
+                {link}
+              </a>
             </div>
           )}
         </div>
