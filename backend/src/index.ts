@@ -1,12 +1,12 @@
 import express from "express";
-import { JWT_SECRET } from "./config";
+import { JWT_SECRET } from "./config.js";
 import Jwt from "jsonwebtoken";
-import { UserModel, ContentModel, LinkModel } from "./db";
-import { userMiddleware } from "./middelware";
-import { random } from "./utils";
+import { UserModel, ContentModel, LinkModel } from "./db.js";
+import { userMiddleware } from "./middelware.js";
+import { random } from "./utils.js";
 import cors from "cors";
-import { storeCardEmbeddings } from "./embeddingService";
-import { queryWithQA } from "./qaService";
+import { storeCardEmbeddings } from "./embeddingService.js";
+import { queryWithQA } from "./qaService.js";
 
 const app = express();
 app.use(express.json());

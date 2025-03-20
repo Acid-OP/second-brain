@@ -1,4 +1,4 @@
-import { queryChromaDB } from "./embeddingService";
+import { queryChromaDB } from "./embeddingService.js";
 
 export async function queryWithQA(query: string, userId: string): Promise<{
   id: string;
