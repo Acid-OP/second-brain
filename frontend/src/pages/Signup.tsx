@@ -23,7 +23,6 @@ export function Signup() {
         username,
         password,
       });
-      alert("You have signed up!");
       navigate("/signin");
     } else {
       alert("Please fill out both fields.");

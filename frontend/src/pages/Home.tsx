@@ -2,7 +2,8 @@ import React, { useRef } from "react";
 import { Hero } from "../components/Hero";
 import { Navbar } from "../components/Navbar";
 import { motion } from "framer-motion";
-import dashboardImage from "../iconImages/dashboardimage.png";
+import dashboardImage from "../iconImages/dashboardimage2.png";
+import dashboardImage2 from "../iconImages/dashboardimage3.png";
 
 export function Home() {
   const featuresRef = useRef<HTMLDivElement>(null);
@@ -47,16 +48,16 @@ export function Home() {
         </div>
 
         <motion.div
-          className="w-full max-w-5xl mb-12"
+          className="w-full max-w-5xl mb-12 relative group"
           initial={{ scale: 0.95, opacity: 0 }}
           whileInView={{ scale: 1, opacity: 1 }}
           transition={{ duration: 0.8, ease: "easeOut" }}
           viewport={{ once: true }}
         >
           <img
-            src={dashboardImage}
+            src={dashboardImage2}
             alt="Second Brain Dashboard"
-            className="w-full h-auto rounded-xl shadow-xl border border-gray-200"
+            className="w-full h-auto rounded-xl shadow-xl border-2 border-[#7950f2] hover:border-[#5e3fd6] transition-all duration-300"
           />
         </motion.div>
 
@@ -85,7 +86,7 @@ export function Home() {
               whileInView={{ y: 0, opacity: 1 }}
               transition={{ duration: 0.6, delay: index * 0.2, ease: "easeOut" }}
               viewport={{ once: true }}
-              whileHover={cardHover} // Applied here
+              whileHover={cardHover}
             >
               <svg
                 className="w-8 h-8 text-[#7950f2] mb-4"
@@ -108,7 +109,7 @@ export function Home() {
         </div>
       </motion.section>
 
-      {/* Spacer between Features and How It Works */}
+      {/* Spacer */}
       <div className="py-12 bg-gray-50"></div>
 
       {/* How It Works Section */}
@@ -130,7 +131,7 @@ export function Home() {
         </div>
 
         <motion.div
-          className="w-full max-w-5xl mb-12"
+          className="w-full max-w-5xl mb-12 relative group"
           initial={{ scale: 0.95, opacity: 0 }}
           whileInView={{ scale: 1, opacity: 1 }}
           transition={{ duration: 0.8, ease: "easeOut" }}
@@ -139,7 +140,7 @@ export function Home() {
           <img
             src={dashboardImage}
             alt="Second Brain Workflow"
-            className="w-full h-auto rounded-xl shadow-xl border border-gray-200"
+            className="w-full h-auto rounded-xl shadow-xl border-2 border-[#7950f2] hover:border-[#5e3fd6] transition-all duration-300"
           />
         </motion.div>
 
@@ -168,7 +169,7 @@ export function Home() {
               whileInView={{ y: 0, opacity: 1 }}
               transition={{ duration: 0.6, delay: index * 0.2, ease: "easeOut" }}
               viewport={{ once: true }}
-              whileHover={cardHover} // Applied here
+              whileHover={cardHover}
             >
               <span className="absolute -top-4 left-6 text-2xl font-bold text-[#7950f2] bg-white px-3 py-1 rounded-full border border-[#7950f2]/20 shadow-sm">
                 {step.step}
