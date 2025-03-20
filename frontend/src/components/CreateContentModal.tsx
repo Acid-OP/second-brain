@@ -51,7 +51,7 @@ export function CreateContentModal({ open, onClose, onContentAdded }: CreateCont
       return;
     }
     if (title.length > 30) {
-      setError(`Title must be 30 characters or less. Current length: ${title.length}`);.
+      setError(`Title must be 30 characters or less. Current length: ${title.length}`);
       return;
     }
     if (!link) {

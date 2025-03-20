@@ -23,7 +23,7 @@ export function Signup() {
         username,
         password,
       });
-      navigate("/signin");
+      navigate("/signin", { state: { fromSignup: true } });
     } else {
       alert("Please fill out both fields.");
     }

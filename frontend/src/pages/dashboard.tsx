@@ -11,25 +11,32 @@ import axios from "axios";
 import { useContent } from "../hooks/usecontent";
 import { motion } from "framer-motion";
 import { Toast } from "../components/Toastcomponent";
+import { useLocation } from "react-router-dom"; // Added useLocation
 
 export function Dashboard() {
   const [open, setOpen] = useState(true);
   const [modalOpen, setModalOpen] = useState(false);
   const { contents, refresh } = useContent();
   const [filter, setFilter] = useState<"all" | "youtube" | "twitter" | "reddit" | "link">("all");
-  const [shareLink, setShareLink] = useState<string | null>(null); // Start as null (private)
+  const [shareLink, setShareLink] = useState<string | null>(null);
   const [shareModalOpen, setShareModalOpen] = useState(false);
   const [toastMessage, setToastMessage] = useState<string | null>(null);
   const [isCopied, setIsCopied] = useState(false);
   const [highlightedCardId, setHighlightedCardId] = useState<string | null>(null);
   const cardRefs = useRef<Map<string, HTMLDivElement>>(new Map());
   const scrollContainerRef = useRef<HTMLDivElement>(null);
+  const location = useLocation(); // Added to check navigation state
+  const [showLoginToast, setShowLoginToast] = useState<boolean>(false); // New toast state
 
   useEffect(() => {
     refresh();
-    // Ensure brain is private on load by resetting share status
     makePrivateOnLoad();
-  }, [refresh]);
+    // Check if coming from signin
+    const fromSignin = location.state?.fromSignin;
+    if (fromSignin) {
+      setShowLoginToast(true);
+    }
+  }, [refresh, location]);
 
   useEffect(() => {
     if (highlightedCardId) {
@@ -43,7 +50,6 @@ export function Dashboard() {
 
   const filteredContents = contents.filter(({ type }) => (filter === "all" ? true : type === filter));
 
-  // New function to ensure private by default
   const makePrivateOnLoad = async () => {
     try {
       await axios.post(
@@ -51,10 +57,9 @@ export function Dashboard() {
         { share: false },
         { headers: { Authorization: `Bearer ${localStorage.getItem("token")}` } }
       );
-      setShareLink(null); // Ensure no share link exists
+      setShareLink(null);
     } catch (e) {
       console.error("Error ensuring private on load:", e);
-      // If it fails, assume private (shareLink stays null)
     }
   };
 
@@ -95,8 +100,8 @@ export function Dashboard() {
   };
 
   const handleContentAdded = () => {
-    refresh(); // Refresh content after adding
-    setModalOpen(false); // Ensure modal closes
+    refresh();
+    setModalOpen(false);
   };
 
   return (
@@ -187,6 +192,13 @@ export function Dashboard() {
           </div>
         </div>
         {toastMessage && <Toast message={toastMessage} duration={3000} onClose={() => setToastMessage(null)} />}
+        {showLoginToast && (
+          <Toast
+            message="Logged in successfully!"
+            duration={3000}
+            onClose={() => setShowLoginToast(false)}
+          />
+        )}
       </div>
     </div>
   );
