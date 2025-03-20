@@ -26,13 +26,40 @@ export function CreateContentModal({ open, onClose, onContentAdded }: CreateCont
   const [type, setType] = useState(ContentType.Youtube);
   const [error, setError] = useState<string | null>(null);
 
-  async function addContent() {
-    const title = titleRef.current?.value;
-    const link = linkRef.current?.value;
-    const description = descriptionRef.current?.value;
+  // Simple link validation based on content type
+  const validateLink = (link: string, type: ContentType): boolean => {
+    const patterns: { [key in ContentType]: RegExp } = {
+      [ContentType.Youtube]: /^(https?:\/\/)?(www\.)?(youtube\.com|youtu\.be)\/.+$/,
+      [ContentType.Twitter]: /^(https?:\/\/)?(www\.)?(twitter\.com|x\.com)\/.+$/,
+      [ContentType.Reddit]: /^(https?:\/\/)?(www\.)?reddit\.com\/.+$/,
+      [ContentType.Link]: /^(https?:\/\/).+\..+$/, // Basic URL check
+    };
+    return patterns[type].test(link);
+  };
 
-    if (!title || !link) {
-      setError("Title and link are required.");
+  async function addContent() {
+    const title = titleRef.current?.value.trim();
+    const link = linkRef.current?.value.trim();
+    const description = descriptionRef.current?.value.trim();
+
+    // Reset error
+    setError(null);
+
+    // Validation checks
+    if (!title) {
+      setError("Title is required.");
+      return;
+    }
+    if (title.length > 30) {
+      setError(`Title must be 30 characters or less. Current length: ${title.length}`);
+      return;
+    }
+    if (!link) {
+      setError("Link is required.");
+      return;
+    }
+    if (!validateLink(link, type)) {
+      setError(`Invalid ${type} link. Please provide a valid ${type} URL.`);
       return;
     }
 
@@ -68,8 +95,8 @@ export function CreateContentModal({ open, onClose, onContentAdded }: CreateCont
       onClose();
     } catch (error: any) {
       console.error("[ERROR] Error adding content:", error.response?.data || error.message);
-      setError(`Failed to add content: ${error.response?.status || "Unknown error"}`);
-      // Close modal even on failure after a delay to show error
+      setError(`Failed to add content: ${error.response?.data?.message || error.message}`);
+      // Close modal after a delay to show error
       setTimeout(onClose, 2000);
     }
   }
@@ -98,7 +125,7 @@ export function CreateContentModal({ open, onClose, onContentAdded }: CreateCont
             onClick={onClose}
             className="absolute top-2 right-2 p-2 rounded-full hover:bg-gray-100 transition-all duration-200 cursor-pointer"
           >
-            <CrossIcon />
+            <CrossIcon className="w-5 h-5 text-gray-600" />
           </button>
           <div className="text-center">
             <h2 className="text-xl font-semibold text-gray-800">Add New Content</h2>
@@ -107,7 +134,7 @@ export function CreateContentModal({ open, onClose, onContentAdded }: CreateCont
           <div className="flex flex-col gap-4 mt-6">
             <Input
               reference={titleRef}
-              placeholder="Title"
+              placeholder="Title (max 30 chars)"
               className="w-full border-gray-300 focus:border-[#7950f2] focus:ring-[#7950f2] transition-all duration-200"
             />
             <Input

@@ -12,12 +12,18 @@ export function Toast({ message, duration = 3000, onClose }: ToastProps) {
 
   useEffect(() => {
     const timer = setTimeout(() => {
-      setVisible(false);
-      onClose();
+      setVisible(false); // Trigger exit animation
     }, duration);
 
     return () => clearTimeout(timer);
-  }, [duration, onClose]);
+  }, [duration]);
+
+  // Call onClose after the exit animation completes
+  const handleExitComplete = () => {
+    if (!visible) onClose();
+  };
+
+  if (!visible) return null; // Remove from DOM after animation starts
 
   return (
     <motion.div
@@ -26,6 +32,7 @@ export function Toast({ message, duration = 3000, onClose }: ToastProps) {
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, y: 20 }}
       transition={{ duration: 0.3 }}
+      onAnimationComplete={handleExitComplete} // Ensure onClose is called after exit
     >
       {message}
     </motion.div>

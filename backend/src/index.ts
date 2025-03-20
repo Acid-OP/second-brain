@@ -109,28 +109,23 @@ app.post("/api/v1/content", userMiddleware, async (req, res) => {
 });
 
 // Delete Content
-app.delete("/api/v1/content", userMiddleware, (req, res) => {
+// @ts-ignore
+app.delete("/api/v1/content", userMiddleware, async (req, res) => {
   const { id } = req.body;
   const userId = req.userId;
 
-  ContentModel.findOne({ _id: id, userId })
-    .then((content) => {
-      if (!content) {
-        return res.status(404).json({ error: "Content not found or you don’t have permission." });
-      }
-      ContentModel.findByIdAndDelete(id)
-        .then(() => {
-          res.status(200).json({ message: "Content deleted successfully." });
-        })
-        .catch((e) => {
-          console.error("Error deleting content:", e);
-          res.status(500).json({ error: "Internal server error" });
-        });
-    })
-    .catch((e) => {
-      console.error("Error finding content:", e);
-      res.status(500).json({ error: "Internal server error" });
-    });
+  try {
+    const content = await ContentModel.findOne({ _id: id, userId });
+    if (!content) {
+      return res.status(404).json({ error: "Content not found or you don’t have permission." });
+    }
+    await ContentModel.deleteOne({ _id: id, userId });
+    console.log("[DEBUG] Content deleted:", id);
+    res.status(200).json({ message: "Content deleted successfully", _id: id });
+  } catch (e) {
+    console.error("[ERROR] Error deleting content:", e);
+    res.status(500).json({ error: "Internal server error" });
+  }
 });
 
 // Share Functionality
