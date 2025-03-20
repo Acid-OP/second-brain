@@ -11,7 +11,7 @@ import { queryWithQA } from "./qaService.js";
 const app = express();
 app.use(express.json());
 app.use(cors({
-  origin: "http://localhost:5173", // Frontend URL
+  origin: "http://localhost:5173",
   credentials: true,
 }));
 
@@ -71,7 +71,7 @@ app.get("/api/v1/content", userMiddleware, async (req, res) => {
   res.json(content);
 });
 
-// Add Content (NEW ROUTE)
+// Add Content
 app.post("/api/v1/content", userMiddleware, async (req, res) => {
   const { link, type, description, title } = req.body;
   const userId = req.userId;
@@ -142,6 +142,10 @@ app.post("/api/v1/brain/share", userMiddleware, async (req, res) => {
   try {
     const existingLink = await LinkModel.findOne({ userId });
 
+    if (share === undefined) {
+      return res.status(400).json({ error: "Missing 'share' parameter" });
+    }
+
     if (share) {
       if (existingLink) {
         return res.status(200).json({
@@ -157,17 +161,16 @@ app.post("/api/v1/brain/share", userMiddleware, async (req, res) => {
         link: `${process.env.FRONTEND_URL || "http://localhost:5173"}/brain/${hash}`,
       });
     } else {
-      if (!existingLink) {
-        return res.status(400).json({
-          error: "Your content is already private",
-        });
+      if (existingLink) {
+        await LinkModel.deleteOne({ userId });
       }
-      await LinkModel.deleteOne({ userId });
+      // Always return success for share: false, even if no link existed
       res.status(200).json({
         message: "Your content is now private",
       });
     }
   } catch (e) {
+    console.error("[ERROR] Share endpoint error:", e);
     res.status(500).json({ error: "Internal server error" });
   }
 });

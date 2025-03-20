@@ -17,7 +17,7 @@ export function Dashboard() {
   const [modalOpen, setModalOpen] = useState(false);
   const { contents, refresh } = useContent();
   const [filter, setFilter] = useState<"all" | "youtube" | "twitter" | "reddit" | "link">("all");
-  const [shareLink, setShareLink] = useState<string | null>(null);
+  const [shareLink, setShareLink] = useState<string | null>(null); // Start as null (private)
   const [shareModalOpen, setShareModalOpen] = useState(false);
   const [toastMessage, setToastMessage] = useState<string | null>(null);
   const [isCopied, setIsCopied] = useState(false);
@@ -27,7 +27,8 @@ export function Dashboard() {
 
   useEffect(() => {
     refresh();
-    checkShareStatus();
+    // Ensure brain is private on load by resetting share status
+    makePrivateOnLoad();
   }, [refresh]);
 
   useEffect(() => {
@@ -42,21 +43,18 @@ export function Dashboard() {
 
   const filteredContents = contents.filter(({ type }) => (filter === "all" ? true : type === filter));
 
-  const checkShareStatus = async () => {
+  // New function to ensure private by default
+  const makePrivateOnLoad = async () => {
     try {
-      const response = await axios.post(
+      await axios.post(
         `${BACKEND_URL}/api/v1/brain/share`,
-        { share: true },
+        { share: false },
         { headers: { Authorization: `Bearer ${localStorage.getItem("token")}` } }
       );
-      setShareLink(response.data.link || null);
-    } catch (e: any) {
-      if (e.response?.status === 400) {
-        setShareLink(null);
-      } else {
-        console.error("Error checking share status:", e);
-        setShareLink(null);
-      }
+      setShareLink(null); // Ensure no share link exists
+    } catch (e) {
+      console.error("Error ensuring private on load:", e);
+      // If it fails, assume private (shareLink stays null)
     }
   };
 

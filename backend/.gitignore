@@ -31,3 +31,8 @@ lerna-debug.log*
 *.njsproj
 *.sln
 *.sw?
+
+# Ignore model folder
+backend/models/all-MiniLM-L6-v2
+# Optional: Ignore all model folders
+models/
