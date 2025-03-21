@@ -2,12 +2,12 @@ import React, { useRef } from "react";
 import { Hero } from "../components/Hero";
 import { Navbar } from "../components/Navbar";
 import { motion } from "framer-motion";
-import dashboardImage from "../iconImages/dashboardimage2.png";
-import dashboardImage2 from "../iconImages/dashboardimage3.png";
+import dashboardImage from "../iconImages/dashboardimage2.png"; // General dashboard with cards
+import queryImage from "../iconImages/dashboardimage3.png"; // Highlighting a card with query
 
 export function Home() {
-  const featuresRef = useRef<HTMLDivElement>(null);
-  const howItWorksRef = useRef<HTMLDivElement>(null);
+  const dashboardRef = useRef<HTMLDivElement>(null);
+  const queryRef = useRef<HTMLDivElement>(null);
 
   const scrollToSection = (ref: React.RefObject<HTMLDivElement>) => {
     if (ref.current) {
@@ -25,13 +25,14 @@ export function Home() {
     <div className="flex flex-col bg-gray-50 min-h-screen w-full">
       <Navbar
         scrollToSection={scrollToSection}
-        refs={{ featuresRef, howItWorksRef }}
+        refs={{ dashboardRef, queryRef }}
       />
       <Hero />
 
-      {/* Features Section */}
+      {/* Dashboard Section */}
       <motion.section
-        id="features"
+        ref={dashboardRef}
+        id="dashboard"
         className="py-12 px-6 bg-gray-50 flex flex-col items-center justify-center"
         initial={{ opacity: 0, y: 50 }}
         whileInView={{ opacity: 1, y: 0 }}
@@ -40,10 +41,10 @@ export function Home() {
       >
         <div className="text-center max-w-4xl mb-12">
           <h2 className="text-4xl md:text-5xl font-extrabold text-gray-900 tracking-tight mb-4">
-            Why Second Brain?
+            Explore Your Dashboard
           </h2>
           <p className="text-lg md:text-xl text-gray-600 leading-relaxed">
-            Your all-in-one tool to save, organize, and share what matters.
+            A powerful hub to manage and view all your saved cards at a glance.
           </p>
         </div>
 
@@ -55,8 +56,8 @@ export function Home() {
           viewport={{ once: true }}
         >
           <img
-            src={dashboardImage2}
-            alt="Second Brain Dashboard"
+            src={dashboardImage}
+            alt="Second Brain Dashboard Overview"
             className="w-full h-auto rounded-xl shadow-xl border-2 border-[#7950f2] hover:border-[#5e3fd6] transition-all duration-300"
           />
         </motion.div>
@@ -65,17 +66,17 @@ export function Home() {
           {[
             {
               title: "Instant Capture",
-              desc: "Save links from Twitter, YouTube, or anywhere in seconds.",
+              desc: "Add cards from Twitter, YouTube, or any site instantly.",
               icon: "M12 4v16m8-8H4",
             },
             {
-              title: "Smart Organization",
-              desc: "Find anything fast with intelligent categorization.",
+              title: "Card Overview",
+              desc: "See all your saved content in a clean, organized layout.",
               icon: "M3 7h18M3 12h18M3 17h18",
             },
             {
-              title: "Effortless Sharing",
-              desc: "Showcase your collection with a single link.",
+              title: "Quick Access",
+              desc: "Jump to any card with a single click.",
               icon: "M4 12h16m-7-7l7 7-7 7",
             },
           ].map((feature, index) => (
@@ -112,9 +113,10 @@ export function Home() {
       {/* Spacer */}
       <div className="py-12 bg-gray-50"></div>
 
-      {/* How It Works Section */}
+      {/* Query Section */}
       <motion.section
-        id="how-it-works"
+        ref={queryRef}
+        id="query"
         className="py-12 px-6 bg-gray-50 flex flex-col items-center justify-center"
         initial={{ opacity: 0, y: 50 }}
         whileInView={{ opacity: 1, y: 0 }}
@@ -123,10 +125,10 @@ export function Home() {
       >
         <div className="text-center max-w-4xl mb-12">
           <h2 className="text-4xl md:text-5xl font-extrabold text-gray-900 tracking-tight mb-4">
-            How It Works
+            Query Your Brain
           </h2>
           <p className="text-lg md:text-xl text-gray-600 leading-relaxed">
-            Turn your favorite links into a personal knowledge hub in three simple steps.
+            Ask questions and highlight specific cards with ease.
           </p>
         </div>
 
@@ -138,8 +140,8 @@ export function Home() {
           viewport={{ once: true }}
         >
           <img
-            src={dashboardImage}
-            alt="Second Brain Workflow"
+            src={queryImage}
+            alt="Query Highlight in Second Brain"
             className="w-full h-auto rounded-xl shadow-xl border-2 border-[#7950f2] hover:border-[#5e3fd6] transition-all duration-300"
           />
         </motion.div>
@@ -148,18 +150,18 @@ export function Home() {
           {[
             {
               step: "01",
-              title: "Save Your Links",
-              desc: "Capture tweets, videos, or any web content with a click.",
+              title: "Ask a Question",
+              desc: "Type a query to search your saved cards.",
             },
             {
               step: "02",
-              title: "Build Your Collection",
-              desc: "Smart organization keeps everything at your fingertips.",
+              title: "Highlight Results",
+              desc: "See the exact card that answers your question.",
             },
             {
               step: "03",
-              title: "Share Your Insights",
-              desc: "Let others explore your curated brain with ease.",
+              title: "Dive Deeper",
+              desc: "Explore related content with one click.",
             },
           ].map((step, index) => (
             <motion.div

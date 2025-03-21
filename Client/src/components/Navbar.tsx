@@ -7,8 +7,8 @@ import { useNavigate } from "react-router-dom";
 interface NavbarProps {
     scrollToSection: (ref: React.RefObject<HTMLDivElement>) => void;
     refs: {
-        featuresRef: React.RefObject<HTMLDivElement>;
-        howItWorksRef: React.RefObject<HTMLDivElement>; // Renamed from solutionsRef
+        dashboardRef: React.RefObject<HTMLDivElement>;
+        queryRef: React.RefObject<HTMLDivElement>;
     };
 }
 
@@ -41,7 +41,7 @@ export function Navbar({ scrollToSection, refs }: NavbarProps) {
 
                     {/* Right: Auth + Mobile Toggle */}
                     <div className="flex items-center justify-end flex-1 gap-4">
-                        {token ? ("" ) : ( <TopBarSignin /> )}
+                        {token ? "" : <TopBarSignin />}
                     </div>
                 </div>
             </div>

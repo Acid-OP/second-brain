@@ -24,19 +24,18 @@ export function TopBar({ icon, title, onClick }: TopbarProps) {
     );
 }
 
-
 interface TopBarCompProps {
     scrollToSection: (ref: React.RefObject<HTMLDivElement>) => void;
     refs: {
-        featuresRef: React.RefObject<HTMLDivElement>;
-        howItWorksRef: React.RefObject<HTMLDivElement>;
+        dashboardRef: React.RefObject<HTMLDivElement>;
+        queryRef: React.RefObject<HTMLDivElement>;
     };
 }
 
 export function TopBarComp({ scrollToSection, refs }: TopBarCompProps) {
     const sections = [
-        { name: "Features", ref: refs.featuresRef },
-        { name: "How It Works", ref: refs.howItWorksRef },
+        { name: "Dashboard", ref: refs.dashboardRef },
+        { name: "Query", ref: refs.queryRef },
     ];
 
     return (
@@ -55,9 +54,6 @@ export function TopBarComp({ scrollToSection, refs }: TopBarCompProps) {
         </div>
     );
 }
-
-
-
 
 export function TopBarSignin() {
     const navigate = useNavigate();
