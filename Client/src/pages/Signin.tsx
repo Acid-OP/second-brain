@@ -1,23 +1,29 @@
-import { useRef, useState, useEffect } from "react"; // Added useState, useEffect
+import { useRef, useState, useEffect } from "react";
 import { Button } from "../components/Button";
 import { BACKEND_URL } from "../config";
 import axios from "axios";
-import { useNavigate, useLocation } from "react-router-dom"; // Added useLocation
+import { useNavigate, useLocation } from "react-router-dom";
 import purplebrain from "../iconImages/purplebrain.png";
 import logout from "../iconImages/login.png";
 import { motion } from "framer-motion";
 import { SignUpIconcomponent, SignUpIconcomponent2 } from "../components/SignupiconComponent";
 import { SignupInput } from "../components/SignupInput";
-import { Toast } from "../components/Toastcomponent"; // Assuming this path
+import { Toast } from "../components/Toastcomponent";
+import { z } from "zod";
+
+const signinSchema = z.object({
+  username: z.string().min(3, "Username must be at least 3 characters"),
+  password: z.string().min(6, "Password must be at least 6 characters"),
+});
 
 export function Signin() {
   const usernameRef = useRef<HTMLInputElement>(null);
   const passwordRef = useRef<HTMLInputElement>(null);
   const navigate = useNavigate();
-  const location = useLocation(); // To check navigation state
-  const [showSignupToast, setShowSignupToast] = useState<boolean>(false); // Toast state
+  const location = useLocation();
+  const [showSignupToast, setShowSignupToast] = useState<boolean>(false);
+  const [errors, setErrors] = useState<{ username?: string; password?: string; general?: string }>({});
 
-  // Check if we came from signup and show toast
   useEffect(() => {
     const fromSignup = location.state?.fromSignup;
     if (fromSignup) {
@@ -26,16 +32,35 @@ export function Signin() {
   }, [location]);
 
   async function signin() {
-    const username = usernameRef.current?.value;
-    const password = passwordRef.current?.value;
-    const response = await axios.post(BACKEND_URL + "/api/v1/signin", {
-      username,
-      password,
-    });
-    const jwt = response.data.token;
-    localStorage.setItem("token", jwt);
-    console.log("Token stored:", jwt);
-    navigate("/dashboard", { state: { fromSignin: true } });
+    const username = usernameRef.current?.value || "";
+    const password = passwordRef.current?.value || "";
+
+    setErrors({});
+
+    const validation = signinSchema.safeParse({ username, password });
+    if (!validation.success) {
+      const errorMap: { username?: string; password?: string } = {};
+      validation.error.errors.forEach((err) => {
+        if (err.path[0] === "username") errorMap.username = err.message;
+        if (err.path[0] === "password") errorMap.password = err.message;
+      });
+      setErrors(errorMap);
+      return;
+    }
+
+    try {
+      const response = await axios.post(BACKEND_URL + "/api/v1/signin", {
+        username,
+        password,
+      });
+      const jwt = response.data.token;
+      localStorage.setItem("token", jwt);
+      console.log("Token stored:", jwt);
+      navigate("/dashboard", { state: { fromSignin: true } });
+    } catch (error: any) {
+      const message = error.response?.data?.message || "Signin failed. Please try again.";
+      setErrors({ general: message });
+    }
   }
 
   return (
@@ -77,20 +102,23 @@ export function Signin() {
           {/* Right Side: Signin Form */}
           <div className="flex flex-col items-center justify-center p-10 w-1/2 max-[640px]:w-full h-full max-[640px]:h-auto max-[640px]:p-6">
             <h2 className="text-3xl font-bold text-gray-900 mb-10 text-center max-[640px]:text-2xl max-[640px]:mb-6">LogIn</h2>
+            {errors.general && <div className="mb-4 text-red-500 text-sm text-center">{errors.general}</div>}
             <div className="flex flex-col justify-center items-center space-y-6 w-[70%] max-w-md max-[640px]:w-[85%] max-[640px]:space-y-4">
               <div className="w-full">
                 <SignupInput
                   reference={usernameRef}
                   placeholder="Username"
-                  className="text-center px-4 py-2 text-lg max-[640px]:text-base max-[640px]:py-1.5"
+                  className="text-center px-4 py-2 text-lg border border-gray-300 rounded-lg focus:outline-none focus:border-[#7950f2] transition-all duration-200 max-[640px]:text-base max-[640px]:py-1.5"
                 />
+                {errors.username && <div className="mt-1 text-red-500 text-sm text-center">{errors.username}</div>}
               </div>
               <div className="w-full">
                 <SignupInput
                   reference={passwordRef}
                   placeholder="Password"
-                  className="text-center px-4 py-2 text-lg max-[640px]:text-base max-[640px]:py-1.5"
+                  className="text-center px-4 py-2 text-lg border border-gray-300 rounded-lg focus:outline-none focus:border-[#7950f2] transition-all duration-200 max-[640px]:text-base max-[640px]:py-1.5"
                 />
+                {errors.password && <div className="mt-1 text-red-500 text-sm text-center">{errors.password}</div>}
               </div>
               <div className="w-full">
                 <Button
@@ -99,7 +127,7 @@ export function Signin() {
                   variant="primary"
                   text="Sign In"
                   fullWidth={true}
-                  className="py-4 text-lg rounded-lg max-[640px]:py-3 max-[640px]:text-base"
+                  className="py-4 text-lg rounded-lg max-[640px]:py-3 max-[640px]:text-base bg-[#7950f2] hover:bg-[#6a42c1] text-white font-semibold rounded-lg shadow-md hover:shadow-lg transition-all duration-200"
                 />
               </div>
               <p className="text-md text-gray-600 text-center max-[640px]:text-sm">

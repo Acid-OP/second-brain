@@ -7,6 +7,9 @@ import { random } from "./utils.js";
 import cors from "cors";
 import { storeCardEmbeddings } from "./embeddingService.js";
 import { queryWithQA } from "./qaService.js";
+import { z } from "zod";
+// @ts-ignore
+import bcrypt from "bcrypt";
 
 const app = express();
 app.use(express.json());
@@ -15,14 +18,35 @@ app.use(cors({
   credentials: true,
 }));
 
+// Zod Schemas for validation
+const signupSchema = z.object({
+  username: z.string().min(3, "Username must be at least 3 characters").max(50, "Username must be 50 characters or less"),
+  password: z.string().min(6, "Password must be at least 6 characters"),
+});
+
+const signinSchema = z.object({
+  username: z.string().min(3, "Username must be at least 3 characters"),
+  password: z.string().min(6, "Password must be at least 6 characters"),
+});
+
 // Signup
+// @ts-ignore
 app.post("/api/v1/signup", async (req, res) => {
   const username = req.body.username;
   const password = req.body.password;
+
+  const validation = signupSchema.safeParse({ username, password });
+  if (!validation.success) {
+    return res.status(400).json({ message: "Invalid input", errors: validation.error.errors });
+  }
+
   try {
+    const saltRounds = 10;
+    const hashedPassword = await bcrypt.hash(password, saltRounds);
+
     await UserModel.create({
       username: username,
-      password: password,
+      password: hashedPassword,
     });
     res.json({
       message: "user signed up",
@@ -33,15 +57,26 @@ app.post("/api/v1/signup", async (req, res) => {
 });
 
 // Signin
+// @ts-ignore
 app.post("/api/v1/signin", async (req, res) => {
   const username = req.body.username;
   const password = req.body.password;
 
-  const existingUser = await UserModel.findOne({ username, password });
-  if (existingUser) {
-    const token = Jwt.sign({ id: existingUser._id }, JWT_SECRET);
-    res.json({ token });
-    console.log("token", token);
+  const validation = signinSchema.safeParse({ username, password });
+  if (!validation.success) {
+    return res.status(400).json({ message: "Invalid input", errors: validation.error.errors });
+  }
+
+  const existingUser = await UserModel.findOne({ username });
+  if (existingUser && existingUser.password && typeof existingUser.password === "string") {
+    const isPasswordValid = await bcrypt.compare(password, existingUser.password);
+    if (isPasswordValid) {
+      const token = Jwt.sign({ id: existingUser._id }, JWT_SECRET);
+      res.json({ token });
+      console.log("token", token);
+    } else {
+      res.status(403).json({ message: "Incorrect credentials" });
+    }
   } else {
     res.status(403).json({ message: "Incorrect credentials" });
   }
@@ -159,7 +194,6 @@ app.post("/api/v1/brain/share", userMiddleware, async (req, res) => {
       if (existingLink) {
         await LinkModel.deleteOne({ userId });
       }
-      // Always return success for share: false, even if no link existed
       res.status(200).json({
         message: "Your content is now private",
       });

@@ -1,4 +1,4 @@
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import { Button } from "../components/Button";
 import axios from "axios";
 import { BACKEND_URL } from "../config";
@@ -8,24 +8,45 @@ import welcome from "../iconImages/welcome.png";
 import { motion } from "framer-motion";
 import { SignupInput } from "../components/SignupInput";
 import { SignUpIconcomponent, SignUpIconcomponent2 } from "../components/SignupiconComponent";
+import { z } from "zod";
+
+const signupSchema = z.object({
+  username: z.string().min(3, "Username must be at least 3 characters").max(50, "Username must be 50 characters or less"),
+  password: z.string().min(6, "Password must be at least 6 characters"),
+});
 
 export function Signup() {
   const usernameRef = useRef<HTMLInputElement>(null);
   const passwordRef = useRef<HTMLInputElement>(null);
   const navigate = useNavigate();
+  const [errors, setErrors] = useState<{ username?: string; password?: string; general?: string }>({});
 
   async function signup() {
-    const username = usernameRef.current?.value;
-    const password = passwordRef.current?.value;
+    const username = usernameRef.current?.value || "";
+    const password = passwordRef.current?.value || "";
 
-    if (username && password) {
+    setErrors({});
+
+    const validation = signupSchema.safeParse({ username, password });
+    if (!validation.success) {
+      const errorMap: { username?: string; password?: string } = {};
+      validation.error.errors.forEach((err) => {
+        if (err.path[0] === "username") errorMap.username = err.message;
+        if (err.path[0] === "password") errorMap.password = err.message;
+      });
+      setErrors(errorMap);
+      return;
+    }
+
+    try {
       await axios.post(BACKEND_URL + "/api/v1/signup", {
         username,
         password,
       });
       navigate("/signin", { state: { fromSignup: true } });
-    } else {
-      alert("Please fill out both fields.");
+    } catch (error: any) {
+      const message = error.response?.data?.message || "Signup failed. Please try again.";
+      setErrors({ general: message });
     }
   }
 
@@ -68,20 +89,23 @@ export function Signup() {
           {/* Right Side: Signup Form */}
           <div className="flex flex-col items-center justify-center p-10 w-1/2 max-[640px]:w-full h-full max-[640px]:h-auto max-[640px]:p-6">
             <h2 className="text-3xl font-bold text-gray-900 mb-10 text-center max-[640px]:text-2xl max-[640px]:mb-6">Create Your Account</h2>
+            {errors.general && <div className="mb-4 text-red-500 text-sm text-center">{errors.general}</div>}
             <div className="flex flex-col justify-center items-center space-y-6 w-[70%] max-w-md max-[640px]:w-[85%] max-[640px]:space-y-4">
               <div className="w-full">
                 <SignupInput
                   reference={usernameRef}
                   placeholder="Username"
-                  className="text-center px-4 py-2 text-lg max-[640px]:text-base max-[640px]:py-1.5"
+                  className="text-center px-4 py-2 text-lg border border-gray-300 rounded-lg focus:outline-none focus:border-[#7950f2] transition-all duration-200 max-[640px]:text-base max-[640px]:py-1.5"
                 />
+                {errors.username && <div className="mt-1 text-red-500 text-sm text-center">{errors.username}</div>}
               </div>
               <div className="w-full">
                 <SignupInput
                   reference={passwordRef}
                   placeholder="Password"
-                  className="text-center px-4 py-2 text-lg max-[640px]:text-base max-[640px]:py-1.5"
+                  className="text-center px-4 py-2 text-lg border border-gray-300 rounded-lg focus:outline-none focus:border-[#7950f2] transition-all duration-200 max-[640px]:text-base max-[640px]:py-1.5"
                 />
+                {errors.password && <div className="mt-1 text-red-500 text-sm text-center">{errors.password}</div>}
               </div>
               <div className="w-full h-full">
                 <Button
@@ -90,7 +114,7 @@ export function Signup() {
                   variant="primary"
                   text="Sign Up"
                   fullWidth={true}
-                  className="py-4 text-lg cursor-pointer max-[640px]:py-3 max-[640px]:text-base"
+                  className="py-4 text-lg cursor-pointer max-[640px]:py-3 max-[640px]:text-base bg-[#7950f2] hover:bg-[#6a42c1] text-white font-semibold rounded-lg shadow-md hover:shadow-lg transition-all duration-200"
                 />
               </div>
               <div>
@@ -109,7 +133,7 @@ export function Signup() {
         </div>
       </div>
 
-      {/* Footer: Complementary Section */}
+      {/* Footer */}
       <footer className="py-8 bg-gradient-to-t from-gray-100 to-gray-50 border-t border-gray-200">
         <div className="flex flex-col sm:flex-row justify-center items-center gap-8 sm:gap-12 text-gray-700">
           <p className="text-sm font-medium tracking-tight">© 2025 Your Second Brain. All rights reserved.</p>
@@ -120,9 +144,6 @@ export function Signup() {
               rel="noopener noreferrer"
               className="flex items-center gap-2 text-gray-600 hover:text-[#7950f2] transition-all duration-300 group"
             >
-              {/* <svg className="w-5 h-5 text-gray-600 group-hover:text-[#7950f2] transition-colors duration-300" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
-              </svg> */}
               <span className="text-sm font-medium">Twitter</span>
             </a>
             <a
@@ -131,9 +152,6 @@ export function Signup() {
               rel="noopener noreferrer"
               className="flex items-center gap-2 text-gray-600 hover:text-[#7950f2] transition-all duration-300 group"
             >
-              {/* <svg className="w-5 h-5 text-gray-600 group-hover:text-[#7950f2] transition-colors duration-300" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                <path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.387.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-1.338.09-2.584-.896-3.256-1.607-1.338-.708-.113-1.467.324-1.467.868 0 .367.134.713.405.883 1.14 0 2.01-.896 2.01-.896.405 1.727 2.01 1.228 2.504.896.174-.668.67-1.228 1.223-1.51-4.27-.486-8.754-2.13-8.754-9.48 0-2.09.896-3.854 2.367-5.21-.24-.58-.435-1.54.09-3.206 0 0 1.013-.324 3.32 1.24 1.934-.54 4.013-.54 5.947 0 2.306-1.564 3.32-1.24 3.32-1.24.526 1.666.33 2.626.09 3.206 1.47 1.356 2.367 3.12 2.367 5.21 0 7.373-4.49 8.99-8.77 9.47.69.6 1.305 1.77 1.305 3.57 0 2.58-.015 4.66-.015 5.29 0 .32.21.69.825.577C20.565 22.087 24 17.59 24 12.297c0-6.627-5.373-12-12-12" />
-              </svg> */}
               <span className="text-sm font-medium">GitHub</span>
             </a>
           </div>
