@@ -8,7 +8,7 @@ interface NavbarProps {
     scrollToSection: (ref: React.RefObject<HTMLDivElement>) => void;
     refs: {
         dashboardRef: React.RefObject<HTMLDivElement>;
-        queryRef: React.RefObject<HTMLDivElement>;
+        featuresRef: React.RefObject<HTMLDivElement>; // Updated from queryRef
     };
 }
 

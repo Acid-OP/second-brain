@@ -3,11 +3,11 @@ import { Hero } from "../components/Hero";
 import { Navbar } from "../components/Navbar";
 import { motion } from "framer-motion";
 import dashboardImage from "../iconImages/dashboardimage2.png"; // General dashboard with cards
-import queryImage from "../iconImages/dashboardimage3.png"; // Highlighting a card with query
+import featuresImage from "../iconImages/dashboardimage3.png"; // Highlighting a card (formerly queryImage)
 
 export function Home() {
   const dashboardRef = useRef<HTMLDivElement>(null);
-  const queryRef = useRef<HTMLDivElement>(null);
+  const featuresRef = useRef<HTMLDivElement>(null); // Renamed from queryRef
 
   const scrollToSection = (ref: React.RefObject<HTMLDivElement>) => {
     if (ref.current) {
@@ -25,7 +25,7 @@ export function Home() {
     <div className="flex flex-col bg-gray-50 min-h-screen w-full">
       <Navbar
         scrollToSection={scrollToSection}
-        refs={{ dashboardRef, queryRef }}
+        refs={{ dashboardRef, featuresRef }} // Updated ref name
       />
       <Hero />
 
@@ -113,10 +113,10 @@ export function Home() {
       {/* Spacer */}
       <div className="py-12 bg-gray-50"></div>
 
-      {/* Query Section */}
+      {/* Features Section */}
       <motion.section
-        ref={queryRef}
-        id="query"
+        ref={featuresRef} // Updated ref name
+        id="features" // Updated ID
         className="py-12 px-6 bg-gray-50 flex flex-col items-center justify-center"
         initial={{ opacity: 0, y: 50 }}
         whileInView={{ opacity: 1, y: 0 }}
@@ -125,10 +125,10 @@ export function Home() {
       >
         <div className="text-center max-w-4xl mb-12">
           <h2 className="text-4xl md:text-5xl font-extrabold text-gray-900 tracking-tight mb-4">
-            Query Your Brain
+            Discover Key Features
           </h2>
           <p className="text-lg md:text-xl text-gray-600 leading-relaxed">
-            Ask questions and highlight specific cards with ease.
+            Unlock the tools that make Second Brain your ultimate knowledge companion.
           </p>
         </div>
 
@@ -140,8 +140,8 @@ export function Home() {
           viewport={{ once: true }}
         >
           <img
-            src={queryImage}
-            alt="Query Highlight in Second Brain"
+            src={featuresImage} // Updated image name
+            alt="Key Features in Second Brain"
             className="w-full h-auto rounded-xl shadow-xl border-2 border-[#7950f2] hover:border-[#5e3fd6] transition-all duration-300"
           />
         </motion.div>

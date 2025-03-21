@@ -28,14 +28,14 @@ interface TopBarCompProps {
     scrollToSection: (ref: React.RefObject<HTMLDivElement>) => void;
     refs: {
         dashboardRef: React.RefObject<HTMLDivElement>;
-        queryRef: React.RefObject<HTMLDivElement>;
+        featuresRef: React.RefObject<HTMLDivElement>; // Updated from queryRef
     };
 }
 
 export function TopBarComp({ scrollToSection, refs }: TopBarCompProps) {
     const sections = [
         { name: "Dashboard", ref: refs.dashboardRef },
-        { name: "Query", ref: refs.queryRef },
+        { name: "Features", ref: refs.featuresRef }, // Updated from "Query"
     ];
 
     return (

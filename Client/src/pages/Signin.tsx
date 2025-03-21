@@ -12,8 +12,17 @@ import { Toast } from "../components/Toastcomponent";
 import { z } from "zod";
 
 const signinSchema = z.object({
-  username: z.string().min(3, "Username must be at least 3 characters"),
-  password: z.string().min(6, "Password must be at least 6 characters"),
+  username: z
+    .string()
+    .min(3, "Username must be at least 3 characters")
+    .regex(/^[a-zA-Z][a-zA-Z0-9_]*$/, "Username must start with a letter and contain only letters, numbers, or underscores"),
+  password: z
+    .string()
+    .min(8, "Password must be at least 8 characters")
+    .regex(/[A-Z]/, "Password must contain at least one uppercase letter")
+    .regex(/[a-z]/, "Password must contain at least one lowercase letter")
+    .regex(/[0-9]/, "Password must contain at least one number")
+    .regex(/[!@#$%^&*]/, "Password must contain at least one special character (!@#$%^&*)"),
 });
 
 export function Signin() {
@@ -127,7 +136,7 @@ export function Signin() {
                   variant="primary"
                   text="Sign In"
                   fullWidth={true}
-                  className="py-4 text-lg rounded-lg max-[640px]:py-3 max-[640px]:text-base bg-[#7950f2] hover:bg-[#6a42c1] text-white font-semibold rounded-lg shadow-md hover:shadow-lg transition-all duration-200"
+                  className="py-4 text-lg max-[640px]:py-3 max-[640px]:text-base bg-[#7950f2] hover:bg-[#6a42c1] text-white font-semibold rounded-lg shadow-md hover:shadow-lg transition-all duration-200"
                 />
               </div>
               <p className="text-md text-gray-600 text-center max-[640px]:text-sm">
