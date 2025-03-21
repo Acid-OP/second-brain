@@ -13,7 +13,6 @@ export function DeleteConfirmationModal({ isOpen, onClose, onConfirm }: DeleteCo
 
   return (
     <div className="fixed inset-0 z-50">
-      {/* Overlay */}
       <motion.div
         className="w-screen h-screen bg-gray-800 fixed top-0 left-0 opacity-75"
         initial={{ opacity: 0 }}
@@ -22,8 +21,6 @@ export function DeleteConfirmationModal({ isOpen, onClose, onConfirm }: DeleteCo
         transition={{ duration: 0.3 }}
         onClick={onClose}
       />
-
-      {/* Modal */}
       <motion.div
         className="w-screen h-screen fixed top-0 left-0 flex justify-center items-center"
         initial={{ opacity: 0, scale: 0.95 }}
@@ -31,38 +28,31 @@ export function DeleteConfirmationModal({ isOpen, onClose, onConfirm }: DeleteCo
         exit={{ opacity: 0, scale: 0.95 }}
         transition={{ duration: 0.4, ease: "easeInOut" }}
       >
-        <div className="bg-white p-6 rounded-lg shadow-xl relative z-10 w-full max-w-md mx-4">
-          {/* Close Button */}
+        <div className="bg-white p-3 sm:p-4 md:p-5 lg:p-6 rounded-lg shadow-xl relative z-10 w-full max-w-[20rem] sm:max-w-sm md:max-w-md lg:max-w-md mx-2 sm:mx-4 md:mx-4 lg:mx-4">
           <button
             onClick={onClose}
-            className="absolute top-2 right-2 p-2 rounded-full hover:bg-gray-100 transition-all duration-200 cursor-pointer"
+            className="absolute top-1 sm:top-2 md:top-2 lg:top-2 right-1 sm:right-2 md:right-2 lg:right-2 p-1 sm:p-1.5 md:p-2 lg:p-2 rounded-full hover:bg-gray-100 transition-all duration-200 cursor-pointer"
           >
-            <CrossIcon />
+            <CrossIcon className="w-4 h-4 sm:w-4 sm:h-4 md:w-5 md:h-5 lg:w-5 lg:h-5" />
           </button>
-
-          {/* Header */}
           <div className="text-center">
-            <h2 className="text-xl font-semibold text-gray-800">Confirm Deletion</h2>
+            <h2 className="text-base sm:text-lg md:text-lg lg:text-xl font-semibold text-gray-800">Confirm Deletion</h2>
           </div>
-
-          {/* Body */}
-          <div className="mt-4 text-center">
-            <p className="text-gray-600">Are you sure you want to delete this item?</p>
+          <div className="mt-2 sm:mt-3 md:mt-4 lg:mt-4 text-center">
+            <p className="text-xs sm:text-sm md:text-sm lg:text-base text-gray-600">Are you sure you want to delete this item?</p>
           </div>
-
-          {/* Buttons */}
-          <div className="flex justify-center gap-4 mt-6">
+          <div className="flex justify-center gap-2 sm:gap-3 md:gap-4 lg:gap-4 mt-3 sm:mt-4 md:mt-5 lg:mt-6">
             <Button
               onClick={onClose}
               variant="secondary"
               text="Cancel"
-              className="px-6 py-2.5 font-semibold rounded-lg bg-gray-200 hover:bg-gray-300 text-gray-700 transition-all duration-200"
+              className="px-4 sm:px-5 md:px-6 lg:px-6 py-1.5 sm:py-2 md:py-2 lg:py-2.5 font-semibold rounded-md sm:rounded-md md:rounded-lg lg:rounded-lg bg-gray-200 hover:bg-gray-300 text-gray-700 transition-all duration-200"
             />
             <Button
               onClick={onConfirm}
               variant="primary"
               text="Delete"
-              className="px-6 py-2.5 text-white font-semibold rounded-lg bg-red-600 hover:bg-red-700 shadow-md hover:shadow-lg transition-all duration-200"
+              className="px-4 sm:px-5 md:px-6 lg:px-6 py-1.5 sm:py-2 md:py-2 lg:py-2.5 text-white font-semibold rounded-md sm:rounded-md md:rounded-lg lg:rounded-lg bg-red-600 hover:bg-red-700 shadow-md hover:shadow-lg transition-all duration-200"
             />
           </div>
         </div>

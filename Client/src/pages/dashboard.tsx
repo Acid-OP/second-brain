@@ -11,7 +11,7 @@ import axios from "axios";
 import { useContent } from "../hooks/usecontent";
 import { motion } from "framer-motion";
 import { Toast } from "../components/Toastcomponent";
-import { useLocation } from "react-router-dom"; // Added useLocation
+import { useLocation } from "react-router-dom";
 
 export function Dashboard() {
   const [open, setOpen] = useState(true);
@@ -25,13 +25,12 @@ export function Dashboard() {
   const [highlightedCardId, setHighlightedCardId] = useState<string | null>(null);
   const cardRefs = useRef<Map<string, HTMLDivElement>>(new Map());
   const scrollContainerRef = useRef<HTMLDivElement>(null);
-  const location = useLocation(); // Added to check navigation state
-  const [showLoginToast, setShowLoginToast] = useState<boolean>(false); // New toast state
+  const location = useLocation();
+  const [showLoginToast, setShowLoginToast] = useState<boolean>(false);
 
   useEffect(() => {
     refresh();
     makePrivateOnLoad();
-    // Check if coming from signin
     const fromSignin = location.state?.fromSignin;
     if (fromSignin) {
       setShowLoginToast(true);
@@ -109,8 +108,10 @@ export function Dashboard() {
       <Sidebar setFilter={setFilter} open={open} setOpen={setOpen} setHighlightedCardId={handleSetHighlightedCardId} />
       <div
         ref={scrollContainerRef}
-        className={`p-4 flex-1 min-h-screen bg-gray-100 overflow-auto transition-all duration-300 ease-in-out ${
-          open ? "ml-[250px] lg:ml-[250px] md:ml-[200px] sm:ml-0" : "ml-20 lg:ml-20 md:ml-16 sm:ml-0"
+        className={`p-2 sm:p-3 md:p-3 lg:p-4 flex-1 min-h-screen bg-gray-100 overflow-auto transition-all duration-300 ease-in-out ${
+          open
+            ? "ml-[120px] sm:ml-[150px] md:ml-[220px] lg:ml-[250px]"
+            : "ml-[60px] sm:ml-[40px] md:ml-[80px] lg:ml-20"
         }`}
       >
         <CreateContentModal open={modalOpen} onClose={() => setModalOpen(false)} onContentAdded={handleContentAdded} />
@@ -166,7 +167,7 @@ export function Dashboard() {
             </motion.div>
           </div>
         )}
-        <div className="flex justify-end gap-4 flex-wrap sm:flex-col sm:items-center md:flex-row md:gap-6">
+        <div className="flex justify-end gap-2 sm:gap-4 md:gap-6 lg:gap-6 flex-wrap sm:flex-col sm:items-center md:flex-row">
           <Button onClick={() => setModalOpen(true)} variant="primary" text="Add Content" startIcon={<PlusIcon />} />
           <Button
             onClick={shareLink ? handleMakePrivate : handleShare}
@@ -176,7 +177,7 @@ export function Dashboard() {
           />
         </div>
         <div className="flex w-full">
-          <div className="flex pt-4 pl-10 gap-6 flex-wrap w-full">
+          <div className="flex pt-4 sm:pt-3 md:pt-3 lg:pt-4 pl-4 sm:pl-6 md:pl-8 lg:pl-10 gap-4 sm:gap-5 md:gap-6 lg:gap-6 flex-wrap w-full">
             {filteredContents.map((content) => (
               <Card
                 key={content._id}

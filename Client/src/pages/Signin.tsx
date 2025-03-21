@@ -4,7 +4,7 @@ import { BACKEND_URL } from "../config";
 import axios from "axios";
 import { useNavigate, useLocation } from "react-router-dom";
 import purplebrain from "../iconImages/purplebrain.png";
-import logout from "../iconImages/login.png";
+import logout from "../iconImages/login.png"; // Assuming this is intended (logout vs. login)
 import { motion } from "framer-motion";
 import { SignUpIconcomponent, SignUpIconcomponent2 } from "../components/SignupiconComponent";
 import { SignupInput } from "../components/SignupInput";
@@ -20,7 +20,7 @@ const signinSchema = z.object({
     .string()
     .min(8, "Password must be at least 8 characters")
     .regex(/[A-Z]/, "Password must contain at least one uppercase letter")
-    .regex(/[a-z]/, "Password must contain at least one lowercase letter")
+    .regex(/[-a]/, "Password must contain at least one lowercase letter")
     .regex(/[0-9]/, "Password must contain at least one number")
     .regex(/[!@#$%^&*]/, "Password must contain at least one special character (!@#$%^&*)"),
 });
@@ -75,79 +75,81 @@ export function Signin() {
   return (
     <div className="flex flex-col min-h-screen w-screen bg-gray-50">
       {/* Top: Enhanced Header */}
-      <div className="flex flex-col items-center pt-8 pb-6">
+      <div className="flex flex-col items-center pt-2">
         <motion.div
-          className="flex items-center gap-4"
+          className="flex items-center gap-2 max-[640px]:gap-2"
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
         >
           <motion.div
-            className="w-20 h-20 flex items-center justify-center bg-white rounded-full shadow-lg hover:shadow-xl transition-shadow duration-300 max-[640px]:w-16 max-[640px]:h-16"
+            className="w-24 h-24 flex items-center justify-center bg-white rounded-full shadow-lg hover:shadow-xl transition-shadow duration-300 max-[640px]:w-20 max-[640px]:h-20"
             whileHover={{ scale: 1.05 }}
             transition={{ duration: 0.3 }}
           >
-            <SignUpIconcomponent src={purplebrain} className="w-12 h-12 max-[640px]:w-8 max-[640px]:h-8" />
+            <SignUpIconcomponent src={purplebrain} className="w-16 h-16 max-[640px]:w-12 max-[640px]:h-12" />
           </motion.div>
           <div className="flex flex-col items-center">
-            <h1 className="text-3xl font-extrabold text-gray-900 max-[640px]:text-2xl">Your Second Brain</h1>
-            <p className="text-base text-gray-600 mt-1 max-[640px]:text-sm">Capture, Organize, Thrive</p>
+            <h1 className="text-3xl font-extrabold text-gray-900 max-[640px]:text-xl">Your Second Brain</h1>
+            <p className="text-base text-gray-600 mt-1 max-[640px]:text-xs">Capture, Organize, Thrive</p>
           </div>
         </motion.div>
       </div>
 
       {/* Main Content */}
-      <div className="flex flex-1 items-center justify-center p-8 max-[640px]:p-4">
+      <div className="flex flex-1 items-center justify-center p-8 max-[640px]:p-2">
         <div className="flex items-center justify-center bg-white rounded-3xl shadow-lg overflow-hidden max-w-6xl w-full h-[550px] max-[640px]:flex-col max-[640px]:w-[90%] max-[640px]:h-auto">
           {/* Left Side: Image and Text */}
           <div className="flex flex-col items-center justify-around bg-gradient-to-br from-[#7950f2] to-[#6a42c1] text-white w-1/2 max-[640px]:w-full h-full max-[640px]:h-auto p-10 max-[640px]:p-6">
-            <SignUpIconcomponent2 src={logout} className="mt max-[640px]:w-24 max-[640px]:h-24" />
-            <div className="flex flex-col p-4 items-center space-y-6 max-[640px]:space-y-4">
-              <h1 className="text-5xl font-extrabold text-center max-[640px]:text-3xl">Welcome Back</h1>
-              <p className="text-xl text-center text-gray-100 max-[640px]:text-base">Access your organized links with Second Brain.</p>
+            <SignUpIconcomponent2 src={logout} className="p-6" />
+            <div className="flex flex-col items-center space-y-6 max-[640px]:space-y-4">
+              <h1 className="text-5xl font-extrabold text-center max-[640px]:text-2xl">Welcome Back</h1>
+              <p className="text-xl text-center text-gray-100 max-[640px]:text-sm">Access your organized links with Second Brain.</p>
             </div>
           </div>
 
           {/* Right Side: Signin Form */}
           <div className="flex flex-col items-center justify-center p-10 w-1/2 max-[640px]:w-full h-full max-[640px]:h-auto max-[640px]:p-6">
-            <h2 className="text-3xl font-bold text-gray-900 mb-10 text-center max-[640px]:text-2xl max-[640px]:mb-6">LogIn</h2>
-            {errors.general && <div className="mb-4 text-red-500 text-sm text-center">{errors.general}</div>}
-            <div className="flex flex-col justify-center items-center space-y-6 w-[70%] max-w-md max-[640px]:w-[85%] max-[640px]:space-y-4">
+            <h2 className="text-3xl font-bold text-gray-900 mb-10 text-center max-[640px]:text-xl max-[640px]:mb-6">Log In</h2>
+            {errors.general && <div className="mb-4 text-red-500 text-sm text-center max-[640px]:text-xs max-[640px]:mb-3">{errors.general}</div>}
+            <div className="flex flex-col justify-center items-center space-y-6 w-[70%] max-w-md max-[640px]:w-full max-[640px]:space-y-4">
               <div className="w-full">
                 <SignupInput
                   reference={usernameRef}
                   placeholder="Username"
-                  className="text-center px-4 py-2 text-lg border border-gray-300 rounded-lg focus:outline-none focus:border-[#7950f2] transition-all duration-200 max-[640px]:text-base max-[640px]:py-1.5"
+                  className="text-center px-4 py-2 text-lg border border-gray-300 rounded-lg focus:outline-none focus:border-[#7950f2] transition-all duration-200 max-[640px]:text-sm max-[640px]:px-4 max-[640px]:py-1.5"
                 />
-                {errors.username && <div className="mt-1 text-red-500 text-sm text-center">{errors.username}</div>}
+                {errors.username && <div className="mt-1 text-red-500 text-sm text-center max-[640px]:text-xs">{errors.username}</div>}
               </div>
               <div className="w-full">
                 <SignupInput
                   reference={passwordRef}
                   placeholder="Password"
-                  className="text-center px-4 py-2 text-lg border border-gray-300 rounded-lg focus:outline-none focus:border-[#7950f2] transition-all duration-200 max-[640px]:text-base max-[640px]:py-1.5"
+                  className="text-center px-4 py-2 text-lg border border-gray-300 rounded-lg focus:outline-none focus:border-[#7950f2] transition-all duration-200 max-[640px]:text-sm max-[640px]:px-4 max-[640px]:py-1.5"
                 />
-                {errors.password && <div className="mt-1 text-red-500 text-sm text-center">{errors.password}</div>}
+                {errors.password && <div className="mt-1 text-red-500 text-sm text-center max-[640px]:text-xs">{errors.password}</div>}
               </div>
-              <div className="w-full">
+              <div className="w-full h-full">
                 <Button
                   onClick={signin}
                   loading={false}
                   variant="primary"
-                  text="Sign In"
+                  text="Log In"
                   fullWidth={true}
-                  className="py-4 text-lg max-[640px]:py-3 max-[640px]:text-base bg-[#7950f2] hover:bg-[#6a42c1] text-white font-semibold rounded-lg shadow-md hover:shadow-lg transition-all duration-200"
+                  className="py-4 text-lg cursor-pointer max-[640px]:py-2.5 max-[640px]:text-sm bg-[#7950f2] hover:bg-[#6a42c1] text-white font-semibold rounded-lg shadow-md hover:shadow-lg transition-all duration-200"
                 />
               </div>
-              <p className="text-md text-gray-600 text-center max-[640px]:text-sm">
-                Don’t have an account?{" "}
-                <span
-                  className="text-[#7950f2] cursor-pointer hover:text-[#6a42c1] transition duration-300"
-                  onClick={() => navigate("/signup")}
-                >
-                  Sign Up
-                </span>
-              </p>
+              <div>
+                <p className="text-md text-gray-600 text-center max-[640px]:text-xs">
+                  Don’t have an account?{" "}
+                  <span
+                    className="text-[#7950f2] cursor-pointer hover:text-[#6a42c1] transition duration-300"
+                    onClick={() => navigate("/signup")}
+                  >
+                    Sign Up
+                  </span>
+                </p>
+              </div>
             </div>
           </div>
         </div>
@@ -163,17 +165,17 @@ export function Signin() {
       )}
 
       {/* Footer */}
-      <footer className="py-8 bg-gradient-to-t from-gray-100 to-gray-50 border-t border-gray-200">
-        <div className="flex flex-col sm:flex-row justify-center items-center gap-8 sm:gap-12 text-gray-700">
-          <p className="text-sm font-medium tracking-tight">© 2025 Your Second Brain. All rights reserved.</p>
-          <div className="flex gap-8 sm:gap-10">
+      <footer className="py-4 bg-gradient-to-t from-gray-100 to-gray-50 border-t border-gray-200 max-[640px]:py-4">
+        <div className="flex flex-col sm:flex-row justify-center items-center gap-8 sm:gap-12 text-gray-700 max-[640px]:gap-4">
+          <p className="text-sm font-medium tracking-tight max-[640px]:text-xs">© 2025 Your Second Brain. All rights reserved.</p>
+          <div className="flex gap-8 sm:gap-10 max-[640px]:gap-6">
             <a
               href="https://x.com/GauravKapurr"
               target="_blank"
               rel="noopener noreferrer"
               className="flex items-center gap-2 text-gray-600 hover:text-[#7950f2] transition-all duration-300 group"
             >
-              <span className="text-sm font-medium">Twitter</span>
+              <span className="text-sm font-medium max-[640px]:text-xs">Twitter</span>
             </a>
             <a
               href="https://github.com/Acid-OP/second-brain"
@@ -181,7 +183,7 @@ export function Signin() {
               rel="noopener noreferrer"
               className="flex items-center gap-2 text-gray-600 hover:text-[#7950f2] transition-all duration-300 group"
             >
-              <span className="text-sm font-medium">GitHub</span>
+              <span className="text-sm font-medium max-[640px]:text-xs">GitHub</span>
             </a>
           </div>
         </div>
@@ -189,3 +191,4 @@ export function Signin() {
     </div>
   );
 }
+

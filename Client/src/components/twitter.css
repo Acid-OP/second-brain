@@ -34,3 +34,13 @@
 .twitter-embed-container:has(iframe) {
   height: auto !important;
 }
+
+/* Mobile fix: Adjust container height to match embed */
+@media (max-width: 640px) {
+  .twitter-embed-container {
+    max-height: 200px; /* Cap container height to typical mobile embed size */
+  }
+  .twitter-embed-container iframe {
+    height: 180px !important; /* Set a fixed height for mobile embeds */
+  }
+}

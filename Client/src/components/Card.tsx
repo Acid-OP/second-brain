@@ -26,8 +26,8 @@ interface CardProps {
 
 export const Card = forwardRef<HTMLDivElement, CardProps>(
   ({ title, link, type, _id, description, className, isHighlighted = false, onDelete }, ref): ReactElement | null => {
-    const [showToast, setShowToast] = useState<boolean>(false); // Share toast
-    const [showDeleteToast, setShowDeleteToast] = useState<boolean>(false); // Delete toast
+    const [showToast, setShowToast] = useState<boolean>(false);
+    const [showDeleteToast, setShowDeleteToast] = useState<boolean>(false);
     const [isDeleted, setIsDeleted] = useState<boolean>(false);
     const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 
@@ -63,10 +63,10 @@ export const Card = forwardRef<HTMLDivElement, CardProps>(
 
     const RenderIcon = (): ReactElement => {
       switch (type) {
-        case "youtube": return <YoutubeIcon className="w-6" />;
-        case "twitter": return <TwitterIcon className="w-6" />;
-        case "reddit": return <RedditIcon className="w-6" />;
-        case "link": return <Linkicon className="w-6" />;
+        case "youtube": return <YoutubeIcon className="w-4 sm:w-5 md:w-6 lg:w-6" />;
+        case "twitter": return <TwitterIcon className="w-4 sm:w-5 md:w-6 lg:w-6" />;
+        case "reddit": return <RedditIcon className="w-4 sm:w-5 md:w-6 lg:w-6" />;
+        case "link": return <Linkicon className="w-4 sm:w-5 md:w-6 lg:w-6" />;
       }
     };
 
@@ -93,12 +93,12 @@ export const Card = forwardRef<HTMLDivElement, CardProps>(
           data: { id: _id },
         });
         if (response.status === 200) {
-          setShowDeleteToast(true); // Show toast FIRST
-          setIsModalOpen(false); // Close modal
+          setShowDeleteToast(true);
+          setIsModalOpen(false);
           setTimeout(() => {
-            setIsDeleted(true); // Delay card removal
-            if (onDelete) onDelete(_id); // Notify parent after toast
-          }, 5); // Short delay to let toast render
+            setIsDeleted(true);
+            if (onDelete) onDelete(_id);
+          }, 5);
         }
       } catch (e) {
         console.error("[ERROR] Delete failed:", e);
@@ -122,27 +122,31 @@ export const Card = forwardRef<HTMLDivElement, CardProps>(
         {!isDeleted && (
           <div
             ref={ref}
-            className={`${className || ""} p-4 bg-white rounded-md border-gray-200 max-w-72 min-h-48 min-w-72 sm:w-full md:w-1/2 lg:w-1/3 transition-all duration-500 ${
+            className={`${className || ""} p-2 sm:p-3 md:p-3 lg:p-4 bg-white rounded-md border-gray-200 max-w-[18rem] sm:max-w-64 md:max-w-72 lg:max-w-72 min-h-32 sm:min-h-40 md:min-h-44 lg:min-h-48 min-w-[18rem] sm:min-w-64 md:min-w-72 lg:min-w-72 w-full sm:w-full md:w-1/2 lg:w-1/3 transition-all duration-500 ${
               isHighlighted ? "bg-purple-100 border-2 border-purple-500 shadow-lg" : ""
             }`}
           >
             <div className="flex justify-between items-center">
-              <div className="flex justify-center items-center gap-2">
+              <div className="flex justify-center items-center gap-1 sm:gap-2 md:gap-2 lg:gap-2">
                 {RenderIcon()}
-                <span className="font-semibold text-neutral-800 text-xl tracking-wide capitalize leading-tight">{title}</span>
+                <span className="font-semibold text-neutral-800 text-base sm:text-lg md:text-lg lg:text-xl tracking-wide capitalize leading-tight">{title}</span>
               </div>
-              <div className="flex justify-center items-center gap-2">
-                <ShareIcon className="w-5 cursor-pointer" onClick={handleCopyLink} />
+              <div className="flex justify-center items-center gap-1 sm:gap-2 md:gap-2 lg:gap-2">
+                <ShareIcon className="w-4 sm:w-4 md:w-5 lg:w-5 cursor-pointer" onClick={handleCopyLink} />
                 <button onClick={handleDeleteClick} className="cursor-pointer">
-                  <DeleteIcon className="w-5 h-5" />
+                  <DeleteIcon className="w-4 sm:w-4 md:w-5 lg:w-5 h-4 sm:h-4 md:h-5 lg:h-5" />
                 </button>
               </div>
             </div>
-            {description && <div className="mt-2 text-sm text-gray-600 line-clamp-2">{description}</div>}
-            <div className="pt-4">
+            {description && (
+              <div className="mt-2 sm:mt-2 md:mt-3 lg:mt-3 text-xs sm:text-xs md:text-sm lg:text-sm text-gray-600 line-clamp-3 overflow-hidden">
+                {description}
+              </div>
+            )}
+            <div className="mt-2 sm:mt-3 md:mt-3 lg:mt-4">
               {type === "youtube" && (
                 <iframe
-                  className="youtube-player"
+                  className="youtube-player w-full h-24 sm:h-28 md:h-32 lg:h-36"
                   src={link.replace("watch", "embed").replace("?v=", "/").split("&")[0]}
                   title="YouTube video player"
                   frameBorder="0"
@@ -166,9 +170,15 @@ export const Card = forwardRef<HTMLDivElement, CardProps>(
                 </div>
               )}
               {type === "link" && (
-                <div className="border border-neutral-700 rounded-xl p-2">
-                  <a target="_blank" href={link} className="text-blue-500 hover:underline break-all line-clamp-2 text-sm" rel="noopener noreferrer">
-                    {link}
+                <div className="bg-gray-50 rounded-md p-1 sm:p-1 md:p-2 lg:p-2 border border-gray-200 shadow-xs hover:shadow-sm transition-all duration-200">
+                  <a
+                    target="_blank"
+                    href={link}
+                    className="flex items-center gap-1 sm:gap-1 md:gap-2 lg:gap-2 text-[#7950f2] font-medium hover:bg-gray-100 rounded-md p-1 sm:p-1 md:p-2 lg:p-2 break-all line-clamp-2 text-xs sm:text-xs md:text-sm lg:text-sm"
+                    rel="noopener noreferrer"
+                  >
+                    <Linkicon className="w-3 sm:w-4 md:w-5 lg:w-5 h-3 sm:h-4 md:h-5 lg:h-5 flex-shrink-0" />
+                    <span>{link}</span>
                   </a>
                 </div>
               )}

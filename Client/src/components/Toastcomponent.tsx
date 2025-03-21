@@ -18,21 +18,20 @@ export function Toast({ message, duration = 3000, onClose }: ToastProps) {
     return () => clearTimeout(timer);
   }, [duration]);
 
-  // Call onClose after the exit animation completes
   const handleExitComplete = () => {
     if (!visible) onClose();
   };
 
-  if (!visible) return null; // Remove from DOM after animation starts
+  if (!visible) return null;
 
   return (
     <motion.div
-      className="fixed bottom-4 right-4 bg-gray-800 text-white px-4 py-2 rounded-lg shadow-lg"
+      className="fixed bottom-2 sm:bottom-3 md:bottom-4 lg:bottom-4 right-2 sm:right-3 md:right-4 lg:right-4 bg-gray-800 text-white px-2 sm:px-3 md:px-3 lg:px-4 py-1 sm:py-1 md:py-1.5 lg:py-2 rounded-md sm:rounded-md md:rounded-lg lg:rounded-lg shadow-md max-w-[80%] sm:max-w-[70%] md:max-w-[60%] lg:max-w-[50%] text-xs sm:text-sm md:text-sm lg:text-base"
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, y: 20 }}
       transition={{ duration: 0.3 }}
-      onAnimationComplete={handleExitComplete} // Ensure onClose is called after exit
+      onAnimationComplete={handleExitComplete}
     >
       {message}
     </motion.div>
