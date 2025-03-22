@@ -1,6 +1,5 @@
 import { useRef, useState, useEffect } from "react";
 import { Button } from "../components/Button";
-import { BACKEND_URL } from "../config";
 import axios from "axios";
 import { useNavigate, useLocation } from "react-router-dom";
 import purplebrain from "../iconImages/purplebrain.png";
@@ -20,7 +19,7 @@ const signinSchema = z.object({
     .string()
     .min(8, "Password must be at least 8 characters")
     .regex(/[A-Z]/, "Password must contain at least one uppercase letter")
-    .regex(/[-a]/, "Password must contain at least one lowercase letter")
+    .regex(/[a-z]/, "Password must contain at least one lowercase letter") // Fixed typo: [-a] -> [a-z]
     .regex(/[0-9]/, "Password must contain at least one number")
     .regex(/[!@#$%^&*]/, "Password must contain at least one special character (!@#$%^&*)"),
 });
@@ -32,6 +31,8 @@ export function Signin() {
   const location = useLocation();
   const [showSignupToast, setShowSignupToast] = useState<boolean>(false);
   const [errors, setErrors] = useState<{ username?: string; password?: string; general?: string }>({});
+
+  const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
 
   useEffect(() => {
     const fromSignup = location.state?.fromSignup;
@@ -58,7 +59,7 @@ export function Signin() {
     }
 
     try {
-      const response = await axios.post(BACKEND_URL + "/api/v1/signin", {
+      const response = await axios.post(`${BACKEND_URL}/api/v1/signin`, {
         username,
         password,
       });
@@ -191,4 +192,3 @@ export function Signin() {
     </div>
   );
 }
-

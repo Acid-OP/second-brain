@@ -6,7 +6,6 @@ import { PlusIcon } from "../icons/PlusIcon";
 import { ShareIcon } from "../icons/ShareIcon";
 import { CrossIcon } from "../icons/CrossIcon";
 import { Sidebar } from "../components/Sidebar";
-import { BACKEND_URL } from "../config";
 import axios from "axios";
 import { useContent } from "../hooks/usecontent";
 import { motion } from "framer-motion";
@@ -27,6 +26,8 @@ export function Dashboard() {
   const scrollContainerRef = useRef<HTMLDivElement>(null);
   const location = useLocation();
   const [showLoginToast, setShowLoginToast] = useState<boolean>(false);
+
+  const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
 
   useEffect(() => {
     refresh();

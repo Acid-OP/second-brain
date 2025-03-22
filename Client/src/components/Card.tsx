@@ -8,7 +8,6 @@ import { DeleteIcon } from "../icons/DeleteIcon";
 import { DeleteConfirmationModal } from "./DeleteConfirmationModel";
 import { Toast } from "./Toastcomponent";
 import axios from "axios";
-import { BACKEND_URL } from "../config";
 import "./youtube.css";
 import "./twitter.css";
 import "./reddit.css";
@@ -30,6 +29,8 @@ export const Card = forwardRef<HTMLDivElement, CardProps>(
     const [showDeleteToast, setShowDeleteToast] = useState<boolean>(false);
     const [isDeleted, setIsDeleted] = useState<boolean>(false);
     const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+
+    const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
 
     useEffect(() => {
       let script: HTMLScriptElement | null = null;
@@ -63,10 +64,14 @@ export const Card = forwardRef<HTMLDivElement, CardProps>(
 
     const RenderIcon = (): ReactElement => {
       switch (type) {
-        case "youtube": return <YoutubeIcon className="w-4 sm:w-5 md:w-6 lg:w-6" />;
-        case "twitter": return <TwitterIcon className="w-4 sm:w-5 md:w-6 lg:w-6" />;
-        case "reddit": return <RedditIcon className="w-4 sm:w-5 md:w-6 lg:w-6" />;
-        case "link": return <Linkicon className="w-4 sm:w-5 md:w-6 lg:w-6" />;
+        case "youtube":
+          return <YoutubeIcon className="w-4 sm:w-5 md:w-6 lg:w-6" />;
+        case "twitter":
+          return <TwitterIcon className="w-4 sm:w-5 md:w-6 lg:w-6" />;
+        case "reddit":
+          return <RedditIcon className="w-4 sm:w-5 md:w-6 lg:w-6" />;
+        case "link":
+          return <Linkicon className="w-4 sm:w-5 md:w-6 lg:w-6" />;
       }
     };
 
@@ -101,7 +106,7 @@ export const Card = forwardRef<HTMLDivElement, CardProps>(
           }, 5);
         }
       } catch (e) {
-        console.error("[ERROR] Delete failed:", e);
+        console.error("Delete failed:", e);
         setIsModalOpen(false);
       }
     };
@@ -129,7 +134,9 @@ export const Card = forwardRef<HTMLDivElement, CardProps>(
             <div className="flex justify-between items-center">
               <div className="flex justify-center items-center gap-1 sm:gap-2 md:gap-2 lg:gap-2">
                 {RenderIcon()}
-                <span className="font-semibold text-neutral-800 text-base sm:text-lg md:text-lg lg:text-xl tracking-wide capitalize leading-tight">{title}</span>
+                <span className="font-semibold text-neutral-800 text-base sm:text-lg md:text-lg lg:text-xl tracking-wide capitalize leading-tight">
+                  {title}
+                </span>
               </div>
               <div className="flex justify-center items-center gap-1 sm:gap-2 md:gap-2 lg:gap-2">
                 <ShareIcon className="w-4 sm:w-4 md:w-5 lg:w-5 cursor-pointer" onClick={handleCopyLink} />

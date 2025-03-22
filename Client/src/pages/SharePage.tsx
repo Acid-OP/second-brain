@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
-import { BACKEND_URL } from "../config";
 import { Card } from "../components/Card";
 
 export function SharePage() {
@@ -9,6 +8,8 @@ export function SharePage() {
   const [username, setUsername] = useState<string | null>(null);
   const [contents, setContents] = useState<any[]>([]);
   const [error, setError] = useState<string | null>(null);
+
+  const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
 
   useEffect(() => {
     const fetchSharedContent = async () => {

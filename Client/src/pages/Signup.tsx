@@ -1,7 +1,6 @@
 import { useRef, useState } from "react";
 import { Button } from "../components/Button";
 import axios from "axios";
-import { BACKEND_URL } from "../config";
 import { useNavigate } from "react-router-dom";
 import purplebrain from "../iconImages/purplebrain.png";
 import welcome from "../iconImages/welcome.png";
@@ -31,6 +30,8 @@ export function Signup() {
   const navigate = useNavigate();
   const [errors, setErrors] = useState<{ username?: string; password?: string; general?: string }>({});
 
+  const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
+
   async function signup() {
     const username = usernameRef.current?.value || "";
     const password = passwordRef.current?.value || "";
@@ -49,7 +50,7 @@ export function Signup() {
     }
 
     try {
-      await axios.post(BACKEND_URL + "/api/v1/signup", {
+      await axios.post(`${BACKEND_URL}/api/v1/signup`, {
         username,
         password,
       });
@@ -170,4 +171,3 @@ export function Signup() {
     </div>
   );
 }
-

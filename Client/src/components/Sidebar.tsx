@@ -14,7 +14,6 @@ import { LogoutIcon } from "../icons/LogoutIcon";
 import { LogoutText } from "./LogoutButton";
 import { QueryInput } from "./QuerySection";
 import axios from "axios";
-import { BACKEND_URL } from "../config";
 
 // Helper function for responsive sidebar width
 const getSidebarWidth = (open: boolean) => {
@@ -43,23 +42,22 @@ export function Sidebar({
 }) {
   const navigate = useNavigate();
 
+  const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
+
   function logout() {
     localStorage.removeItem("token");
     navigate("/home");
   }
 
   const handleQuerySubmit = async (query: string) => {
-    console.log("Query submitted:", query);
     try {
       const token = localStorage.getItem("token");
-      console.log("[DEBUG] Token used for query:", token);
       const response = await axios.post(
         `${BACKEND_URL}/api/v1/query`,
         { query },
-        { headers: { Authorization: token } }
+        { headers: { Authorization: `Bearer ${token}` } }
       );
       const card = response.data.card;
-      console.log("Queried card from backend:", card);
       setHighlightedCardId(card.id);
     } catch (error) {
       console.error("Error querying backend:", error);
