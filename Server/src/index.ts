@@ -7,18 +7,20 @@ import cors from "cors";
 import { storeCardEmbeddings } from "./embeddingService.js";
 import { queryWithQA } from "./qaService.js";
 import { z } from "zod";
-// @ts-ignore
 import bcrypt from "bcrypt";
 import dotenv from "dotenv";
 import helmet from "helmet";
 // Load environment variables from .env file
 dotenv.config();
+
 const app = express();
 app.use(express.json());
-app.use(cors({
-  origin: process.env.FRONTEND_URL,
-  credentials: true,
-}));
+app.use(
+  cors({
+    origin: process.env.FRONTEND_URL,
+    credentials: true,
+  })
+);
 app.use(helmet());
 
 // Zod Schemas for validation
@@ -51,7 +53,7 @@ const signinSchema = z.object({
     .regex(/[!@#$%^&*]/, "Password must contain at least one special character (!@#$%^&*)"),
 });
 
-// Signup
+// Signup with Password Hashing
 // @ts-ignore
 app.post("/api/v1/signup", async (req, res) => {
   const username = req.body.username;
@@ -78,7 +80,7 @@ app.post("/api/v1/signup", async (req, res) => {
   }
 });
 
-// Signin
+// Signin with Password Comparison
 // @ts-ignore
 app.post("/api/v1/signin", async (req, res) => {
   const username = req.body.username;
@@ -109,7 +111,7 @@ app.post("/api/v1/query", userMiddleware, async (req, res) => {
   const userId = req.userId;
 
   try {
-    // @ts-ignore
+// @ts-ignore
     const card = await queryWithQA(query, userId);
     res.json({ card });
   } catch (error) {
@@ -219,7 +221,6 @@ app.post("/api/v1/brain/share", userMiddleware, async (req, res) => {
     res.status(500).json({ error: "Internal server error" });
   }
 });
-
 // @ts-ignore
 app.get("/api/v1/brain/:shareLink", async (req, res) => {
   const hash = req.params.shareLink;
