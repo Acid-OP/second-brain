@@ -2,8 +2,8 @@ import React, { useRef } from "react";
 import { Hero } from "../components/Hero";
 import { Navbar } from "../components/Navbar";
 import { motion } from "framer-motion";
-import dashboardImage from "../iconImages/dashboardimage2.png"; // General dashboard with cards
-import featuresImage from "../iconImages/dashboardimage3.png"; // Highlighting a card (formerly queryImage)
+import dashboardImage1 from "../iconImages/dashboardimage2.png"; // General dashboard with cards
+import dashboardImage2 from "../iconImages/dashboardimage3.png"; // Highlighting a card (formerly queryImage)
 
 export function Home() {
   const dashboardRef = useRef<HTMLDivElement>(null);
@@ -56,7 +56,7 @@ export function Home() {
           viewport={{ once: true }}
         >
           <img
-            src={dashboardImage}
+            src={dashboardImage2}
             alt="Second Brain Dashboard Overview"
             className="w-full h-auto rounded-xl shadow-xl border-2 border-[#7950f2] hover:border-[#5e3fd6] transition-all duration-300"
           />
@@ -140,7 +140,7 @@ export function Home() {
           viewport={{ once: true }}
         >
           <img
-            src={featuresImage} // Updated image name
+            src={dashboardImage1} // Updated image name
             alt="Key Features in Second Brain"
             className="w-full h-auto rounded-xl shadow-xl border-2 border-[#7950f2] hover:border-[#5e3fd6] transition-all duration-300"
           />
@@ -151,7 +151,7 @@ export function Home() {
             {
               step: "01",
               title: "Ask a Question",
-              desc: "Type a query to search your saved cards.",
+              desc: "Type a query to search your saved cards by their titles or descriptions.",
             },
             {
               step: "02",

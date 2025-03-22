@@ -1,5 +1,4 @@
 import express from "express";
-import { JWT_SECRET } from "./config.js";
 import Jwt from "jsonwebtoken";
 import { UserModel, ContentModel, LinkModel } from "./db.js";
 import { userMiddleware } from "./middelware.js";
@@ -10,13 +9,17 @@ import { queryWithQA } from "./qaService.js";
 import { z } from "zod";
 // @ts-ignore
 import bcrypt from "bcrypt";
-
+import dotenv from "dotenv";
+import helmet from "helmet";
+// Load environment variables from .env file
+dotenv.config();
 const app = express();
 app.use(express.json());
 app.use(cors({
-  origin: "http://localhost:5173",
+  origin: process.env.FRONTEND_URL,
   credentials: true,
 }));
+app.use(helmet());
 
 // Zod Schemas for validation
 const signupSchema = z.object({
@@ -90,9 +93,8 @@ app.post("/api/v1/signin", async (req, res) => {
   if (existingUser && existingUser.password && typeof existingUser.password === "string") {
     const isPasswordValid = await bcrypt.compare(password, existingUser.password);
     if (isPasswordValid) {
-      const token = Jwt.sign({ id: existingUser._id }, JWT_SECRET);
+      const token = Jwt.sign({ id: existingUser._id }, process.env.JWT_SECRET as string);
       res.json({ token });
-      console.log("token", token);
     } else {
       res.status(403).json({ message: "Incorrect credentials" });
     }
@@ -107,10 +109,8 @@ app.post("/api/v1/query", userMiddleware, async (req, res) => {
   const userId = req.userId;
 
   try {
-    console.log("[DEBUG] Received query request:", { query, userId });
     // @ts-ignore
     const card = await queryWithQA(query, userId);
-    console.log("[DEBUG] Sending response with card:", card || "No card found");
     res.json({ card });
   } catch (error) {
     console.error("[ERROR] Error processing query:", error);
@@ -131,7 +131,6 @@ app.post("/api/v1/content", userMiddleware, async (req, res) => {
   const userId = req.userId;
 
   try {
-    console.log("[DEBUG] Received content creation request:", { link, type, description, title, userId });
     const content = await ContentModel.create({
       link,
       type,
@@ -150,7 +149,6 @@ app.post("/api/v1/content", userMiddleware, async (req, res) => {
         link,
         userId,
       });
-      console.log("[DEBUG] Content added and embeddings stored for card:", content._id.toString());
     } catch (embeddingError) {
       console.warn("[WARN] Embeddings failed but content saved:", embeddingError);
     }
@@ -174,7 +172,6 @@ app.delete("/api/v1/content", userMiddleware, async (req, res) => {
       return res.status(404).json({ error: "Content not found or you don’t have permission." });
     }
     await ContentModel.deleteOne({ _id: id, userId });
-    console.log("[DEBUG] Content deleted:", id);
     res.status(200).json({ message: "Content deleted successfully", _id: id });
   } catch (e) {
     console.error("[ERROR] Error deleting content:", e);
@@ -198,7 +195,7 @@ app.post("/api/v1/brain/share", userMiddleware, async (req, res) => {
     if (share) {
       if (existingLink) {
         return res.status(200).json({
-          link: `${process.env.FRONTEND_URL || "http://localhost:5173"}/brain/${existingLink.hash}`,
+          link: `${process.env.FRONTEND_URL}/brain/${existingLink.hash}`,
         });
       }
       const hash = random(10);
@@ -207,7 +204,7 @@ app.post("/api/v1/brain/share", userMiddleware, async (req, res) => {
         userId,
       });
       res.status(200).json({
-        link: `${process.env.FRONTEND_URL || "http://localhost:5173"}/brain/${hash}`,
+        link: `${process.env.FRONTEND_URL}/brain/${hash}`,
       });
     } else {
       if (existingLink) {
@@ -222,6 +219,7 @@ app.post("/api/v1/brain/share", userMiddleware, async (req, res) => {
     res.status(500).json({ error: "Internal server error" });
   }
 });
+
 // @ts-ignore
 app.get("/api/v1/brain/:shareLink", async (req, res) => {
   const hash = req.params.shareLink;

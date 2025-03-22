@@ -1,6 +1,9 @@
 import { NextFunction, Request, Response } from "express";
 import jwt, { JwtPayload } from "jsonwebtoken";
-import { JWT_SECRET } from "./config.js";
+import dotenv from "dotenv";
+
+// Load environment variables from .env file
+dotenv.config();
 
 // Extend Request type to include userId
 interface AuthRequest extends Request {
@@ -19,7 +22,7 @@ export const userMiddleware = (req: AuthRequest, res: Response, next: NextFuncti
   const token = header.startsWith("Bearer ") ? header.split(" ")[1] : header;
 
   try {
-    const decoded = jwt.verify(token, JWT_SECRET) as JwtPayload;
+    const decoded = jwt.verify(token, process.env.JWT_SECRET as string) as JwtPayload;
     if (!decoded.id) {
       res.status(401).json({ message: "Invalid token payload" });
       return;
